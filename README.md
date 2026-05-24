@@ -22,7 +22,7 @@ Offline NFC wallet system — system design and technical specifications, built 
 
 ### Prerequisites
 
-- Node.js >= 20
+- Node.js >= 24
 - [Yarn](https://yarnpkg.com/)
 
 ### Installation

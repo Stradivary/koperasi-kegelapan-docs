@@ -28,8 +28,8 @@
 
 ## Deployment checklist
 
-- [ ] Card format changes are reflected in `version` field and documented in §3.
-- [ ] API schema changes are documented in §8 before merge.
+- [ ] Card format changes are reflected in `version` field and documented in [§3](3_card-storage-model.md).
+- [ ] API schema changes are documented in [§8](8_backend-frontend-interfaces.md) before merge.
 - [ ] New `keyVersion` is available at the backend before any cards are written with it.
 - [ ] Frontend and terminal builds are deployed before issuing cards with the new layout.
 - [ ] Reconciliation queue is flushed before a backend migration that changes event schemas.

@@ -39,10 +39,11 @@ Mark a card as tampered when any of the following are true:
 
 ## Log chain
 
-- Each log entry includes a 6-byte hash field.
-- `hash[n] = SHA256(deltaTime || amount || balanceAfter || flags || hash[n-1])[0..5]`
-- The chain is anchored at `session.startTime`: `hash[0]` uses `startTime` bytes as the initial previous value.
+- Each log entry includes a 4-byte truncated hash field.
+- `hash[n] = SHA256(timestamp || amount || balanceAfter || flags || hash[n-1])[0..3]`
+- The chain is anchored at `session.startTime`: `hash[0]` uses `startTime` bytes (4 bytes, little-endian) as the initial previous value.
 - The trailer `rootHash` stores the hash of the most recent log entry (the chain head).
+- An all-zero hash field serves as the empty-slot sentinel during decoding.
 
 ## Validation guarantees
 

@@ -2,7 +2,7 @@
 
 ## Testing philosophy
 
-Every test assertion must trace to at least one claim in a spec layer above it. Tests that cannot be traced to a spec are candidates for deletion or for a spec gap to be filled. The acceptance criteria in Product Spec §4 are the top-level regression checklist; all 14 must have at least one E2E scenario.
+Every test assertion must trace to at least one claim in a spec layer above it. Tests that cannot be traced to a spec are candidates for deletion or for a spec gap to be filled. The acceptance criteria in [Product Spec §4](../product-spec/4_acceptance-criteria.md) are the top-level regression checklist; all 14 must have at least one E2E scenario.
 
 ---
 

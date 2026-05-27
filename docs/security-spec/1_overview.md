@@ -46,7 +46,7 @@ The system must protect the financial value stored on NFC cards and the tenant d
 | A01 Broken Access Control       | Tenant-scoped RBAC; every request validated against `tenantId` + role scope; no direct object references without ownership check      |
 | A02 Cryptographic Failures      | AES-256-GCM + HMAC-SHA256 on card payload; Argon2id for passwords; no plaintext secrets in storage or logs                            |
 | A03 Injection                   | All database queries use parameterised statements; no dynamic SQL from user input                                                     |
-| A04 Insecure Design             | Offline-first model reviewed in ADR §4; session grant TTL bounds offline fraud exposure                                               |
+| A04 Insecure Design             | Offline-first model reviewed in [ADR §4](../adr/4_offline-trust-model.md); session grant TTL bounds offline fraud exposure            |
 | A05 Security Misconfiguration   | Per-tenant cache namespacing; secrets via HSM/Vault; no default credentials at deployment                                             |
 | A06 Vulnerable Components       | Dependency audits in CI; pinned lockfiles; automated SCA in pipeline                                                                  |
 | A07 Identity & Auth Failures    | Two-layer auth (device + operator); MFA required for station/admin roles; short-lived access tokens; refresh token hashed server-side |

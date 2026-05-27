@@ -26,7 +26,7 @@ This site contains the full specification for the **Koperasi Kegelapan offline N
 
 ## Architecture Decision Records
 
-Six key decisions are recorded in the [ADR folder](adr/index.md):
+Twelve key decisions are recorded in the [ADR folder](adr/index.md):
 
 1. [A/B buffer write strategy](adr/1_ab-buffer-write-strategy.md) — NFC write non-atomicity and recovery
 2. [AES-GCM cipher choice](adr/2_aes-gcm.md) — Web Crypto API constraint and AEAD rationale
@@ -34,3 +34,9 @@ Six key decisions are recorded in the [ADR folder](adr/index.md):
 4. [Offline trust model](adr/4_offline-trust-model.md) — Session grants, deferred reconciliation
 5. [Hash-chain log](adr/5_hash-chain-log.md) — Tamper-evident on-card transaction log
 6. [Balance ceiling](adr/6_balance-ceiling.md) — uint32 with Rp 16 M operational cap
+7. [TanStack + Cloudflare stack](adr/7_tanstack-start-cloudflare-stack.md) — Application platform choice
+8. [Local-first terminal architecture](adr/8_local-first-terminal-architecture.md) — Optional backend sync
+9. [IndexedDB local persistence](adr/9_indexeddb-local-persistence.md) — Typed local state in browser
+10. [Tenant-scoped local replicas](adr/10_tenant-scoped-local-replicas.md) — Explicit tenant selection
+11. [Outbox-first reconciliation sync](adr/11_outbox-first-reconciliation-sync.md) — Conflict resolution
+12. [Cloudflare-only distribution](adr/12_cloudflare-distribution-only.md) — CDN with local-first offline operation

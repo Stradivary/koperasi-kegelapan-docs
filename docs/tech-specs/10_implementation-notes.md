@@ -3,13 +3,13 @@
 ## Data layout and compatibility
 
 - Use fixed-size fields on the card for predictable parsing. Do not use variable-length structures.
-- All multi-byte integers are little-endian. String fields are null-padded UTF-8 (see §3).
+- All multi-byte integers are little-endian. String fields are null-padded UTF-8 (see [§3](3_card-storage-model.md)).
 - Reserve `version` and feature flag fields to allow safe schema upgrades without breaking deployed cards.
 - When the card format changes, increment `version` and update the parser to handle both the old and new layout during a migration window.
 
 ## Validation and error handling
 
-- Run the full tamper detection sequence (see §5) on every card read before displaying data or allowing writes.
+- Run the full tamper detection sequence (see [§5](5_tamper-detection-validation.md)) on every card read before displaying data or allowing writes.
 - Treat any unexpected or invalid card payload as suspicious: log it, show a user-friendly blocked message, and do not write.
 - Surface detailed validation failure codes in developer/debug logs; never expose raw cryptographic errors to end users.
 - Use specific error types for different failure categories (HMAC fail, counter rollback, chain break, etc.) to simplify debugging and alerting.

@@ -51,7 +51,7 @@ Where:
 - Rp 5,000,000 is the recommended balance cap (backend policy)
 - `TTL` is the session grant TTL (backend-controlled, 1–24 hours)
 
-Reducing the grant TTL is the primary control for reducing offline exposure. The risk triad — balance ceiling, TTL, and reconciliation frequency — must be reviewed together whenever any one value changes. See ADR §6.
+Reducing the grant TTL is the primary control for reducing offline exposure. The risk triad — balance ceiling, TTL, and reconciliation frequency — must be reviewed together whenever any one value changes. See [ADR §6](../adr/6_balance-ceiling.md).
 
 ---
 

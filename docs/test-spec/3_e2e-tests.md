@@ -1,12 +1,12 @@
 # 3. E2E Tests
 
-All E2E tests run with Playwright against a Miniflare backend, a seeded SQLite database, and a mock NFC reader fixture. Each scenario traces to one or more acceptance criteria from Product Spec §4 or to a security control from the Security Spec.
+All E2E tests run with Playwright against a Miniflare backend, a seeded SQLite database, and a mock NFC reader fixture. Each scenario traces to one or more acceptance criteria from [Product Spec §4](../product-spec/4_acceptance-criteria.md) or to a security control from the Security Spec.
 
 ---
 
 ## 3.1 Offline transaction flow
 
-**Traces to**: AC-01, AC-02, AC-03 (Product Spec §4)
+**Traces to**: AC-01, AC-02, AC-03 ([Product Spec §4](../product-spec/4_acceptance-criteria.md))
 
 ### E2E-TXN-01 — Successful offline debit
 
@@ -48,7 +48,7 @@ Then POST /api/reconcile is called with all 5 events in one batch
 
 ## 3.2 Tamper and fraud detection
 
-**Traces to**: AC-04, AC-05, AC-06 (Product Spec §4), Security Spec §4
+**Traces to**: AC-04, AC-05, AC-06 ([Product Spec §4](../product-spec/4_acceptance-criteria.md)), [Security Spec §4](../security-spec/4_card-tamper-detection.md)
 
 ### E2E-TMPR-01 — Byte-modified card triggers BLOCKED_TAMPER
 
@@ -86,7 +86,7 @@ Then the app rejects the operation before any NFC write
 
 ## 3.3 Member experience
 
-**Traces to**: AC-07, AC-08 (Product Spec §4)
+**Traces to**: AC-07, AC-08 ([Product Spec §4](../product-spec/4_acceptance-criteria.md))
 
 ### E2E-MEMBER-01 — Scout view displays balance without write
 
@@ -114,7 +114,7 @@ Then the validation pre-check detects the uninitialised state
 
 ## 3.4 Financial limits
 
-**Traces to**: AC-09, AC-10 (Product Spec §4), Security Spec §7
+**Traces to**: AC-09, AC-10 ([Product Spec §4](../product-spec/4_acceptance-criteria.md)), [Security Spec §7](../security-spec/7_financial-risk-controls.md)
 
 ### E2E-LIM-01 — Single transaction above limit rejected at write time
 
@@ -154,7 +154,7 @@ Then the backend accepts the batch
 
 ## 3.5 Session lifecycle
 
-**Traces to**: AC-11, AC-12 (Product Spec §4)
+**Traces to**: AC-11, AC-12 ([Product Spec §4](../product-spec/4_acceptance-criteria.md))
 
 ### E2E-SES-01 — Gate check-in transitions card to CHECKED_IN
 
@@ -181,7 +181,7 @@ Then the app detects the stale session
 
 ## 3.6 Audit and reconciliation
 
-**Traces to**: AC-13, AC-14 (Product Spec §4)
+**Traces to**: AC-13, AC-14 ([Product Spec §4](../product-spec/4_acceptance-criteria.md))
 
 ### E2E-AUD-01 — Audit log entry exists for every committed value change
 
@@ -210,7 +210,7 @@ Then the response accepted = 3, flagged = 1 (event C)
 
 ## 3.7 Tenant isolation
 
-**Traces to**: Security Spec §2, Data Spec §5
+**Traces to**: [Security Spec §2](../security-spec/2_authentication-authorization.md), [Data Spec §5](../data-spec/5_multitenancy-auth-local-first.md)
 
 ### E2E-ISO-01 — Cross-tenant card lookup blocked
 
@@ -238,7 +238,7 @@ Then the event for the tenant-B card is rejected with reason 'invalid_card'
 
 ## 3.8 Authentication and MFA flows
 
-**Traces to**: Security Spec §2 Authentication & Authorization, API Spec §2
+**Traces to**: [Security Spec §2](../security-spec/2_authentication-authorization.md) Authentication & Authorization, [API Spec §2](../api-spec/2_auth.md)
 
 ### E2E-AUTH-01 — Successful login with TOTP
 
@@ -311,7 +311,7 @@ Then the current tenant-A session grant is discarded from memory
 
 ## 3.9 RBAC enforcement
 
-**Traces to**: Security Spec §2 Permission matrix
+**Traces to**: [Security Spec §2](../security-spec/2_authentication-authorization.md) Permission matrix
 
 ### E2E-RBAC-01 — Scout role cannot request session grant
 

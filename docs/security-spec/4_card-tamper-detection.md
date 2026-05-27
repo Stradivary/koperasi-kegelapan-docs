@@ -38,16 +38,16 @@ Each failure condition maps to a security event severity.
 
 Every tamper event submitted to the backend must include:
 
-| Field         | Description                                                               |
-| ------------- | ------------------------------------------------------------------------- |
-| `tenantId`    | Owning koperasi                                                           |
-| `cardId`      | Card identifier (hex)                                                     |
-| `terminalId`  | Reporting terminal                                                        |
-| `accountId`   | Operator on session at time of detection                                  |
-| `eventType`   | One of: `tamper`, `replay`, `rollback`, `chain_break`, `balance_mismatch` |
-| `detectedAt`  | Terminal-local timestamp                                                  |
-| `counter`     | On-card counter value at time of detection                                |
-| `failureStep` | Validation step number from Tech Specs §5 that failed                     |
+| Field         | Description                                                                                             |
+| ------------- | ------------------------------------------------------------------------------------------------------- |
+| `tenantId`    | Owning koperasi                                                                                         |
+| `cardId`      | Card identifier (hex)                                                                                   |
+| `terminalId`  | Reporting terminal                                                                                      |
+| `accountId`   | Operator on session at time of detection                                                                |
+| `eventType`   | One of: `tamper`, `replay`, `rollback`, `chain_break`, `balance_mismatch`                               |
+| `detectedAt`  | Terminal-local timestamp                                                                                |
+| `counter`     | On-card counter value at time of detection                                                              |
+| `failureStep` | Validation step number from [Tech Specs §5](../tech-specs/5_tamper-detection-validation.md) that failed |
 
 Tamper events must be queued in the local outbox if the terminal is offline and submitted as part of the next reconciliation batch.
 

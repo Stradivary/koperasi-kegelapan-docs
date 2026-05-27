@@ -12,19 +12,19 @@ This folder defines **what proves correctness** for the offline NFC wallet syste
 
 ## Spec coverage matrix
 
-| Spec layer                          | Covered by                                                               |
-| ----------------------------------- | ------------------------------------------------------------------------ |
-| Product Spec §4 Acceptance Criteria | E2E tests — all 14 acceptance criteria have a corresponding E2E scenario |
-| System Design §3 Security Model     | Unit tests (crypto, tamper); E2E tests (tamper, session expiry)          |
-| Tech Specs §4 Cryptography          | Unit tests — key derivation, HMAC, nonce, AES-GCM                        |
-| Tech Specs §5 Tamper Detection      | Unit tests — each of the 10 validation steps; E2E — tamper scenario      |
-| Tech Specs §6 State Machine         | Unit tests — each transition; E2E — session lifecycle                    |
-| Tech Specs §9 Risk Limits           | Unit tests — limit enforcement; E2E — limit breach behaviour             |
-| API Spec §2 Authentication          | E2E — auth flow, MFA, tenant switching, token rotation                   |
-| Data Spec §5 Local-first Storage    | Unit tests — outbox, checkpoint, snapshot stores                         |
-| Security Spec §2 Auth & AuthZ       | E2E — RBAC enforcement, cross-tenant access attempt                      |
-| Security Spec §4 Tamper Detection   | E2E — tamper report flow                                                 |
-| Security Spec §7 Financial Risk     | E2E — limit breach flagging and operator notification                    |
+| Spec layer                                                                          | Covered by                                                               |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| [Product Spec §4](../product-spec/4_acceptance-criteria.md) Acceptance Criteria     | E2E tests — all 14 acceptance criteria have a corresponding E2E scenario |
+| [System Design §3](../system-design/3_security-model.md) Security Model             | Unit tests (crypto, tamper); E2E tests (tamper, session expiry)          |
+| [Tech Specs §4](../tech-specs/4_cryptography.md) Cryptography                       | Unit tests — key derivation, HMAC, nonce, AES-GCM                        |
+| [Tech Specs §5](../tech-specs/5_tamper-detection-validation.md) Tamper Detection    | Unit tests — each of the 10 validation steps; E2E — tamper scenario      |
+| [Tech Specs §6](../tech-specs/6_state-machine-session-rules.md) State Machine       | Unit tests — each transition; E2E — session lifecycle                    |
+| [Tech Specs §9](../tech-specs/9_risk-financial-limits.md) Risk Limits               | Unit tests — limit enforcement; E2E — limit breach behaviour             |
+| [API Spec §2](../api-spec/2_auth.md) Authentication                                 | E2E — auth flow, MFA, tenant switching, token rotation                   |
+| [Data Spec §5](../data-spec/5_multitenancy-auth-local-first.md) Local-first Storage | Unit tests — outbox, checkpoint, snapshot stores                         |
+| [Security Spec §2](../security-spec/2_authentication-authorization.md) Auth & AuthZ | E2E — RBAC enforcement, cross-tenant access attempt                      |
+| [Security Spec §4](../security-spec/4_card-tamper-detection.md) Tamper Detection    | E2E — tamper report flow                                                 |
+| [Security Spec §7](../security-spec/7_financial-risk-controls.md) Financial Risk    | E2E — limit breach flagging and operator notification                    |
 
 ## Upstream sources
 

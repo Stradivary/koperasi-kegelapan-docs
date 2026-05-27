@@ -2,15 +2,15 @@
 
 ## Design
 
-The card stores a fixed-capacity ring buffer of transaction log entries. Storage is constrained by card capacity; the buffer holds approximately 7 entries on NTAG215.
+The card stores a fixed-capacity ring buffer of transaction log entries. Storage is constrained by card capacity; the buffer holds **5 entries** on NTAG215 (80 bytes total).
 
 Each entry records:
 
-- The time elapsed since session start (as a delta, not an absolute timestamp)
+- The absolute Unix timestamp of the transaction (uint32)
 - The transaction amount
 - The balance after the transaction
 - The transaction type and operational flags
-- A truncated hash linking this entry to the previous one
+- A 4-byte truncated SHA-256 hash linking this entry to the previous one
 
 ## Ring buffer behaviour
 

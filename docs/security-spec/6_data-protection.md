@@ -18,14 +18,14 @@
 
 The following personal data is intentionally excluded or limited:
 
-| Data                        | Decision                                                                |
-| --------------------------- | ----------------------------------------------------------------------- |
-| Member full name on card    | Excluded from card binary; stored server-side only                      |
-| National ID / IC number     | Not collected; out of scope (see Product Spec §5)                       |
-| Biometric data              | Not collected at any layer                                              |
-| Location data               | Not collected; no GPS or IP-to-location inference stored                |
-| Device hardware fingerprint | Only the enrolled `device_id` (UUID) is stored; no raw fingerprint      |
-| Operator email              | Stored as `username` in `accounts`; protected by Argon2id password hash |
+| Data                        | Decision                                                                               |
+| --------------------------- | -------------------------------------------------------------------------------------- |
+| Member full name on card    | Excluded from card binary; stored server-side only                                     |
+| National ID / IC number     | Not collected; out of scope (see [Product Spec §5](../product-spec/5_out-of-scope.md)) |
+| Biometric data              | Not collected at any layer                                                             |
+| Location data               | Not collected; no GPS or IP-to-location inference stored                               |
+| Device hardware fingerprint | Only the enrolled `device_id` (UUID) is stored; no raw fingerprint                     |
+| Operator email              | Stored as `username` in `accounts`; protected by Argon2id password hash                |
 
 PII stored on the backend is limited to: operator username/display name, member name, and the join between `user_id` and `card_id`. No government-issued identifier is stored.
 

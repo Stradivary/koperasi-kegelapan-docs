@@ -10,11 +10,11 @@
 | `3`  | `BLOCKED_EXPIRED` | Card or session has passed its expiry date          |
 | `4`  | `BLOCKED_ADMIN`   | Manually decommissioned by an operator              |
 
-The `status` field lives in the Identity Block of the card payload (see §3).
+The `status` field lives in the Identity Block of the card payload (see [§3](3_card-storage-model.md)).
 
 ## Blocking logic
 
-- **BLOCKED_TAMPER**: set automatically when any tamper detection check fails (see §5). The terminal sets this status on the next authenticated write if the card is still writable; if not, it reports the event to the backend.
+- **BLOCKED_TAMPER**: set automatically when any tamper detection check fails (see [§5](5_tamper-detection-validation.md)). The terminal sets this status on the next authenticated write if the card is still writable; if not, it reports the event to the backend.
 - **BLOCKED_FRAUD**: set when the terminal or backend detects suspicious patterns (e.g., multiple rapid debit attempts, counter anomalies, or backend-flagged transactions).
 - **BLOCKED_EXPIRED**: set when `expiresAt` in the trailer has passed. The terminal enforces this on read; the backend enforces it on reconciliation.
 - **BLOCKED_ADMIN**: written by a station terminal acting on a backend instruction. Used for lost/stolen cards or manual decommissioning.

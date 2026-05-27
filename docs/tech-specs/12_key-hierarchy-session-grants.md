@@ -47,7 +47,7 @@ nonce         = HKDF-SHA256(ikm=sessionKey, salt=cardId || counter,  info="nonce
 
 ## Rotation procedure
 
-See §11 for the full key rotation deployment procedure. The key invariant is:
+See [§11](11_deployment-maintenance.md) for the full key rotation deployment procedure. The key invariant is:
 
 > The backend must serve session grants for both the old and new `keyVersion` values throughout the migration window.
 

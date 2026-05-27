@@ -90,7 +90,7 @@ HSM / Secrets Manager
 
 ## Cryptographic validation on card read
 
-The terminal must always run the full sequence from Tech Specs §5. Partial validation is not permitted. Skipping any step is treated as a security failure and must be surfaced as a code defect, not a runtime exception.
+The terminal must always run the full sequence from [Tech Specs §5](../tech-specs/5_tamper-detection-validation.md). Partial validation is not permitted. Skipping any step is treated as a security failure and must be surfaced as a code defect, not a runtime exception.
 
 ---
 

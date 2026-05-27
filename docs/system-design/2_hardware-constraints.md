@@ -13,7 +13,7 @@
 
 | Card    | Usable bytes | Buffer capacity       | Log entries |
 | ------- | ------------ | --------------------- | ----------- |
-| NTAG215 | ~492 bytes   | ~216 bytes per buffer | 7 entries   |
+| NTAG215 | ~504 bytes   | 216 bytes per buffer  | 5 entries   |
 | NTAG216 | ~1024 bytes  | ~448 bytes per buffer | ~21 entries |
 
 ## Limitations

@@ -8,7 +8,7 @@ All unit tests run with Vitest. Each suite below lists the assertions that must 
 
 **Module**: `crypto/keyDerivation`
 
-**Traces to**: Tech Specs §4 Cryptography, Security Spec §3 Cryptographic Controls
+**Traces to**: [Tech Specs §4](../tech-specs/4_cryptography.md) Cryptography, [Security Spec §3](../security-spec/3_cryptographic-controls.md) Cryptographic Controls
 
 | ID      | Given                                                    | When                            | Then                                                                         |
 | ------- | -------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------- |
@@ -24,7 +24,7 @@ All unit tests run with Vitest. Each suite below lists the assertions that must 
 
 **Module**: `crypto/aesgcm`
 
-**Traces to**: Tech Specs §4, ADR §2 AES-GCM, Security Spec §3
+**Traces to**: [Tech Specs §4](../tech-specs/4_cryptography.md), [ADR §2](../adr/2_aes-gcm.md) AES-GCM, [Security Spec §3](../security-spec/3_cryptographic-controls.md)
 
 | ID       | Given                                              | When                                            | Then                                                   |
 | -------- | -------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------ |
@@ -40,7 +40,7 @@ All unit tests run with Vitest. Each suite below lists the assertions that must 
 
 **Module**: `crypto/hmac`
 
-**Traces to**: Tech Specs §4, ADR §2, Security Spec §3
+**Traces to**: [Tech Specs §4](../tech-specs/4_cryptography.md), [ADR §2](../adr/2_aes-gcm.md), [Security Spec §3](../security-spec/3_cryptographic-controls.md)
 
 | ID        | Given                                              | When                                        | Then                                                   |
 | --------- | -------------------------------------------------- | ------------------------------------------- | ------------------------------------------------------ |
@@ -55,7 +55,7 @@ All unit tests run with Vitest. Each suite below lists the assertions that must 
 
 **Module**: `validation/cardValidator`
 
-**Traces to**: Tech Specs §5 Tamper Detection & Validation (steps 0–10)
+**Traces to**: [Tech Specs §5](../tech-specs/5_tamper-detection-validation.md) Tamper Detection & Validation (steps 0–10)
 
 Each step must be independently testable by passing a card payload with only that step's failure condition triggered.
 
@@ -80,7 +80,7 @@ Each step must be independently testable by passing a card payload with only tha
 
 **Module**: `state-machine/cardStateMachine`
 
-**Traces to**: Tech Specs §6 State Machine & Session Rules, System Design §4
+**Traces to**: [Tech Specs §6](../tech-specs/6_state-machine-session-rules.md) State Machine & Session Rules, [System Design §4](../system-design/4_card-state-machine.md)
 
 | ID      | From                 | Trigger                                                | Then                                               |
 | ------- | -------------------- | ------------------------------------------------------ | -------------------------------------------------- |
@@ -99,7 +99,7 @@ Each step must be independently testable by passing a card payload with only tha
 
 **Module**: `limits/limitEnforcer`
 
-**Traces to**: Tech Specs §9 Risk & Financial Limits, Security Spec §7
+**Traces to**: [Tech Specs §9](../tech-specs/9_risk-financial-limits.md) Risk & Financial Limits, [Security Spec §7](../security-spec/7_financial-risk-controls.md)
 
 | ID       | Given                                                                     | When                              | Then                                                          |
 | -------- | ------------------------------------------------------------------------- | --------------------------------- | ------------------------------------------------------------- |
@@ -115,7 +115,7 @@ Each step must be independently testable by passing a card payload with only tha
 
 **Module**: `outbox/reconciliationOutbox`
 
-**Traces to**: Data Spec §5 Local-first Storage, Tech Specs §8 Backend & Frontend Interfaces
+**Traces to**: [Data Spec §5](../data-spec/5_multitenancy-auth-local-first.md) Local-first Storage, [Tech Specs §8](../tech-specs/8_backend-frontend-interfaces.md) Backend & Frontend Interfaces
 
 | ID       | Given                                                       | When                       | Then                                                              |
 | -------- | ----------------------------------------------------------- | -------------------------- | ----------------------------------------------------------------- |
@@ -132,7 +132,7 @@ Each step must be independently testable by passing a card payload with only tha
 
 **Module**: `auth/tokenVerifier`
 
-**Traces to**: Security Spec §2 Authentication & Authorization, API Spec §2
+**Traces to**: [Security Spec §2](../security-spec/2_authentication-authorization.md) Authentication & Authorization, [API Spec §2](../api-spec/2_auth.md)
 
 | ID        | Given                                       | When                                  | Then                                                          |
 | --------- | ------------------------------------------- | ------------------------------------- | ------------------------------------------------------------- |
@@ -149,7 +149,7 @@ Each step must be independently testable by passing a card payload with only tha
 
 **Module**: `codec/cardCodec`
 
-**Traces to**: Data Spec §2 Card Binary Schema, Data Spec §4 Encoding Conventions
+**Traces to**: [Data Spec §2](../data-spec/2_card-binary-schema.md) Card Binary Schema, [Data Spec §4](../data-spec/4_encoding-conventions.md) Encoding Conventions
 
 | ID       | Given                                             | When               | Then                                                       |
 | -------- | ------------------------------------------------- | ------------------ | ---------------------------------------------------------- |

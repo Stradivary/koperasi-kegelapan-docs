@@ -21,5 +21,7 @@ This folder contains implementation-focused technical specifications for the NFC
 15. [Status Codes & Block Rules](15_status-codes-block-rules.md)
 16. [Infrastructure Stack](16_infrastructure-stack.md)
 17. [Time, Validation & Assumptions](17_time-validation-assumptions.md)
+18. [Software Assumptions](18_software-assumptions.md)
+19. [CI/CD Integration](19_cicd-integration.md)
 
 > These specs are written as a development reference: clear behavior definitions, interface expectations, and implementation guidance for both the browser app and the backend service.

@@ -23,6 +23,8 @@ This site contains the full specification for the **Koperasi Kegelapan offline N
 - [Cryptographic model](system-design/8_crypto-model.md) — AES-256-GCM, HMAC-SHA256, HKDF
 - [API overview](api-spec/1_overview.md) — Base URL, auth, error format
 - [Hardware constraints](system-design/2_hardware-constraints.md) — NTAG215 / NTAG216 specs
+- [Software assumptions](tech-specs/18_software-assumptions.md) — Tenancy, cards, transactions, sync, limits
+- [CI/CD integration](tech-specs/19_cicd-integration.md) — Pipeline, secrets, scripts, deployment
 
 ## Architecture Decision Records
 

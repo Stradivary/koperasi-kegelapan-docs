@@ -57,7 +57,7 @@ Configure these in **Settings → Secrets and variables → Actions**:
 
 ## 3. SonarCloud Setup
 
-1. Sign in at <https://sonarcloud.io> with your GitHub account.
+1. Sign in at [https://sonarcloud.io](https://sonarcloud.io) with your GitHub account.
 2. Click **+** → **Analyze new project** → import `stradivary/koperasi-kegelapan`.
 3. Choose **GitHub Actions** as the analysis method.
 4. Copy the generated token and add it as `SONAR_TOKEN` (see table above).

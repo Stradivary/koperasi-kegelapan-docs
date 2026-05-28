@@ -2,6 +2,10 @@
 
 This site contains the full specification for the **Koperasi Kegelapan offline NFC wallet system**: a tap-based payment system that operates without real-time backend connectivity, storing encrypted wallet state on NTAG215 NFC cards.
 
+## 📖 Panduan Pengguna
+
+Baru menggunakan sistem ini? Mulai dari [**Panduan Pengguna**](user-guide/index.md) untuk langkah-langkah lengkap dari registrasi hingga operasional harian.
+
 ## Spec Layers
 
 | Layer                                      | Status      | Folder                |

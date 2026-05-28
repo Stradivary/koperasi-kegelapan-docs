@@ -53,6 +53,12 @@ const config = {
         title: "Koperasi Kegelapan NFC Wallet",
         items: [
           {
+            type: "docSidebar",
+            sidebarId: "userGuideSidebar",
+            label: "📖 Panduan",
+            position: "left",
+          },
+          {
             type: "dropdown",
             label: "Spec Layers",
             position: "left",
@@ -99,6 +105,7 @@ const config = {
               },
             ],
           },
+          // TODO: Add User guideline here
           {
             href: "https://github.com/stradivary/koperasi-kegelapan-docs",
             label: "GitHub",

@@ -60,3 +60,43 @@
   background-color: var(--ifm-color-emphasis-300);
   color: var(--ifm-color-emphasis-700);
 }
+
+
+/* ─── User Guide: Side-by-side step layout ─── */
+.guide-step {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: start;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+@media (min-width: 768px) {
+  .guide-step {
+    grid-template-columns: 1fr 280px;
+  }
+}
+
+.guide-step:last-child {
+  border-bottom: none;
+}
+
+.guide-step__text {
+  min-width: 0;
+}
+
+.guide-step__text p {
+  margin-bottom: 0.5rem;
+}
+
+.guide-step__image {
+  display: flex;
+  justify-content: center;
+}
+
+/* Ensure placeholder images don't overflow on mobile */
+.guide-step__image figure {
+  margin: 0;
+  max-width: 100%;
+}

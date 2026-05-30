@@ -61,7 +61,6 @@
   color: var(--ifm-color-emphasis-700);
 }
 
-
 /* ─── User Guide: Side-by-side step layout ─── */
 .guide-step {
   display: grid;

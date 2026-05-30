@@ -26,10 +26,12 @@ Akses aplikasi melalui browser. Anda akan melihat halaman login dengan opsi untu
 <div className="guide-step__text">
 
 **Yang perlu dilakukan:**
+
 - Buka URL aplikasi di browser
 - Pada halaman login, tap tombol **"Buat Koperasi Baru"**
 
 **Tips:**
+
 - Pastikan browser mendukung Web NFC (Chrome Android 89+)
 - Tambahkan ke Home Screen untuk pengalaman terbaik
 
@@ -49,11 +51,13 @@ Form registrasi akan muncul. Isi informasi dasar koperasi Anda.
 <div className="guide-step__text">
 
 **Field yang perlu diisi:**
+
 - **Nama Koperasi** — Nama organisasi Anda (contoh: "Koperasi Maju Bersama")
 - **Kode Tenant** — Kode unik pendek (auto-generated, bisa diedit)
 - **PIN Admin** — PIN 6 digit untuk akses admin
 
 **Validasi:**
+
 - Nama minimal 3 karakter
 - PIN harus 6 digit angka
 - Kode tenant harus unik di sistem
@@ -74,11 +78,13 @@ Setelah mengisi data, sistem akan membuat tenant secara lokal.
 <div className="guide-step__text">
 
 **Apa yang terjadi:**
+
 - Tenant dibuat di penyimpanan lokal (IndexedDB)
 - Master key di-generate untuk enkripsi kartu
 - Anda otomatis login sebagai admin tenant tersebut
 
 **Penting:**
+
 - Data tenant awalnya hanya ada di perangkat ini
 - Sinkronisasi ke server terjadi otomatis saat online
 - Anda bisa menggunakan sistem secara offline sepenuhnya
@@ -103,8 +109,8 @@ Setelah tenant berhasil dibuat, Anda akan diarahkan ke **Dashboard Admin** (Stat
 
 ## Troubleshooting
 
-| Masalah | Solusi |
-|---------|--------|
-| Kode tenant sudah dipakai | Ganti dengan kode lain yang unik |
-| Form tidak muncul | Pastikan JavaScript aktif di browser |
-| Data tidak tersimpan | Periksa storage permission browser |
+| Masalah                   | Solusi                               |
+| ------------------------- | ------------------------------------ |
+| Kode tenant sudah dipakai | Ganti dengan kode lain yang unik     |
+| Form tidak muncul         | Pastikan JavaScript aktif di browser |
+| Data tidak tersimpan      | Periksa storage permission browser   |

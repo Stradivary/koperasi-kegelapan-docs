@@ -9,15 +9,15 @@ Selamat datang di panduan pengguna **Koperasi Kegelapan NFC Wallet**. Dokumen in
 
 ## Daftar Panduan
 
-| # | Panduan | Deskripsi |
-|---|---------|-----------|
-| 1 | [Register Tenant](./register-tenant.md) | Membuat organisasi/koperasi baru di sistem |
-| 2 | [Login](./login.md) | Masuk ke aplikasi dan memilih tenant |
-| 3 | [Pasang Perangkat](./pasang-perangkat.md) | Setup perangkat sebagai terminal/kiosk |
-| 4 | [Operasi Kartu](./operasi-kartu.md) | Issue, top-up, dan kelola kartu NFC |
-| 5 | [Manajemen Anggota](./manajemen-anggota.md) | Tambah dan kelola data anggota |
-| 6 | [Mode Kiosk](./mode-kiosk.md) | Gunakan perangkat sebagai Gate, Terminal, atau Scout |
-| 7 | [Transaksi](./transaksi.md) | Proses check-in, checkout, dan riwayat |
+| #   | Panduan                                     | Deskripsi                                            |
+| --- | ------------------------------------------- | ---------------------------------------------------- |
+| 1   | [Register Tenant](./register-tenant.md)     | Membuat organisasi/koperasi baru di sistem           |
+| 2   | [Login](./login.md)                         | Masuk ke aplikasi dan memilih tenant                 |
+| 3   | [Pasang Perangkat](./pasang-perangkat.md)   | Setup perangkat sebagai terminal/kiosk               |
+| 4   | [Operasi Kartu](./operasi-kartu.md)         | Issue, top-up, dan kelola kartu NFC                  |
+| 5   | [Manajemen Anggota](./manajemen-anggota.md) | Tambah dan kelola data anggota                       |
+| 6   | [Mode Kiosk](./mode-kiosk.md)               | Gunakan perangkat sebagai Gate, Terminal, atau Scout |
+| 7   | [Transaksi](./transaksi.md)                 | Proses check-in, checkout, dan riwayat               |
 
 ## Alur Umum
 

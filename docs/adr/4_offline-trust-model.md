@@ -5,7 +5,7 @@
 
 ## Context
 
-The system serves event venues and transit operators where connectivity to a backend cannot be guaranteed during operations. Turnstiles, food stalls, and transit gates must process card taps even when the internet is unavailable — a failed connection must not block a member from entering or spending.
+The system serves event venues and transit operators where connectivity to a backend cannot be guaranteed during operations. Turnstiles, food stalls, and transit gates must process card taps even when the internet is unavailable - a failed connection must not block a member from entering or spending.
 
 At the same time, the system must not allow unlimited offline fraud. A terminal that has been disconnected from the backend for an extended period should not have unrestricted authority to accept transactions.
 

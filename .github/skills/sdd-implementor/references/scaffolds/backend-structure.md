@@ -16,7 +16,7 @@ src/
           balance-ceiling.policy.ts        # Security/Product Spec constraint
           blocked-card.rule.ts
         repositories/
-          i-card.repository.ts             # Interface — no framework deps
+          i-card.repository.ts             # Interface - no framework deps
         events/
           card-activated.event.ts          # Domain event
       application/
@@ -52,9 +52,9 @@ app/
     Controllers/
       CardController.php               # API Spec endpoints
     Requests/
-      ActivateCardRequest.php          # Validation — Tech Spec rules
+      ActivateCardRequest.php          # Validation - Tech Spec rules
     Resources/
-      CardResource.php                 # Response shape — API Spec
+      CardResource.php                 # Response shape - API Spec
   Domain/
     Card/
       Card.php                         # Domain entity (not Eloquent)
@@ -107,7 +107,7 @@ src/main/java/com/app/
 
 ```java
 // Feature: <feature-name>
-// Spec:    <layer> §<section> — <claim>
+// Spec:    <layer> §<section> - <claim>
 // Pattern: <design pattern>
 ```
 

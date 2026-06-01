@@ -6,10 +6,10 @@ Every card read must re-verify the entire card state from scratch. No cached ass
 
 A card is treated as tampered if any of the following fail:
 
-- **Cryptographic integrity** — the authentication tag or HMAC over the payload does not match
-- **Log chain integrity** — any entry in the transaction log chain is inconsistent with its predecessor
-- **State consistency** — the balance, counter, or timestamp recorded in the wallet block is inconsistent with the log history
-- **Counter or timestamp rollback** — the monotonic counter or last-write timestamp has moved backwards, indicating a replay or rollback attack
+- **Cryptographic integrity** - the authentication tag or HMAC over the payload does not match
+- **Log chain integrity** - any entry in the transaction log chain is inconsistent with its predecessor
+- **State consistency** - the balance, counter, or timestamp recorded in the wallet block is inconsistent with the log history
+- **Counter or timestamp rollback** - the monotonic counter or last-write timestamp has moved backwards, indicating a replay or rollback attack
 
 ## Additional checks
 

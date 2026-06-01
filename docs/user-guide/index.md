@@ -3,7 +3,7 @@ sidebar_position: 1
 title: Panduan Pengguna
 ---
 
-# Panduan Pengguna — Koperasi Kegelapan NFC Wallet
+# Panduan Pengguna - Koperasi Kegelapan NFC Wallet
 
 Selamat datang di panduan pengguna **Koperasi Kegelapan NFC Wallet**. Dokumen ini akan membantu Anda memahami cara menggunakan aplikasi dari awal hingga operasional sehari-hari.
 
@@ -32,6 +32,6 @@ flowchart LR
 
 ## Catatan
 
-- Aplikasi ini dirancang **mobile-first** — semua operasi bisa dilakukan dari smartphone.
-- Sistem bekerja **offline-first** — tidak perlu koneksi internet untuk operasi kartu.
+- Aplikasi ini dirancang **mobile-first** - semua operasi bisa dilakukan dari smartphone.
+- Sistem bekerja **offline-first** - tidak perlu koneksi internet untuk operasi kartu.
 - Sinkronisasi ke server dilakukan otomatis saat koneksi tersedia.

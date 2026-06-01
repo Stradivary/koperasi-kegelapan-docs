@@ -4,13 +4,13 @@
 
 | Storage area                       | Classification              | Encryption at rest                      | Access control                            |
 | ---------------------------------- | --------------------------- | --------------------------------------- | ----------------------------------------- |
-| NFC card payload                   | Financial — sensitive       | AES-256-GCM (application-level)         | Requires valid session grant to write     |
+| NFC card payload                   | Financial - sensitive       | AES-256-GCM (application-level)         | Requires valid session grant to write     |
 | Backend database (PostgreSQL)      | Financial + PII             | Database-level TDE + tenant isolation   | Backend API only; no direct client access |
 | Secrets manager (Vault / KV)       | Secret                      | Platform-level encryption               | Backend service identity only             |
-| IndexedDB — `operatorSession`      | Sensitive                   | AES-256-GCM via WebCrypto               | Active authenticated session only         |
-| IndexedDB — `cardSnapshot`         | Internal                    | None required (no PII, no key material) | Active authenticated session only         |
-| IndexedDB — `reconciliationOutbox` | Internal                    | None required (no key material)         | Active authenticated session only         |
-| Browser `localStorage`             | Not used for sensitive data | N/A                                     | —                                         |
+| IndexedDB - `operatorSession`      | Sensitive                   | AES-256-GCM via WebCrypto               | Active authenticated session only         |
+| IndexedDB - `cardSnapshot`         | Internal                    | None required (no PII, no key material) | Active authenticated session only         |
+| IndexedDB - `reconciliationOutbox` | Internal                    | None required (no key material)         | Active authenticated session only         |
+| Browser `localStorage`             | Not used for sensitive data | N/A                                     | -                                         |
 
 ---
 

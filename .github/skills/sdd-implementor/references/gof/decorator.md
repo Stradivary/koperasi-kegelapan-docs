@@ -10,10 +10,10 @@ Attach additional responsibilities to an object dynamically by wrapping it in a 
 - Any Security Spec requirement to intercept and validate before a domain operation.
 - NestJS interceptors, guards, and middleware are Decorator pattern implementations.
 
-## Code Template (TypeScript — Repository with caching decorator)
+## Code Template (TypeScript - Repository with caching decorator)
 
 ```ts
-// Spec: Tech Specs §3 — Card storage with caching
+// Spec: Tech Specs §3 - Card storage with caching
 // Pattern: Decorator
 
 export class CachedCardRepository implements ICardRepository {
@@ -34,14 +34,14 @@ export class CachedCardRepository implements ICardRepository {
   }
 }
 
-// Usage — compose at composition root
+// Usage - compose at composition root
 const cardRepo: ICardRepository = new CachedCardRepository(new PrismaCardRepository(prisma));
 ```
 
-## Code Template (TypeScript — Logging decorator)
+## Code Template (TypeScript - Logging decorator)
 
 ```ts
-// Pattern: Decorator — logging
+// Pattern: Decorator - logging
 
 export class LoggingCardRepository implements ICardRepository {
   constructor(
@@ -75,4 +75,4 @@ const cardRepo: ICardRepository = new LoggingCardRepository(
 ## Antipatterns
 
 - Decorator that changes the behavior contract (violates Liskov).
-- Deeply nested decorators with no clear order — document the composition order.
+- Deeply nested decorators with no clear order - document the composition order.

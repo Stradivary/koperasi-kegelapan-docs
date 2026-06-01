@@ -45,9 +45,9 @@ The active and shadow buffers each have a fixed size of **216 bytes** on NTAG215
 | `userId`    | 8 B  | ASCII  | 8-character alphanumeric user identifier (e.g. "GJWt7u3g"); backend join key                                                                               |
 | `gender`    | 1 B  | uint8  | Gender code: `0` = unspecified, `1` = male, `2` = female (application-defined)                                                                             |
 | `status`    | 1 B  | uint8  | Card status code (see [§15](15_status-codes-block-rules.md))                                                                                               |
-| `reserved`  | 2 B  | —      | Padding. Must be zeroed on write; ignored on read.                                                                                                         |
+| `reserved`  | 2 B  | -      | Padding. Must be zeroed on write; ignored on read.                                                                                                         |
 | `createdAt` | 4 B  | uint32 | Card issuance timestamp (UTC seconds)                                                                                                                      |
-| `reserved`  | 8 B  | —      | Reserved for future fields (e.g. nationality code, extended user metadata). Must be zeroed on write; ignored on read. Pads the Identity Block to 48 bytes. |
+| `reserved`  | 8 B  | -      | Reserved for future fields (e.g. nationality code, extended user metadata). Must be zeroed on write; ignored on read. Pads the Identity Block to 48 bytes. |
 
 ### Wallet + Runtime Block (24 bytes)
 
@@ -59,7 +59,7 @@ The active and shadow buffers each have a fixed size of **216 bytes** on NTAG215
 | `lastTimestamp` | 4 B  | uint32 | Timestamp of the most recent write (UTC seconds)                        |
 | `state`         | 1 B  | uint8  | Card lifecycle state (see [§6](6_state-machine-session-rules.md))       |
 | `flags`         | 1 B  | uint8  | Feature and operational flags (see below)                               |
-| `reserved`      | 2 B  | —      | Padding to 24 bytes. Must be zeroed on write; ignored on read.          |
+| `reserved`      | 2 B  | -      | Padding to 24 bytes. Must be zeroed on write; ignored on read.          |
 
 #### Flags (1 byte)
 
@@ -76,9 +76,9 @@ The active and shadow buffers each have a fixed size of **216 bytes** on NTAG215
 | `startTime`  | 4 B  | uint32 | Session open timestamp (UTC seconds)                                                                                                                                                     |
 | `endTime`    | 4 B  | uint32 | Session close timestamp; zero if session is open                                                                                                                                         |
 | `terminalId` | 4 B  | uint32 | Identifier of the terminal that opened the session                                                                                                                                       |
-| `reserved`   | 4 B  | —      | Pads the Session Block to 16 bytes for alignment. Reserved for future session fields (e.g. gateId that performed check-in, session type flag). Must be zeroed on write; ignored on read. |
+| `reserved`   | 4 B  | -      | Pads the Session Block to 16 bytes for alignment. Reserved for future session fields (e.g. gateId that performed check-in, session type flag). Must be zeroed on write; ignored on read. |
 
-### Logs (80 bytes — 5 entries × 16 bytes each)
+### Logs (80 bytes - 5 entries × 16 bytes each)
 
 See [§14](14_transaction-log-format.md) for full log entry definition and chain integrity rules.
 
@@ -100,13 +100,13 @@ Offsets are relative to the trailer start.
 | ------------- | ------ | ---- | ------ | -------------------------------------------------------------------------------- |
 | `expiresAt`   | 0      | 4 B  | uint32 | Card expiry timestamp (UTC seconds)                                              |
 | `keyVersion`  | 4      | 1 B  | uint8  | Version of the key set used to encrypt and authenticate this card                |
-| `reserved`    | 5      | 3 B  | —      | Reserved; zero on write                                                          |
+| `reserved`    | 5      | 3 B  | -      | Reserved; zero on write                                                          |
 | `rootHash`    | 8      | 6 B  | bytes  | Truncated SHA-256 over the full log chain; anchors log sequence to current state |
-| `reserved`    | 14     | 2 B  | —      | Reserved; zero on write                                                          |
+| `reserved`    | 14     | 2 B  | -      | Reserved; zero on write                                                          |
 | `counterBind` | 16     | 4 B  | uint32 | Lower 32 bits of `counter` included in HMAC input for replay resistance          |
 | `HMAC`        | 20     | 8 B  | bytes  | Truncated HMAC-SHA256 over payload and trailer fields                            |
 | `activePtr`   | 28     | 1 B  | uint8  | `0` = buffer A is active; `1` = buffer B is active                               |
-| `padding`     | 29     | 35 B | —      | Zero-padded to fill 64 bytes                                                     |
+| `padding`     | 29     | 35 B | -      | Zero-padded to fill 64 bytes                                                     |
 
 ## Size summary
 

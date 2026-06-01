@@ -53,9 +53,9 @@ Each buffer contains the following blocks in fixed order:
 | `userId`    | 40     | 8 B  | ASCII  | Alphanumeric user ID (e.g. "GJWt7u3g")                   | 8-char ID; set at issuance; backend join key     |
 | `gender`    | 48     | 1 B  | uint8  | Gender code: `0` = unspecified, `1` = male, `2` = female | Application-defined; not used in financial logic |
 | `status`    | 49     | 1 B  | uint8  | Card health status code                                  | See [status codes table](#status-codes) below    |
-| `reserved`  | 50     | 2 B  | —      | Padding                                                  | Must be zeroed on write; ignored on read         |
+| `reserved`  | 50     | 2 B  | -      | Padding                                                  | Must be zeroed on write; ignored on read         |
 | `createdAt` | 52     | 4 B  | uint32 | Issuance timestamp (UTC seconds)                         | Immutable after issuance                         |
-| `reserved`  | 56     | 8 B  | —      | Reserved                                                 | Must be zeroed on write; ignored on read         |
+| `reserved`  | 56     | 8 B  | -      | Reserved                                                 | Must be zeroed on write; ignored on read         |
 
 #### Status codes
 
@@ -79,7 +79,7 @@ Each buffer contains the following blocks in fixed order:
 | `lastTimestamp` | 80     | 4 B  | uint32 | Timestamp of most recent write (UTC seconds)            | Must not be earlier than previous `lastTimestamp`                 |
 | `state`         | 84     | 1 B  | uint8  | Card lifecycle / session state                          | See [session state codes](#session-state-codes) below             |
 | `flags`         | 85     | 1 B  | uint8  | Feature and operational flags                           | See [flags layout](#flags-layout) below                           |
-| `reserved`      | 86     | 2 B  | —      | Padding to 24 bytes                                     | Must be zeroed on write; ignored on read                          |
+| `reserved`      | 86     | 2 B  | -      | Padding to 24 bytes                                     | Must be zeroed on write; ignored on read                          |
 
 #### Session state codes
 
@@ -109,9 +109,9 @@ Each buffer contains the following blocks in fixed order:
 | `startTime`  | 88     | 4 B  | uint32 | Session open timestamp (UTC seconds)   | Set on `CHECKED_IN`; used as chain initialisation anchor |
 | `endTime`    | 92     | 4 B  | uint32 | Session close timestamp (UTC seconds)  | Zero while session is open; set on `CHECKED_OUT`         |
 | `terminalId` | 96     | 4 B  | uint32 | ID of terminal that opened the session | Backend-assigned terminal identifier                     |
-| `reserved`   | 100    | 4 B  | —      | Reserved                               | Must be zeroed on write; ignored on read                 |
+| `reserved`   | 100    | 4 B  | -      | Reserved                               | Must be zeroed on write; ignored on read                 |
 
-### Log Region (80 bytes — 5 entries × 16 bytes)
+### Log Region (80 bytes - 5 entries × 16 bytes)
 
 Fixed-capacity ring buffer. When full, the oldest entry is overwritten. Current write position is tracked implicitly via `rootHash` in the trailer.
 
@@ -154,13 +154,13 @@ Offsets below are **relative to the trailer start** (absolute offset 432 in full
 | ------------- | ------ | ---- | ------ | ------------------------------------------------------ | ------------------------------------------------------------------------------------- |
 | `expiresAt`   | 0      | 4 B  | uint32 | Card expiry timestamp (UTC seconds)                    | Card is `BLOCKED_EXPIRED` if current time > `expiresAt`                               |
 | `keyVersion`  | 4      | 1 B  | uint8  | Key set version used to encrypt/authenticate this card | Determines which master key is used for HMAC derivation                               |
-| `reserved`    | 5      | 3 B  | —      | Reserved                                               | Must be zeroed on write                                                               |
+| `reserved`    | 5      | 3 B  | -      | Reserved                                               | Must be zeroed on write                                                               |
 | `rootHash`    | 8      | 6 B  | bytes  | Truncated SHA-256 of the most recent log entry hash    | Chain head; ties log sequence to trailer HMAC                                         |
-| `reserved`    | 14     | 2 B  | —      | Reserved                                               | Must be zeroed on write                                                               |
+| `reserved`    | 14     | 2 B  | -      | Reserved                                               | Must be zeroed on write                                                               |
 | `counterBind` | 16     | 4 B  | uint32 | Lower 32 bits of `counter` included in HMAC input      | Anti-replay binding in the HMAC                                                       |
 | `HMAC`        | 20     | 8 B  | bytes  | Truncated HMAC-SHA256 over payload and trailer fields  | Covers: active buffer bytes + `expiresAt` + `keyVersion` + `rootHash` + `counterBind` |
 | `activePtr`   | 28     | 1 B  | uint8  | Active buffer pointer: `0` = Buffer A, `1` = Buffer B  | Flipped only after new buffer is fully written and verified                           |
-| `padding`     | 29     | 35 B | —      | Zero-padding to fill 64 bytes                          | Must be zeroed on write                                                               |
+| `padding`     | 29     | 35 B | -      | Zero-padding to fill 64 bytes                          | Must be zeroed on write                                                               |
 
 ---
 

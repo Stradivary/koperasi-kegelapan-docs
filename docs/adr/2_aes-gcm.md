@@ -5,7 +5,7 @@
 
 ## Context
 
-The card payload (Zone A and Zone B) must be encrypted before writing to the NFC card. An attacker with a cheap NFC reader can read any NTAG card in seconds. Without encryption, the balance, identity, and session state are exposed in plaintext. The encrypted payload must also be authenticated — an attacker who cannot read the plaintext must also be unable to forge or modify the ciphertext without detection.
+The card payload (Zone A and Zone B) must be encrypted before writing to the NFC card. An attacker with a cheap NFC reader can read any NTAG card in seconds. Without encryption, the balance, identity, and session state are exposed in plaintext. The encrypted payload must also be authenticated - an attacker who cannot read the plaintext must also be unable to forge or modify the ciphertext without detection.
 
 The encryption stack must run in a browser-based terminal application (Android Chrome) because Web NFC requires a browser context and cannot be used from a native Android app. The Web Crypto API is therefore the only available cryptographic runtime.
 
@@ -57,4 +57,4 @@ An **HMAC-SHA256** (truncated to 8 bytes) is therefore computed over the full en
 - System Design [§8 Cryptographic Model](../system-design/8_crypto-model.md)
 - Tech Specs [§4 Cryptography](../tech-specs/4_cryptography.md)
 - Tech Specs [§12 Key Hierarchy & Session Grants](../tech-specs/12_key-hierarchy-session-grants.md)
-- [Web Crypto API — Supported Algorithms (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto)
+- [Web Crypto API - Supported Algorithms (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto)

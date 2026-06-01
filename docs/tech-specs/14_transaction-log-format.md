@@ -33,7 +33,7 @@
 
 - The first entry in a session uses `session.startTime` bytes (4 bytes, little-endian, zero-padded to 4) as the initial `prevHash`.
 - Each subsequent entry: `hash[n] = SHA256(timestamp || amount || balanceAfter || flags || hash[n-1])[0..3]`
-- `rootHash` in the trailer equals `hash[lastEntry]` — the chain head.
+- `rootHash` in the trailer equals `hash[lastEntry]` - the chain head.
 - After a ring buffer wrap, the chain continues from the overwritten slot's predecessor; the full chain back to session start is no longer available, but each surviving entry is still individually verifiable from its predecessor.
 
 ## Integrity guarantees

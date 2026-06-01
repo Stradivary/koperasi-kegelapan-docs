@@ -6,12 +6,12 @@ Encapsulate a request as an object, allowing parameterisation, queuing, logging,
 
 ## SDD Trigger
 
-- CQRS Commands are the Command pattern — every write operation in the API Spec is a Command.
+- CQRS Commands are the Command pattern - every write operation in the API Spec is a Command.
 - Undo/redo requirements in Tech Specs.
 - Queueing deferred operations (offline payment queue when NFC terminal is disconnected).
 - Any spec that says "record what was requested, not just what happened."
 
-## Code Template (TypeScript — CQRS Command object)
+## Code Template (TypeScript - CQRS Command object)
 
 ```ts
 // Spec: API Spec §5 POST /cards/{uid}/payment
@@ -52,10 +52,10 @@ export class ProcessPaymentHandler implements ICommandHandler<ProcessPaymentComm
 }
 ```
 
-## Code Template (TypeScript — Offline command queue)
+## Code Template (TypeScript - Offline command queue)
 
 ```ts
-// Spec: System Design §9 — Write strategy (buffered/offline)
+// Spec: System Design §9 - Write strategy (buffered/offline)
 // Pattern: Command + Queue
 
 export class OfflineCommandQueue {
@@ -76,9 +76,9 @@ export class OfflineCommandQueue {
 
 ## Rules
 
-- Commands are immutable value objects — no setters after construction.
+- Commands are immutable value objects - no setters after construction.
 - One handler per command type (single responsibility).
-- Commands carry all data needed to execute — no hidden dependencies.
+- Commands carry all data needed to execute - no hidden dependencies.
 
 ## Antipatterns
 

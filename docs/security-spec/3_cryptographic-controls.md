@@ -82,7 +82,7 @@ HSM / Secrets Manager
 | Backend secrets manager (Vault / KV) | Session key seeds, OTP seeds (encrypted)            | Plaintext card data, PII         |
 | Terminal process memory              | Session key, derived per-card keys (ephemeral)      | Anything persisted across reload |
 | Device IndexedDB                     | Encrypted refresh token blob                        | Plaintext tokens, session keys   |
-| Client `localStorage`                | Nothing sensitive                                   | —                                |
+| Client `localStorage`                | Nothing sensitive                                   | -                                |
 | Card binary payload                  | Encrypted wallet state                              | Plaintext balance, keys          |
 | Logs                                 | No key material, no PII beyond operator identifiers | Any secret value                 |
 

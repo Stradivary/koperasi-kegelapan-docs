@@ -4,17 +4,17 @@
 
 Run checks in this order on every card read. Stop and mark tampered on the first failure.
 
-0. **Uninitialised card pre-check** — if the `magic` field is all `0x00` or all `0xFF`, treat the card as uninitialised (not tampered) and halt. Display "Unactivated card" to the user. Do not proceed to step 1. See [System Design §18](../system-design/18_card-initialisation-state.md).
-1. **Magic and version check** — reject the payload if `magic` does not match the expected value or `version` is unsupported.
-2. **Key version lookup** — reject if no session grant is available for the card's `keyVersion`.
-3. **HMAC verification** — recompute HMAC over encrypted buffer and trailer fields; reject on mismatch.
-4. **AES-GCM decryption** — attempt decryption; reject if the GCM authentication tag fails.
-5. **Counter check** — reject if the on-card `counter` is less than or equal to the last known counter for this card (rollback).
-6. **Timestamp check** — reject if `lastTimestamp` is significantly in the future (beyond clock drift allowance).
-7. **Status check** — if `status` is any blocked value, deny writes; allow read-only operations.
-8. **Balance consistency** — reject if `balance ≠ lastBalance` when no transaction was expected, or if `balance` does not match the `balanceAfter` of the most recent log entry.
-9. **Log chain verification** — recompute each entry hash from `session.startTime`; reject if any hash mismatches.
-10. **Root hash verification** — recompute `rootHash` from the log chain head; reject if it does not match the trailer value.
+0. **Uninitialised card pre-check** - if the `magic` field is all `0x00` or all `0xFF`, treat the card as uninitialised (not tampered) and halt. Display "Unactivated card" to the user. Do not proceed to step 1. See [System Design §18](../system-design/18_card-initialisation-state.md).
+1. **Magic and version check** - reject the payload if `magic` does not match the expected value or `version` is unsupported.
+2. **Key version lookup** - reject if no session grant is available for the card's `keyVersion`.
+3. **HMAC verification** - recompute HMAC over encrypted buffer and trailer fields; reject on mismatch.
+4. **AES-GCM decryption** - attempt decryption; reject if the GCM authentication tag fails.
+5. **Counter check** - reject if the on-card `counter` is less than or equal to the last known counter for this card (rollback).
+6. **Timestamp check** - reject if `lastTimestamp` is significantly in the future (beyond clock drift allowance).
+7. **Status check** - if `status` is any blocked value, deny writes; allow read-only operations.
+8. **Balance consistency** - reject if `balance ≠ lastBalance` when no transaction was expected, or if `balance` does not match the `balanceAfter` of the most recent log entry.
+9. **Log chain verification** - recompute each entry hash from `session.startTime`; reject if any hash mismatches.
+10. **Root hash verification** - recompute `rootHash` from the log chain head; reject if it does not match the trailer value.
 
 ## Failure conditions
 

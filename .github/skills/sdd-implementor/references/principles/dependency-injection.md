@@ -7,7 +7,7 @@ Supply dependencies to a class from outside rather than having the class constru
 ## SDD Trigger
 
 - Every `IRepository`, `IService`, or `IPolicy` interface defined in Tech Specs → inject, never construct directly.
-- Security Spec — crypto providers must be injectable to allow key rotation without code changes.
+- Security Spec - crypto providers must be injectable to allow key rotation without code changes.
 
 ## Constructor Injection (preferred)
 
@@ -39,7 +39,7 @@ export class CardModule {}
 ## DI in React (Context + Custom Hook)
 
 ```ts
-// Composition root — src/di/container.ts
+// Composition root - src/di/container.ts
 import { PrismaCardRepository } from "../infrastructure/prisma-card-repository";
 import { BalanceCeilingPolicy } from "../domain/policies/balance-ceiling-policy";
 

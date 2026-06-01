@@ -27,7 +27,7 @@ ICardState
 ## Code Template (TypeScript)
 
 ```ts
-// Spec: System Design §4 — Card state machine
+// Spec: System Design §4 - Card state machine
 // Pattern: State
 
 export interface ICardState {
@@ -42,7 +42,7 @@ export class ActiveState implements ICardState {
     throw new InvalidTransitionError("Card is already active");
   }
   onDebit(card: Card, amount: number): void {
-    // Spec: Tech Specs §15 — balance deduction rules
+    // Spec: Tech Specs §15 - balance deduction rules
     card.balance -= amount;
   }
   onBlock(card: Card, reason: string): void {

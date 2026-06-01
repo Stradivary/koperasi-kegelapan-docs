@@ -13,7 +13,7 @@ Constructs complex objects step-by-step. Separates construction from representat
 ## Code Template (TypeScript)
 
 ```ts
-// Spec: Data Spec §card — Card initialisation
+// Spec: Data Spec §card - Card initialisation
 // Pattern: Builder
 
 export class CardBuilder {
@@ -81,5 +81,5 @@ const card = new CardBuilder()
 
 ## Antipatterns
 
-- Builder with no validation in `build()` — missing required fields should throw, not silently produce invalid objects.
+- Builder with no validation in `build()` - missing required fields should throw, not silently produce invalid objects.
 - Builder that leaks mutable internal state before `build()` is called.

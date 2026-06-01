@@ -10,7 +10,7 @@ Organises UI components into a strict hierarchy from smallest to largest. Encour
 Atoms        → Smallest indivisible UI elements (Button, Badge, Input, Icon)
 Molecules    → Simple groups of atoms (FormField, CardStatus, SearchBar)
 Organisms    → Complex sections composed of molecules (CardList, NavBar, PaymentForm)
-Templates    → Page layouts — no real data, only structure
+Templates    → Page layouts - no real data, only structure
 Pages        → Templates with real data injected (connected to ViewModel / React Query)
 ```
 
@@ -45,24 +45,24 @@ src/
         NavigationBar.tsx
   features/<feature>/
     components/
-      CardDetailPage.tsx        # Page — connects data to template
-      CardDetailTemplate.tsx    # Template — layout, no data
+      CardDetailPage.tsx        # Page - connects data to template
+      CardDetailTemplate.tsx    # Template - layout, no data
       CardSummaryCard.tsx       # Organism
 ```
 
 ## Component Rules
 
-- **Atoms** — zero business logic, zero API calls, accept only primitive props.
-- **Molecules** — composed of atoms, may have local UI state (open/closed), no async.
-- **Organisms** — may receive complex typed props or subscribe to a ViewModel hook; no direct API calls.
-- **Pages** — the only layer that calls `useCardViewModel` or `useCardQuery` hooks.
-- All components must be typed with explicit `interface Props` — no implicit `any`.
+- **Atoms** - zero business logic, zero API calls, accept only primitive props.
+- **Molecules** - composed of atoms, may have local UI state (open/closed), no async.
+- **Organisms** - may receive complex typed props or subscribe to a ViewModel hook; no direct API calls.
+- **Pages** - the only layer that calls `useCardViewModel` or `useCardQuery` hooks.
+- All components must be typed with explicit `interface Props` - no implicit `any`.
 
 ## Code Template (Atom)
 
 ```tsx
-// Spec: Product Spec §2 — card status display
-// Pattern: Atomic Design — Atom
+// Spec: Product Spec §2 - card status display
+// Pattern: Atomic Design - Atom
 
 interface BadgeProps {
   label: string;
@@ -82,11 +82,11 @@ export function StatusBadge({ label, variant }: BadgeProps) {
 }
 ```
 
-## Code Template (Page — data binding)
+## Code Template (Page - data binding)
 
 ```tsx
-// Spec: Product Spec §2 — card detail user flow
-// Pattern: Atomic Design — Page
+// Spec: Product Spec §2 - card detail user flow
+// Pattern: Atomic Design - Page
 
 export function CardDetailPage({ uid }: { uid: string }) {
   const { data: card, isLoading, error } = useCardQuery(uid, cardRepository);
@@ -102,4 +102,4 @@ export function CardDetailPage({ uid }: { uid: string }) {
 
 - Atoms that call `fetch` or import from `react-query`.
 - Organisms that contain routing or page-level side effects.
-- Props drilling more than 2 levels deep — lift to ViewModel or Context instead.
+- Props drilling more than 2 levels deep - lift to ViewModel or Context instead.

@@ -53,7 +53,7 @@ Gate digunakan di pintu masuk untuk mencatat waktu kedatangan.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Mode Gate — menunggu tap kartu" />
+<PlaceholderImg caption="Mode Gate - menunggu tap kartu" />
 </div>
 </div>
 
@@ -77,7 +77,7 @@ Gate digunakan di pintu masuk untuk mencatat waktu kedatangan.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Gate — check-in berhasil" />
+<PlaceholderImg caption="Gate - check-in berhasil" />
 </div>
 </div>
 
@@ -109,7 +109,7 @@ Terminal digunakan di pintu keluar untuk menghitung durasi dan memotong saldo.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Mode Terminal — menunggu tap" />
+<PlaceholderImg caption="Mode Terminal - menunggu tap" />
 </div>
 </div>
 
@@ -134,7 +134,7 @@ Terminal digunakan di pintu keluar untuk menghitung durasi dan memotong saldo.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Terminal — detail checkout & tarif" />
+<PlaceholderImg caption="Terminal - detail checkout & tarif" />
 </div>
 </div>
 
@@ -161,11 +161,11 @@ Scout adalah mode read-only untuk mengecek informasi kartu.
 - Verifikasi sebelum top-up
 - Troubleshooting kartu bermasalah
 
-**Tidak ada write** — kartu tidak dimodifikasi.
+**Tidak ada write** - kartu tidak dimodifikasi.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Mode Scout — informasi kartu" />
+<PlaceholderImg caption="Mode Scout - informasi kartu" />
 </div>
 </div>
 
@@ -193,7 +193,7 @@ Scout adalah mode read-only untuk mengecek informasi kartu.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Mode picker — long press untuk akses" />
+<PlaceholderImg caption="Mode picker - long press untuk akses" />
 </div>
 </div>
 
@@ -226,7 +226,7 @@ Scout adalah mode read-only untuk mengecek informasi kartu.
 | Masalah                           | Solusi                                      |
 | --------------------------------- | ------------------------------------------- |
 | Kartu tidak terbaca di Gate       | Pastikan NFC aktif, coba posisi lain        |
-| Checkout gagal — "Belum check-in" | Kartu belum tap di Gate, atau state corrupt |
+| Checkout gagal - "Belum check-in" | Kartu belum tap di Gate, atau state corrupt |
 | Saldo tidak cukup saat checkout   | Anggota perlu top-up di Station             |
 | Mode picker tidak muncul          | Long-press minimal 500ms di area header     |
 | Layar mati otomatis               | Aktifkan "Stay Awake" di Settings           |

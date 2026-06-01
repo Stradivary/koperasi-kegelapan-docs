@@ -97,7 +97,7 @@ Panduan untuk melihat, memahami, dan mengelola riwayat transaksi di sistem.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Detail transaksi — hash chain" />
+<PlaceholderImg caption="Detail transaksi - hash chain" />
 </div>
 </div>
 
@@ -112,9 +112,9 @@ Panduan untuk melihat, memahami, dan mengelola riwayat transaksi di sistem.
 
 **Indikator status:**
 
-- 🟢 **Synced** — Sudah tersimpan di server
-- 🟡 **Pending** — Menunggu koneksi untuk sync
-- 🔴 **Conflict** — Ada konflik yang perlu resolusi
+- 🟢 **Synced** - Sudah tersimpan di server
+- 🟡 **Pending** - Menunggu koneksi untuk sync
+- 🔴 **Conflict** - Ada konflik yang perlu resolusi
 
 **Cara kerja sync:**
 
@@ -157,7 +157,7 @@ Panduan untuk melihat, memahami, dan mengelola riwayat transaksi di sistem.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Manual sync — status & trigger" />
+<PlaceholderImg caption="Manual sync - status & trigger" />
 </div>
 </div>
 

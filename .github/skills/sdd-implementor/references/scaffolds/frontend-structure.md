@@ -4,19 +4,19 @@ Frontend stack: **React + TypeScript + Web**. All scaffolds use `.tsx`/`.ts` fil
 
 Use this reference when scaffolding a frontend feature from SDD specs.
 
-## React + TypeScript — Feature-Sliced Structure (recommended)
+## React + TypeScript - Feature-Sliced Structure (recommended)
 
 ```
 src/
   features/
     <feature>/                         # e.g. cardManagement
       api/
-        cardApi.ts                     # Raw fetch/axios — API Spec endpoints
+        cardApi.ts                     # Raw fetch/axios - API Spec endpoints
       queries/
-        useCardQuery.ts                # React Query — server state
+        useCardQuery.ts                # React Query - server state
         useCardMutations.ts            # React Query mutations
       repositories/
-        ICardRepository.ts             # Interface — no framework deps
+        ICardRepository.ts             # Interface - no framework deps
         cardRepository.ts              # Implements ICardRepository via cardApi
       viewmodels/
         useCardViewModel.ts            # MVVM ViewModel hook (client UI state)
@@ -24,7 +24,7 @@ src/
         cardSlice.ts                   # Redux slice for UI state (not server state)
         cardSelectors.ts
       components/
-        CardDetailPage.tsx             # Page — Atomic: Template/Page
+        CardDetailPage.tsx             # Page - Atomic: Template/Page
         CardDetail.tsx                 # Atomic: Organism
         CardStatusBadge.tsx            # Atomic: Molecule
         CardBalanceDisplay.tsx         # Atomic: Atom wrapper
@@ -47,7 +47,7 @@ src/
     repositories/
       http.client.ts                   # Axios/fetch base instance
   di/
-    container.ts                       # Composition root — bind interfaces to impls
+    container.ts                       # Composition root - bind interfaces to impls
 ```
 
 ## Layer Responsibilities
@@ -67,7 +67,7 @@ Every generated file should start with:
 
 ```ts
 // Feature: <feature-name>
-// Spec:    <layer> §<section> — <claim>
+// Spec:    <layer> §<section> - <claim>
 // Pattern: <design pattern>
 ```
 

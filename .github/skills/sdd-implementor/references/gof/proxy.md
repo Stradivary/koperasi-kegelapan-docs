@@ -6,14 +6,14 @@ Provide a surrogate or placeholder for another object to control access to it. C
 
 ## SDD Trigger
 
-- Security Spec — access control before domain operations (auth guard proxy).
+- Security Spec - access control before domain operations (auth guard proxy).
 - Lazy loading expensive resources (NFC reader connection, large config).
-- Any Tech Spec that says "only authorised roles may perform X" — implement as Proxy around the real service.
+- Any Tech Spec that says "only authorised roles may perform X" - implement as Proxy around the real service.
 
-## Code Template (TypeScript — Auth guard proxy)
+## Code Template (TypeScript - Auth guard proxy)
 
 ```ts
-// Spec: Security Spec — role-based access control
+// Spec: Security Spec - role-based access control
 // Pattern: Proxy
 
 export class AuthorizedCardRepository implements ICardRepository {
@@ -23,7 +23,7 @@ export class AuthorizedCardRepository implements ICardRepository {
   ) {}
 
   async findByUid(uid: string): Promise<Card | null> {
-    // Spec: Tech Specs §13 — client roles
+    // Spec: Tech Specs §13 - client roles
     if (!this.authContext.hasPermission("card:read")) {
       throw new ForbiddenError("Insufficient permissions to read card");
     }
@@ -39,10 +39,10 @@ export class AuthorizedCardRepository implements ICardRepository {
 }
 ```
 
-## Code Template (TypeScript — Lazy proxy)
+## Code Template (TypeScript - Lazy proxy)
 
 ```ts
-// Pattern: Proxy — lazy initialisation
+// Pattern: Proxy - lazy initialisation
 
 export class LazyNfcReaderProxy implements INfcReader {
   private reader: NfcReader | null = null;
@@ -70,4 +70,4 @@ export class LazyNfcReaderProxy implements INfcReader {
 ## Antipatterns
 
 - Proxy that silently swallows permission errors instead of throwing.
-- Proxy with business logic — keep it as a pure access control layer.
+- Proxy with business logic - keep it as a pure access control layer.

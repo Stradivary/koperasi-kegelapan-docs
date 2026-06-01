@@ -39,5 +39,5 @@ adapter/
 ## Rules
 
 - Domain (model + ports + service) has zero framework imports.
-- Adapters depend on domain — never the reverse.
+- Adapters depend on domain - never the reverse.
 - Each driven port should map to one Tech Spec interface definition.

@@ -2,7 +2,7 @@
 
 The backend uses a lightweight SQL database (SQLite or equivalent) to persist tenant metadata, accounts, member profiles, and the backend projection of issued cards.
 
-> This schema is the **server-side projection** of card state. It is not the source of truth for offline balance — the card is. The backend schema becomes authoritative only after reconciliation.
+> This schema is the **server-side projection** of card state. It is not the source of truth for offline balance - the card is. The backend schema becomes authoritative only after reconciliation.
 
 > Tenant isolation is mandatory. Every business table below carries `tenant_id`, and every unique key that identifies a tenant-owned record must be unique inside a tenant scope unless explicitly marked global.
 >

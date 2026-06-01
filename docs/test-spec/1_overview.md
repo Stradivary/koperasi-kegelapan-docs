@@ -69,7 +69,7 @@ Every test assertion must trace to at least one claim in a spec layer above it. 
 | Local development   | Developer       | Local SQLite seed | Miniflare dev mode         |
 | CI (GitHub Actions) | Automated tests | In-memory SQLite  | Miniflare                  |
 | Staging             | Pre-release E2E | Staging D1        | Real Cloudflare Worker     |
-| Production          | —               | —                 | Not tested (monitors only) |
+| Production          | -               | -                 | Not tested (monitors only) |
 
 ---
 

@@ -36,7 +36,7 @@ Setiap anggota (member) adalah entitas yang bisa memiliki satu atau lebih kartu 
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Daftar Anggota — tombol Tambah" />
+<PlaceholderImg caption="Daftar Anggota - tombol Tambah" />
 </div>
 </div>
 
@@ -49,10 +49,10 @@ Setiap anggota (member) adalah entitas yang bisa memiliki satu atau lebih kartu 
 
 **Field yang tersedia:**
 
-- **Nama Lengkap** (wajib) — Nama anggota
-- **No. Anggota** (opsional) — ID internal koperasi
-- **No. HP** (opsional) — Untuk notifikasi
-- **Catatan** (opsional) — Informasi tambahan
+- **Nama Lengkap** (wajib) - Nama anggota
+- **No. Anggota** (opsional) - ID internal koperasi
+- **No. HP** (opsional) - Untuk notifikasi
+- **Catatan** (opsional) - Informasi tambahan
 
 **Validasi:**
 
@@ -142,7 +142,7 @@ Setiap anggota (member) adalah entitas yang bisa memiliki satu atau lebih kartu 
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Detail anggota — kartu & riwayat" />
+<PlaceholderImg caption="Detail anggota - kartu & riwayat" />
 </div>
 </div>
 

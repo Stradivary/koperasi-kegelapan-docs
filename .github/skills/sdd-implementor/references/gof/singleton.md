@@ -2,18 +2,18 @@
 
 ## Purpose
 
-Ensure a class has only one instance and provide a global access point to it. Use sparingly — most use cases in modern TypeScript are better served by DI containers or module-level exports.
+Ensure a class has only one instance and provide a global access point to it. Use sparingly - most use cases in modern TypeScript are better served by DI containers or module-level exports.
 
 ## SDD Trigger
 
 - A shared resource that must be initialised once: DB connection pool, config loader, logger.
 - Composition root bindings that should resolve to the same instance across the app.
 
-## Code Template (TypeScript — module singleton, preferred)
+## Code Template (TypeScript - module singleton, preferred)
 
 ```ts
-// Spec: Infrastructure — single DB connection pool
-// Pattern: Singleton (module export — preferred in Node.js)
+// Spec: Infrastructure - single DB connection pool
+// Pattern: Singleton (module export - preferred in Node.js)
 
 import { PrismaClient } from "@prisma/client";
 
@@ -21,7 +21,7 @@ import { PrismaClient } from "@prisma/client";
 export const prisma = new PrismaClient();
 ```
 
-## Code Template (TypeScript — class singleton, when needed)
+## Code Template (TypeScript - class singleton, when needed)
 
 ```ts
 // Pattern: Singleton (class-based)
@@ -54,7 +54,7 @@ export class ConfigService {
 ## Rules
 
 - Prefer module-level singletons (`export const x = new X()`) over class-based in Node.js/TypeScript.
-- In NestJS, use `@Injectable()` with default scope — the DI container handles singleton lifecycle.
+- In NestJS, use `@Injectable()` with default scope - the DI container handles singleton lifecycle.
 - Never use Singleton for objects with mutable state shared across requests in a web server (race conditions).
 - In React, use React Context or Zustand store instead of class singletons.
 

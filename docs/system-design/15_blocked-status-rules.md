@@ -6,9 +6,9 @@
 
 Not every suspicious event results in an immediate block. The system distinguishes between:
 
-- **Hard block** — immediate and automatic. Triggered by a failed cryptographic check (→ `BLOCKED_TAMPER`) or a backend fraud signal (→ `BLOCKED_FRAUD`). No operator confirmation required.
-- **Soft warning** — a suspicious condition is logged and surfaced to the operator, but the card continues operating. Used when the evidence is ambiguous (e.g. a single near-limit transaction, minor clock drift).
-- **Admin block** — a deliberate operator action, always initiated via the Station app with backend confirmation (→ `BLOCKED_ADMIN`).
+- **Hard block** - immediate and automatic. Triggered by a failed cryptographic check (→ `BLOCKED_TAMPER`) or a backend fraud signal (→ `BLOCKED_FRAUD`). No operator confirmation required.
+- **Soft warning** - a suspicious condition is logged and surfaced to the operator, but the card continues operating. Used when the evidence is ambiguous (e.g. a single near-limit transaction, minor clock drift).
+- **Admin block** - a deliberate operator action, always initiated via the Station app with backend confirmation (→ `BLOCKED_ADMIN`).
 
 ## Warning-to-block escalation
 

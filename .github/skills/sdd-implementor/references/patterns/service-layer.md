@@ -42,10 +42,10 @@ src/modules/<feature>/
     i-card-repository.ts
 ```
 
-## Code Template (TypeScript — NestJS)
+## Code Template (TypeScript - NestJS)
 
 ```ts
-// Spec: Tech Specs §6 — Session state rules
+// Spec: Tech Specs §6 - Session state rules
 // Pattern: Service Layer
 
 @Injectable()
@@ -60,15 +60,15 @@ export class CardService {
     const card = await this.cardRepo.findByUid(cardUid);
     if (!card) throw new CardNotFoundError(cardUid);
 
-    // Spec: Security Spec — balance ceiling enforcement
+    // Spec: Security Spec - balance ceiling enforcement
     this.policy.enforce(card, amount);
 
-    // Spec: System Design §4 — state machine: active required
+    // Spec: System Design §4 - state machine: active required
     card.debit(amount);
 
     await this.cardRepo.save(card);
 
-    // Spec: System Design §6 — log chain append
+    // Spec: System Design §6 - log chain append
     await this.logRepo.append(TransactionLog.create(card, amount, terminalId));
   }
 }
@@ -76,9 +76,9 @@ export class CardService {
 
 ## Rules
 
-- Service methods map 1:1 to Tech Spec behaviors — one method per operation.
+- Service methods map 1:1 to Tech Spec behaviors - one method per operation.
 - Services must not contain HTTP-specific logic (no `Request`, `Response` objects).
-- Services are the transaction boundary — wrap the entire operation in a DB transaction.
+- Services are the transaction boundary - wrap the entire operation in a DB transaction.
 - Services call domain entities for business rules, never raw SQL.
 
 ## Antipatterns

@@ -38,7 +38,7 @@ Dari dashboard admin, tap tab **Kartu**.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Daftar Kartu — tombol Issue" />
+<PlaceholderImg caption="Daftar Kartu - tombol Issue" />
 </div>
 </div>
 
@@ -221,11 +221,11 @@ Kartu berhasil di-issue dan siap digunakan.
    - Status kartu
    - 5 transaksi terakhir
 
-**Read-only** — tidak ada perubahan data di kartu.
+**Read-only** - tidak ada perubahan data di kartu.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Tampilan Scout — info kartu" />
+<PlaceholderImg caption="Tampilan Scout - info kartu" />
 </div>
 </div>
 

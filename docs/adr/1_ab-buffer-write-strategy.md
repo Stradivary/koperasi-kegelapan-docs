@@ -5,13 +5,13 @@
 
 ## Context
 
-NFC cards (NTAG215, NTAG216) have no hardware write-atomicity guarantee. A write to the card may be interrupted mid-way by the card leaving the RF field — due to user movement, RF interference, or a partial write timeout. If the card payload is stored in a single contiguous region, an interrupted write leaves the card in an undefined state: partially overwritten with new data and partially containing old data. Neither the new state nor the old state is intact, and neither can be verified.
+NFC cards (NTAG215, NTAG216) have no hardware write-atomicity guarantee. A write to the card may be interrupted mid-way by the card leaving the RF field - due to user movement, RF interference, or a partial write timeout. If the card payload is stored in a single contiguous region, an interrupted write leaves the card in an undefined state: partially overwritten with new data and partially containing old data. Neither the new state nor the old state is intact, and neither can be verified.
 
 The system must guarantee that the card is always in a recoverable state after any interrupted write. This is non-negotiable because the card is the authoritative source of truth for the member's balance.
 
 ## Decision
 
-The card payload uses two mirrored buffers — Zone A and Zone B — with a `activePtr` field in the trailer that identifies which buffer holds the current valid state.
+The card payload uses two mirrored buffers - Zone A and Zone B - with a `activePtr` field in the trailer that identifies which buffer holds the current valid state.
 
 **Write procedure:**
 

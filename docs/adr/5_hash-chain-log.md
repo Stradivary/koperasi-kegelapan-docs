@@ -33,7 +33,7 @@ rootHash (trailer, HMAC-protected)
 - Modification of any log entry (amount, balance, type) invalidates all subsequent hashes in the chain. The reader detects tampering on any entry after the modified one.
 - Deletion of a log entry breaks the chain at the deletion point and forward.
 - Reordering entries breaks the chain because each entry's hash depends on the previous.
-- Insertion of a forged entry is only possible if the attacker can also recompute all subsequent hashes — which requires knowing the session key to maintain a valid `rootHash` HMAC.
+- Insertion of a forged entry is only possible if the attacker can also recompute all subsequent hashes - which requires knowing the session key to maintain a valid `rootHash` HMAC.
 
 **Negative:**
 

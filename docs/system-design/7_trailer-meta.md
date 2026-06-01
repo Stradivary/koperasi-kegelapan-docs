@@ -15,6 +15,6 @@ The trailer stores verification anchors and metadata that bind the card's state 
 
 ## Integrity model
 
-All trailer fields are included in the HMAC computation. Any modification to a trailer field — including `activePtr` or `keyVersion` — invalidates the HMAC and is treated as a tamper event.
+All trailer fields are included in the HMAC computation. Any modification to a trailer field - including `activePtr` or `keyVersion` - invalidates the HMAC and is treated as a tamper event.
 
 > Exact field sizes and byte offsets: [Tech Specs §3 Card Storage Model](../tech-specs/3_card-storage-model.md).

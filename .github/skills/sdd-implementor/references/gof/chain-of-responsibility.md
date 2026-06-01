@@ -7,14 +7,14 @@ Pass a request along a chain of handlers. Each handler decides to process the re
 ## SDD Trigger
 
 - Security Spec validation pipeline (auth → rate limit → permission → business rule).
-- Tech Specs §5 — tamper detection validation: multiple sequential checks on card data.
+- Tech Specs §5 - tamper detection validation: multiple sequential checks on card data.
 - Any spec that defines ordered validation steps or middleware pipeline.
 - NestJS Pipes and Guards are Chain of Responsibility implementations.
 
-## Code Template (TypeScript — validation pipeline)
+## Code Template (TypeScript - validation pipeline)
 
 ```ts
-// Spec: Tech Specs §5 — Tamper detection validation chain
+// Spec: Tech Specs §5 - Tamper detection validation chain
 // Pattern: Chain of Responsibility
 
 export interface ICardValidator {
@@ -37,7 +37,7 @@ abstract class BaseCardValidator implements ICardValidator {
 
 export class CardStatusValidator extends BaseCardValidator {
   validate(card: Card, context: ValidationContext): ValidationResult {
-    // Spec: System Design §11 — card status enforcement
+    // Spec: System Design §11 - card status enforcement
     if (card.status === "blocked") {
       return { valid: false, reason: "Card is blocked" };
     }
@@ -47,7 +47,7 @@ export class CardStatusValidator extends BaseCardValidator {
 
 export class BalanceCeilingValidator extends BaseCardValidator {
   validate(card: Card, context: ValidationContext): ValidationResult {
-    // Spec: Tech Specs §9 — risk/financial limits
+    // Spec: Tech Specs §9 - risk/financial limits
     if (card.balance > card.ceiling) {
       return { valid: false, reason: "Balance exceeds ceiling" };
     }
@@ -57,7 +57,7 @@ export class BalanceCeilingValidator extends BaseCardValidator {
 
 export class HashChainValidator extends BaseCardValidator {
   validate(card: Card, context: ValidationContext): ValidationResult {
-    // Spec: Tech Specs §5 — tamper detection
+    // Spec: Tech Specs §5 - tamper detection
     if (!card.isHashChainValid()) {
       return { valid: false, reason: "Hash chain integrity failure" };
     }
@@ -74,9 +74,9 @@ const result = validationChain.validate(card, context);
 
 ## Rules
 
-- Each handler has a single responsibility — one validation concern per class.
-- Order of the chain matters — document which checks run first and why.
-- The chain should terminate cleanly — either a handler processes it or a null object at the end returns a default result.
+- Each handler has a single responsibility - one validation concern per class.
+- Order of the chain matters - document which checks run first and why.
+- The chain should terminate cleanly - either a handler processes it or a null object at the end returns a default result.
 
 ## Antipatterns
 

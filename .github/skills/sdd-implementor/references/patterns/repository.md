@@ -16,7 +16,7 @@ Abstracts data access behind an interface. The domain never knows whether data c
 ## Interface Template
 
 ```ts
-// Spec: Tech Specs §3 — Card storage model
+// Spec: Tech Specs §3 - Card storage model
 // Pattern: Repository interface
 
 export interface ICardRepository {
@@ -29,7 +29,7 @@ export interface ICardRepository {
 ## Implementation Template (Prisma)
 
 ```ts
-// Spec: Tech Specs §3 — Card storage model
+// Spec: Tech Specs §3 - Card storage model
 // Pattern: Repository implementation (Prisma)
 
 export class PrismaCardRepository implements ICardRepository {
@@ -65,7 +65,7 @@ export interface IUnitOfWork {
 
 ## Rules
 
-- Repository interface lives in the **domain layer** — zero framework imports.
+- Repository interface lives in the **domain layer** - zero framework imports.
 - Implementation lives in the **infrastructure layer**.
 - Never expose raw ORM objects (Prisma models, ActiveRecord) to the domain.
 - Use a Mapper class to convert between persistence models and domain entities.

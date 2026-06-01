@@ -1,4 +1,4 @@
-# TanStack Start — Full-Stack React Stack
+# TanStack Start - Full-Stack React Stack
 
 ## Overview
 
@@ -9,10 +9,10 @@ TanStack Start is a full-stack React framework built on **TanStack Router** with
 | Library                         | Role                                                                          |
 | ------------------------------- | ----------------------------------------------------------------------------- |
 | TanStack Router                 | File-based routing, type-safe params, search params                           |
-| TanStack Query (React Query)    | Server state — data fetching, caching, mutations                              |
-| TanStack Start Server Functions | `createServerFn` — RPC-style server actions, replaces REST for internal calls |
+| TanStack Query (React Query)    | Server state - data fetching, caching, mutations                              |
+| TanStack Start Server Functions | `createServerFn` - RPC-style server actions, replaces REST for internal calls |
 | Zustand / Jotai                 | Client UI state (modals, selections, form steps)                              |
-| Zod                             | Schema validation — request/response DTOs from API Spec                       |
+| Zod                             | Schema validation - request/response DTOs from API Spec                       |
 | Vite                            | Build tooling                                                                 |
 
 ## Pattern Stack (SDD-aligned)
@@ -35,23 +35,23 @@ src/
     _authenticated.tsx                # Auth guard layout route
     _authenticated/
       cards/
-        index.tsx                     # /cards — CardListPage
-        $uid.tsx                      # /cards/:uid — CardDetailPage
+        index.tsx                     # /cards - CardListPage
+        $uid.tsx                      # /cards/:uid - CardDetailPage
       session/
-        index.tsx                     # /session — SessionPage
+        index.tsx                     # /session - SessionPage
   server/
     functions/
-      card.functions.ts               # createServerFn — card operations
-      session.functions.ts            # createServerFn — session operations
+      card.functions.ts               # createServerFn - card operations
+      session.functions.ts            # createServerFn - session operations
     repositories/
-      ICardRepository.ts              # Interface (shared — importable by server fns)
+      ICardRepository.ts              # Interface (shared - importable by server fns)
       prisma-card.repository.ts       # Prisma implementation
     policies/
       balance-ceiling.policy.ts       # Spec: Security Spec constraints
   features/
     cards/
       queries/
-        useCardQuery.ts               # React Query — wraps server function
+        useCardQuery.ts               # React Query - wraps server function
         useCardMutations.ts
       viewmodels/
         useCardViewModel.ts           # Client UI state (MVVM hook)
@@ -64,7 +64,7 @@ src/
       card.types.ts                   # Data Spec entity interfaces
       api.types.ts
     schemas/
-      card.schema.ts                  # Zod schemas — validate at boundary
+      card.schema.ts                  # Zod schemas - validate at boundary
   di/
     container.ts                      # Composition root
 ```
@@ -73,7 +73,7 @@ src/
 
 ```ts
 // Spec: API Spec §5 POST /cards/{uid}/payment
-// Pattern: TanStack Start — Server Function (replaces REST controller)
+// Pattern: TanStack Start - Server Function (replaces REST controller)
 
 import { createServerFn } from "@tanstack/start";
 import { z } from "zod";
@@ -89,7 +89,7 @@ const ProcessPaymentInput = z.object({
 export const processPayment = createServerFn({ method: "POST" })
   .validator(ProcessPaymentInput)
   .handler(async ({ data }) => {
-    // Spec: Security Spec — enforce limit policy
+    // Spec: Security Spec - enforce limit policy
     const policy = new BalanceCeilingPolicy();
     const card = await cardRepository.findByUid(data.cardUid);
     if (!card) throw new Error("Card not found");
@@ -105,8 +105,8 @@ export const processPayment = createServerFn({ method: "POST" })
 ## Route Loader Template
 
 ```tsx
-// Spec: Product Spec §2 — card detail user flow
-// Pattern: TanStack Start — Route with loader
+// Spec: Product Spec §2 - card detail user flow
+// Pattern: TanStack Start - Route with loader
 
 import { createFileRoute } from "@tanstack/react-router";
 import { queryOptions } from "@tanstack/react-query";
@@ -116,7 +116,7 @@ const cardQueryOptions = (uid: string) =>
   queryOptions({
     queryKey: ["cards", uid],
     queryFn: () => getCard({ data: { uid } }),
-    staleTime: 30_000, // Spec: System Design §17 — time validation assumptions
+    staleTime: 30_000, // Spec: System Design §17 - time validation assumptions
   });
 
 export const Route = createFileRoute("/_authenticated/cards/$uid")({
@@ -138,7 +138,7 @@ function CardDetailPage() {
 
 ```ts
 // Spec: API Spec §5 GET /cards/{uid}
-// Pattern: TanStack Start — React Query wrapping server function
+// Pattern: TanStack Start - React Query wrapping server function
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCard, processPayment } from "../../server/functions/card.functions";
@@ -165,8 +165,8 @@ export function useProcessPaymentMutation() {
 ## Auth Middleware Template
 
 ```ts
-// Spec: Security Spec — session validation
-// Pattern: TanStack Start — Middleware
+// Spec: Security Spec - session validation
+// Pattern: TanStack Start - Middleware
 
 import { createMiddleware } from "@tanstack/start";
 import { sessionService } from "../../di/container";

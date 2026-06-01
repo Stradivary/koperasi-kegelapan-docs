@@ -6,16 +6,16 @@ Each failure condition maps to a security event severity.
 
 | Failure                  | Condition                                         | Severity                                 |
 | ------------------------ | ------------------------------------------------- | ---------------------------------------- |
-| Magic / version mismatch | `magic` ≠ expected value or `version` unsupported | Medium — may be unformatted card         |
-| HMAC mismatch            | Recomputed HMAC does not match trailer            | **Critical** — active tamper             |
-| GCM decryption failure   | AES-GCM tag check fails                           | **Critical** — active tamper             |
-| Counter rollback         | On-card counter ≤ last known counter              | **Critical** — replay or rollback attack |
-| Timestamp rollback       | `lastTimestamp` > `now + drift_allowance`         | High — potential rollback                |
-| Balance inconsistency    | Balance ≠ expected from log chain                 | **Critical** — active tamper             |
-| Log chain hash mismatch  | Any chain hash fails recomputation                | **Critical** — log tampering             |
-| Root hash mismatch       | Trailer `rootHash` ≠ computed chain head          | **Critical** — active tamper             |
-| Key version unknown      | No grant available for the card's `keyVersion`    | High — offline or re-key needed          |
-| Status blocked           | `status` field is any `BLOCKED_*` value           | Informational — expected state           |
+| Magic / version mismatch | `magic` ≠ expected value or `version` unsupported | Medium - may be unformatted card         |
+| HMAC mismatch            | Recomputed HMAC does not match trailer            | **Critical** - active tamper             |
+| GCM decryption failure   | AES-GCM tag check fails                           | **Critical** - active tamper             |
+| Counter rollback         | On-card counter ≤ last known counter              | **Critical** - replay or rollback attack |
+| Timestamp rollback       | `lastTimestamp` > `now + drift_allowance`         | High - potential rollback                |
+| Balance inconsistency    | Balance ≠ expected from log chain                 | **Critical** - active tamper             |
+| Log chain hash mismatch  | Any chain hash fails recomputation                | **Critical** - log tampering             |
+| Root hash mismatch       | Trailer `rootHash` ≠ computed chain head          | **Critical** - active tamper             |
+| Key version unknown      | No grant available for the card's `keyVersion`    | High - offline or re-key needed          |
+| Status blocked           | `status` field is any `BLOCKED_*` value           | Informational - expected state           |
 
 ---
 
@@ -30,7 +30,7 @@ Each failure condition maps to a security event severity.
 | Key version unknown (offline)                 | Refuse write; display generic error                                                                    | Receive report at next reconciliation                  |
 | Blocked status                                | Allow read; refuse all writes                                                                          | No action unless reconciliation detects escalation     |
 
-**Do not expose the specific failure reason to the end user.** Display `Card blocked` or `Card error — contact staff`. Detailed failure data belongs in operator and backend logs only.
+**Do not expose the specific failure reason to the end user.** Display `Card blocked` or `Card error - contact staff`. Detailed failure data belongs in operator and backend logs only.
 
 ---
 

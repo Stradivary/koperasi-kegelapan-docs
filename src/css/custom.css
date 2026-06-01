@@ -1,9 +1,9 @@
 /**
  * Custom CSS overrides for Koperasi Kegelapan NFC Wallet docs.
- * Docusaurus uses CSS variables for theming — override them here.
+ * Docusaurus uses CSS variables for theming - override them here.
  */
 
-/* Light mode — Telkomsel Red */
+/* Light mode - Telkomsel Red */
 :root {
   --ifm-color-primary: #e40521;
   --ifm-color-primary-dark: #cc041e;
@@ -16,7 +16,7 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
-/* Dark mode — Telkomsel Red */
+/* Dark mode - Telkomsel Red */
 [data-theme="dark"] {
   --ifm-color-primary: #f44d63;
   --ifm-color-primary-dark: #f01e37;

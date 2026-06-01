@@ -51,7 +51,7 @@ Configure these in **Settings → Secrets and variables → Actions**:
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare Dashboard → right sidebar on any page                                                           | `deploy.yml`          |
 | `SONAR_TOKEN`           | SonarCloud → My Account → Security → Generate Token                                                        | `static-analysis.yml` |
 
-`GITHUB_TOKEN` is provided automatically by GitHub — no action required.
+`GITHUB_TOKEN` is provided automatically by GitHub - no action required.
 
 ---
 
@@ -68,7 +68,7 @@ sonar.projectKey=stradivary_koperasi-kegelapan
 sonar.organization=stradivary   # must match your SonarCloud org slug
 ```
 
-Coverage is fed automatically — the `unit-test` job in `ci-test.yml` uploads `coverage/lcov.info`, which SonarCloud reads.
+Coverage is fed automatically - the `unit-test` job in `ci-test.yml` uploads `coverage/lcov.info`, which SonarCloud reads.
 
 ---
 

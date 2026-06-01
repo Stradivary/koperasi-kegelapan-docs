@@ -3,7 +3,7 @@
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Koperasi Kegelapan NFC Wallet",
-  tagline: "Offline NFC wallet system — system design and technical specifications",
+  tagline: "Offline NFC wallet system - system design and technical specifications",
   favicon: "img/favicon.ico",
 
   // Set the production URL of your site here.

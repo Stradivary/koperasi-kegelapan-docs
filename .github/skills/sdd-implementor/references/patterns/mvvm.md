@@ -1,4 +1,4 @@
-# MVVM — Model-View-ViewModel (React + TypeScript)
+# MVVM - Model-View-ViewModel (React + TypeScript)
 
 ## Purpose
 
@@ -20,19 +20,19 @@ src/features/<feature>/
   types/
     card.types.ts              # Data Spec entity interface
   repositories/
-    ICardRepository.ts         # Interface — no framework deps
+    ICardRepository.ts         # Interface - no framework deps
     cardRepository.ts          # Implementation (fetch / RTK Query)
   viewmodels/
     useCardViewModel.ts        # MVVM ViewModel hook
   components/
-    CardDetailPage.tsx         # View — consumes ViewModel hook
+    CardDetailPage.tsx         # View - consumes ViewModel hook
     CardStatusBadge.tsx        # Pure presentational component
 ```
 
 ## ViewModel Hook Rules (SOLID-aligned)
 
-- ViewModel hook must NOT contain JSX — no UI code.
-- Exposes only state and named dispatch functions — never raw state setters.
+- ViewModel hook must NOT contain JSX - no UI code.
+- Exposes only state and named dispatch functions - never raw state setters.
 - One ViewModel hook per page/feature (single responsibility).
 - ViewModel calls repository interfaces, never concrete `fetch` calls directly (DIP).
 - Returns a strongly typed object, not a loose tuple.
@@ -40,8 +40,8 @@ src/features/<feature>/
 ## Code Template (React + TypeScript + Zustand)
 
 ```ts
-// Spec: Tech Specs §6 — Card session state
-// Pattern: MVVM — ViewModel hook (Zustand)
+// Spec: Tech Specs §6 - Card session state
+// Pattern: MVVM - ViewModel hook (Zustand)
 
 import { create } from "zustand";
 import type { ICardRepository } from "../repositories/ICardRepository";
@@ -74,7 +74,7 @@ export function createCardViewModel(repo: ICardRepository) {
     },
 
     blockCard: async (uid, reason) => {
-      // Spec: System Design §15 — blocked status rules
+      // Spec: System Design §15 - blocked status rules
       await repo.block(uid, reason);
       set((s) => ({ card: s.card ? { ...s.card, status: "blocked" } : null }));
     },
@@ -85,8 +85,8 @@ export function createCardViewModel(repo: ICardRepository) {
 ## Code Template (React + TypeScript + useReducer)
 
 ```ts
-// Spec: Tech Specs §6 — Card session state
-// Pattern: MVVM — ViewModel hook (useReducer)
+// Spec: Tech Specs §6 - Card session state
+// Pattern: MVVM - ViewModel hook (useReducer)
 
 type CardState =
   | { status: "idle" }
@@ -139,6 +139,6 @@ export function useCardViewModel(repo: ICardRepository) {
 ## Antipatterns to Avoid
 
 - Business logic (`fetch`, validation, rule enforcement) inside React components.
-- Direct `fetch()` or `axios` calls inside ViewModel hooks — use Repository.
+- Direct `fetch()` or `axios` calls inside ViewModel hooks - use Repository.
 - Sharing one ViewModel hook across unrelated pages.
-- Returning raw state setters from the hook — always wrap in named functions.
+- Returning raw state setters from the hook - always wrap in named functions.

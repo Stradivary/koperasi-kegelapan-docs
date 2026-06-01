@@ -37,7 +37,7 @@ Akses aplikasi melalui browser. Anda akan melihat halaman login dengan opsi untu
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Halaman Login — tombol Buat Koperasi Baru" />
+<PlaceholderImg caption="Halaman Login - tombol Buat Koperasi Baru" />
 </div>
 </div>
 
@@ -52,9 +52,9 @@ Form registrasi akan muncul. Isi informasi dasar koperasi Anda.
 
 **Field yang perlu diisi:**
 
-- **Nama Koperasi** — Nama organisasi Anda (contoh: "Koperasi Maju Bersama")
-- **Kode Tenant** — Kode unik pendek (auto-generated, bisa diedit)
-- **PIN Admin** — PIN 6 digit untuk akses admin
+- **Nama Koperasi** - Nama organisasi Anda (contoh: "Koperasi Maju Bersama")
+- **Kode Tenant** - Kode unik pendek (auto-generated, bisa diedit)
+- **PIN Admin** - PIN 6 digit untuk akses admin
 
 **Validasi:**
 
@@ -101,9 +101,9 @@ Setelah mengisi data, sistem akan membuat tenant secara lokal.
 
 Setelah tenant berhasil dibuat, Anda akan diarahkan ke **Dashboard Admin** (Station mode). Langkah selanjutnya:
 
-1. [Login](./login.md) — Memahami cara login kembali
-2. [Pasang Perangkat](./pasang-perangkat.md) — Setup perangkat tambahan
-3. [Operasi Kartu](./operasi-kartu.md) — Mulai issue kartu NFC pertama
+1. [Login](./login.md) - Memahami cara login kembali
+2. [Pasang Perangkat](./pasang-perangkat.md) - Setup perangkat tambahan
+3. [Operasi Kartu](./operasi-kartu.md) - Mulai issue kartu NFC pertama
 
 ---
 

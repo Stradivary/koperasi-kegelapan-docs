@@ -1,6 +1,6 @@
 # DRY / KISS / YAGNI
 
-## DRY — Don't Repeat Yourself
+## DRY - Don't Repeat Yourself
 
 > Every piece of knowledge must have a single, unambiguous, authoritative representation.
 
@@ -12,7 +12,7 @@
 
 ---
 
-## KISS — Keep It Simple, Stupid
+## KISS - Keep It Simple, Stupid
 
 > The simplest solution that satisfies the spec is correct. Complexity is a liability.
 
@@ -24,7 +24,7 @@
 
 ---
 
-## YAGNI — You Aren't Gonna Need It
+## YAGNI - You Aren't Gonna Need It
 
 > Don't implement features or abstractions until the spec requires them.
 
@@ -32,7 +32,7 @@
 
 **Fix:** Implement exactly what Layer 1–3 specs define. Flag future needs as ADRs, not code.
 
-**SDD link:** Code generation gate — if there is no spec for it, don't build it.
+**SDD link:** Code generation gate - if there is no spec for it, don't build it.
 
 ---
 

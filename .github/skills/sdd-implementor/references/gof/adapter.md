@@ -13,7 +13,7 @@ Convert the interface of a class into another interface that clients expect. All
 ## Code Template (TypeScript)
 
 ```ts
-// Spec: Tech Specs §4 — Cryptography interface
+// Spec: Tech Specs §4 - Cryptography interface
 // Pattern: Adapter
 
 // Domain-facing interface (owned by domain layer)
@@ -28,7 +28,7 @@ export class WebCryptoAdapter implements ICryptoProvider {
   async encrypt(data: Uint8Array, key: CryptoKey): Promise<Uint8Array> {
     const iv = crypto.getRandomValues(new Uint8Array(12));
     const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, data);
-    // Spec: ADR §2 — AES-GCM: prepend IV to ciphertext
+    // Spec: ADR §2 - AES-GCM: prepend IV to ciphertext
     const result = new Uint8Array(iv.length + encrypted.byteLength);
     result.set(iv, 0);
     result.set(new Uint8Array(encrypted), iv.length);
@@ -54,4 +54,4 @@ export class WebCryptoAdapter implements ICryptoProvider {
 ## Antipatterns
 
 - Adapter that leaks third-party types into the domain (defeats the purpose).
-- Adapter with business logic — keep it as a pure interface translation layer.
+- Adapter with business logic - keep it as a pure interface translation layer.

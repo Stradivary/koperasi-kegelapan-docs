@@ -56,7 +56,7 @@ This section defines the application contract between the browser UI, terminal f
 
 ## API endpoints
 
-Full endpoint definitions — payloads, error codes, and constraints — are in the [API Spec](../api-spec/index.md):
+Full endpoint definitions - payloads, error codes, and constraints - are in the [API Spec](../api-spec/index.md):
 
 | Endpoint                          | Section                                                           |
 | --------------------------------- | ----------------------------------------------------------------- |

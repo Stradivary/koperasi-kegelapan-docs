@@ -6,13 +6,13 @@ This folder defines the **contract between services** for the offline NFC wallet
 
 ## Sections
 
-1. [Overview](1_overview.md) — auth model, base URL, versioning, common errors
-2. [Authentication](2_auth.md) — tenant-scoped device and operator auth
-3. [Session Grants](3_session-grants.md) — `GET /api/session-grant`
-4. [Policy](4_policy.md) — `GET /api/policy`
-5. [Cards](5_cards.md) — registration, read, top-up, block, reissue
-6. [Reconciliation](6_reconciliation.md) — `POST /api/reconcile`
-7. [Terminal Reports](7_terminal-reports.md) — `POST /api/terminal-report`
+1. [Overview](1_overview.md) - auth model, base URL, versioning, common errors
+2. [Authentication](2_auth.md) - tenant-scoped device and operator auth
+3. [Session Grants](3_session-grants.md) - `GET /api/session-grant`
+4. [Policy](4_policy.md) - `GET /api/policy`
+5. [Cards](5_cards.md) - registration, read, top-up, block, reissue
+6. [Reconciliation](6_reconciliation.md) - `POST /api/reconcile`
+7. [Terminal Reports](7_terminal-reports.md) - `POST /api/terminal-report`
 
 ## Cross-references
 

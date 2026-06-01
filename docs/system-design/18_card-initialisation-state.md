@@ -8,7 +8,7 @@ An uninitialised card:
 
 - Has no `magic` sentinel value at the expected offset
 - Has no `version` field
-- Cannot pass any cryptographic check — but should not be treated as a tamper event
+- Cannot pass any cryptographic check - but should not be treated as a tamper event
 
 ## Detection rule
 
@@ -31,7 +31,7 @@ If the magic field contains any other value that does not match the expected sen
 | Scout    | ✅ Read  | Display "Unactivated card" message. No write.                                          |
 | Gate     | ❌       | Reject with "Card not registered" before check-in.                                     |
 | Terminal | ❌       | Reject any write attempt.                                                              |
-| Station  | ✅ Write | Initialise card — write magic, version, identity block, and zero-state wallet payload. |
+| Station  | ✅ Write | Initialise card - write magic, version, identity block, and zero-state wallet payload. |
 
 ## Initialisation write (Station only)
 

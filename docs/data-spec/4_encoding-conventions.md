@@ -2,7 +2,7 @@
 
 This section defines the canonical encoding rules that apply to all card binary fields and backend data, plus the versioning and migration contract for the card layout schema.
 
-> Upstream source: [Tech Specs §3 Card Storage Model — Encoding conventions](../tech-specs/3_card-storage-model.md).
+> Upstream source: [Tech Specs §3 Card Storage Model - Encoding conventions](../tech-specs/3_card-storage-model.md).
 
 ---
 

@@ -6,14 +6,14 @@ Provide a simplified interface to a complex subsystem. Reduces coupling between 
 
 ## SDD Trigger
 
-- A feature that touches multiple subsystems (crypto + NFC + log) — wrap in one `CardOperationFacade`.
+- A feature that touches multiple subsystems (crypto + NFC + log) - wrap in one `CardOperationFacade`.
 - Frontend: a single `useCardActions` hook that internally coordinates React Query mutations and Zustand store updates.
 - Any Tech Spec behavior that says "the client calls one operation, but multiple internal steps happen."
 
-## Code Template (TypeScript — Backend service facade)
+## Code Template (TypeScript - Backend service facade)
 
 ```ts
-// Spec: Tech Specs §6 — Payment session flow
+// Spec: Tech Specs §6 - Payment session flow
 // Pattern: Facade
 
 export class PaymentFacade {
@@ -29,16 +29,16 @@ export class PaymentFacade {
     encryptedPayload: Uint8Array,
     sessionToken: string,
   ): Promise<PaymentResult> {
-    // Spec: System Design §12 — Key trust model
+    // Spec: System Design §12 - Key trust model
     const payload = await this.cryptoService.decrypt(encryptedPayload);
 
-    // Spec: Tech Specs §6 — Session grant validation
+    // Spec: Tech Specs §6 - Session grant validation
     const session = await this.sessionService.validate(sessionToken);
 
-    // Spec: System Design §4 — State machine: debit
+    // Spec: System Design §4 - State machine: debit
     await this.cardService.processPayment(session.cardUid, payload.amount);
 
-    // Spec: System Design §6 — Log chain append
+    // Spec: System Design §6 - Log chain append
     await this.logService.append(session.cardUid, payload);
 
     return { success: true, balance: await this.cardService.getBalance(session.cardUid) };
@@ -46,10 +46,10 @@ export class PaymentFacade {
 }
 ```
 
-## Code Template (TypeScript — Frontend hook facade)
+## Code Template (TypeScript - Frontend hook facade)
 
 ```ts
-// Pattern: Facade — frontend hook
+// Pattern: Facade - frontend hook
 
 export function useCardActions(uid: string) {
   const blockMutation = useBlockCardMutation(cardRepository);
@@ -66,9 +66,9 @@ export function useCardActions(uid: string) {
 
 ## Rules
 
-- Facade must not contain business logic — it orchestrates, it doesn't decide.
+- Facade must not contain business logic - it orchestrates, it doesn't decide.
 - Facade can be the single entry point referenced by controllers/components.
-- Keep subsystems independently testable — don't merge them into the Facade class.
+- Keep subsystems independently testable - don't merge them into the Facade class.
 
 ## Antipatterns
 

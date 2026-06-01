@@ -67,7 +67,7 @@ Each subskill maps to a reference file. Load the relevant one before generating 
 
 ## Workflow
 
-### Step 1 — Read the Spec
+### Step 1 - Read the Spec
 
 Load the relevant spec layers for the feature scope:
 
@@ -87,20 +87,20 @@ Extract:
 - **Behavioral rules** from System Design (state machine, trust model)
 - **Constraints** from Product Spec and Security Spec
 
-### Step 2 — Choose Architecture Pattern
+### Step 2 - Choose Architecture Pattern
 
 Ask or infer from the user's argument which pattern stack to apply:
 
 | Stack                  | Recommended Pattern                                                                                                                     |
 | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | React SPA (Vite / CRA) | Flux/Redux (RTK) + Atomic Design + Repository hook layer                                                                                |
-| TanStack Start         | React Query + TanStack Router + Repository + SOLID — see [./references/stacks/tanstack-start.md](./references/stacks/tanstack-start.md) |
+| TanStack Start         | React Query + TanStack Router + Repository + SOLID - see [./references/stacks/tanstack-start.md](./references/stacks/tanstack-start.md) |
 | Next.js full-stack     | React Query + Repository + SOLID                                                                                                        |
 | React + complex domain | MVVM hooks + Zustand + Clean Architecture slices                                                                                        |
 
 Load the relevant subskill reference files from the tables above.
 
-### Step 3 — Map Spec to Structure
+### Step 3 - Map Spec to Structure
 
 For each spec entity/interface, produce a mapping table before writing code:
 
@@ -112,47 +112,47 @@ For each spec entity/interface, produce a mapping table before writing code:
 | Balance ceiling rule      | Tech Specs §9    | `BalanceCeilingPolicy` | Strategy Pattern   |
 | Write buffer strategy     | System Design §9 | `WriteBufferService`   | Strategy + Command |
 
-### Step 4 — Scaffold Frontend
+### Step 4 - Scaffold Frontend
 
 Using the chosen frontend pattern (MVVM hooks / Flux-Redux / React Query):
 
 1. Load the pattern reference file.
 2. Generate folder structure from [./references/scaffolds/frontend-structure.md](./references/scaffolds/frontend-structure.md).
 3. Create:
-   - **Models** — map from Data Spec entities
-   - **ViewModels / Stores / Hooks** — map from Tech Spec behaviors
-   - **Pages / Components** — map from Product Spec user flows
-   - **Services / Repositories** — map from API Spec endpoints
+   - **Models** - map from Data Spec entities
+   - **ViewModels / Stores / Hooks** - map from Tech Spec behaviors
+   - **Pages / Components** - map from Product Spec user flows
+   - **Services / Repositories** - map from API Spec endpoints
 4. Annotate each class with `// Spec: [layer §section]` trace comments.
 
-### Step 5 — Scaffold Backend
+### Step 5 - Scaffold Backend
 
 Using the chosen backend pattern (Clean Arch / Hexagonal / MVC / etc.):
 
 1. Load the pattern reference file.
 2. Generate folder structure from [./references/scaffolds/backend-structure.md](./references/scaffolds/backend-structure.md).
 3. Create:
-   - **Domain Entities** — from Data Spec
-   - **Use Cases / Application Services** — from Tech Spec behavioral rules
-   - **Controllers / Handlers** — from API Spec endpoints
-   - **Repository interfaces + implementations** — from Data Spec storage model
-   - **DTOs / Request-Response objects** — from API Spec payloads
-   - **Policies / Rules** — from Security Spec and Product Spec constraints
+   - **Domain Entities** - from Data Spec
+   - **Use Cases / Application Services** - from Tech Spec behavioral rules
+   - **Controllers / Handlers** - from API Spec endpoints
+   - **Repository interfaces + implementations** - from Data Spec storage model
+   - **DTOs / Request-Response objects** - from API Spec payloads
+   - **Policies / Rules** - from Security Spec and Product Spec constraints
 4. Annotate each class with `// Spec: [layer §section]` trace comments.
 
-### Step 6 — Apply SOLID Check
+### Step 6 - Apply SOLID Check
 
 After scaffolding, review each generated unit:
 
-- [ ] **S** — Does each class have one reason to change?
-- [ ] **O** — Are extension points open (interfaces/abstractions) rather than modifying existing classes?
-- [ ] **L** — Do subtypes honor contracts of their parent?
-- [ ] **I** — Are interfaces focused (not forcing unused method implementations)?
-- [ ] **D** — Do high-level modules depend on abstractions, not concretions?
+- [ ] **S** - Does each class have one reason to change?
+- [ ] **O** - Are extension points open (interfaces/abstractions) rather than modifying existing classes?
+- [ ] **L** - Do subtypes honor contracts of their parent?
+- [ ] **I** - Are interfaces focused (not forcing unused method implementations)?
+- [ ] **D** - Do high-level modules depend on abstractions, not concretions?
 
 See [./references/principles/solid.md](./references/principles/solid.md) for per-violation fix patterns.
 
-### Step 7 — Spec Traceability Audit
+### Step 7 - Spec Traceability Audit
 
 After implementation:
 
@@ -166,7 +166,7 @@ After implementation:
 
 ---
 
-## Quick Reference — Pattern Selection Rules
+## Quick Reference - Pattern Selection Rules
 
 ```
 UI state management    → MVVM hooks (Zustand) | Redux RTK (predictable) | React Query (server state)
@@ -199,13 +199,13 @@ src/
     hooks/              # Shared utility hooks
     types/              # Common TypeScript types
   di/
-    container.ts        # Composition root — interface bindings
+    container.ts        # Composition root - interface bindings
 ```
 
 Each generated file should begin with a spec trace header:
 
 ```
 // Feature: <feature name>
-// Spec: <layer> §<section> — <claim summary>
+// Spec: <layer> §<section> - <claim summary>
 // Pattern: <design pattern applied>
 ```

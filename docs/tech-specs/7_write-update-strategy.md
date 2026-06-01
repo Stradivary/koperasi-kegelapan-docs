@@ -27,7 +27,7 @@
 | Write fails during step 7    | Retry write to inactive buffer; old active buffer remains valid               |
 | Readback mismatch (step 8)   | Retry up to one time; if still mismatched, abort and do not flip pointer      |
 | HMAC mismatch after readback | Treat as write failure; do not flip pointer; log event                        |
-| `activePtr` flip fails       | Retry flip; if it fails, the card is in an ambiguous state — log and escalate |
+| `activePtr` flip fails       | Retry flip; if it fails, the card is in an ambiguous state - log and escalate |
 | Card removed mid-write       | On next tap, old active buffer is still valid; inactive buffer may be partial |
 
 ## Safety rules

@@ -2,7 +2,7 @@
 
 ## What breaks today
 
-Cashless payment systems in venue-based environments — transit gates, event spaces, canteens — typically require continuous backend connectivity to process each transaction. When connectivity fails, terminals either block all transactions or fall back to untracked cash. Neither outcome is acceptable for operators who need a reliable, auditable flow.
+Cashless payment systems in venue-based environments - transit gates, event spaces, canteens - typically require continuous backend connectivity to process each transaction. When connectivity fails, terminals either block all transactions or fall back to untracked cash. Neither outcome is acceptable for operators who need a reliable, auditable flow.
 
 Standard NFC payment cards (e.g., EMV contactless) rely on a secure element and a network-authorised terminal. This model requires expensive hardware certification and per-transaction network round trips. It is unsuitable for low-cost, high-density deployments in connectivity-constrained environments.
 
@@ -16,7 +16,7 @@ Standard NFC payment cards (e.g., EMV contactless) rely on a secure element and 
 
 The offline NFC wallet stores **balance, session state, and a tamper-evident log directly on the card**. This allows terminals to authorise transactions without a live backend connection, using cryptographic proofs to bound the trust placed in the card-held state.
 
-The system does not eliminate trust in the backend — it **defers it**. Terminals operate within a backend-issued session grant, and all offline events are reconciled when connectivity returns. Fraud risk is bounded by the session scope and financial limits, not by continuous connectivity.
+The system does not eliminate trust in the backend - it **defers it**. Terminals operate within a backend-issued session grant, and all offline events are reconciled when connectivity returns. Fraud risk is bounded by the session scope and financial limits, not by continuous connectivity.
 
 ## Success definition
 

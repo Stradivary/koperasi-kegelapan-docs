@@ -2,7 +2,7 @@
 
 This folder contains Architecture Decision Records (ADRs) for the offline NFC wallet system. Each ADR documents a significant design decision, the context that forced it, the alternatives that were considered, and the consequences of the choice.
 
-ADRs are cross-cutting — they explain _why_ the specs are written the way they are.
+ADRs are cross-cutting - they explain _why_ the specs are written the way they are.
 
 ## Index
 
@@ -25,9 +25,9 @@ ADRs are cross-cutting — they explain _why_ the specs are written the way they
 
 Each ADR answers four questions:
 
-1. **Context** — what forced this decision?
-2. **Decision** — what was chosen?
-3. **Consequences** — what does this cost us?
-4. **Alternatives considered** — what was rejected and why?
+1. **Context** - what forced this decision?
+2. **Decision** - what was chosen?
+3. **Consequences** - what does this cost us?
+4. **Alternatives considered** - what was rejected and why?
 
 ADRs are immutable once accepted. If a decision is reversed, a new ADR supersedes the old one; the old one is not deleted.

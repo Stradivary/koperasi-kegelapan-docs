@@ -29,7 +29,7 @@ Context
 ## Code Template (TypeScript)
 
 ```ts
-// Spec: System Design §9 — Write strategy
+// Spec: System Design §9 - Write strategy
 // Pattern: Strategy
 
 export interface IWriteStrategy {
@@ -38,7 +38,7 @@ export interface IWriteStrategy {
 
 export class BufferedWriteStrategy implements IWriteStrategy {
   async write(card: Card, data: CardData): Promise<void> {
-    // Spec: ADR §1 — AB buffer write
+    // Spec: ADR §1 - AB buffer write
     await card.writeToBuffer(data);
   }
 }

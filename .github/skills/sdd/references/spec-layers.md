@@ -1,8 +1,8 @@
-# Spec Layers — Definitions, Templates, and Folder Conventions
+# Spec Layers - Definitions, Templates, and Folder Conventions
 
 ---
 
-## Layer 1 — Product Spec
+## Layer 1 - Product Spec
 
 **Purpose**: Defines what must exist and why. Written from the user/business perspective.  
 **Audience**: All stakeholders, PMs, developers, QA.  
@@ -18,7 +18,7 @@
 ### Template
 
 ```markdown
-# [Feature / System Name] — Product Spec
+# [Feature / System Name] - Product Spec
 
 ## Problem Statement
 
@@ -47,7 +47,7 @@
 
 ---
 
-## Layer 2 — System Design
+## Layer 2 - System Design
 
 **Purpose**: Conceptual model of how the system works. Hardware constraints, state machines, security assumptions, trust model.  
 **Audience**: Architects, senior engineers.  
@@ -63,7 +63,7 @@
 ### Template
 
 ```markdown
-# [Component] — System Design
+# [Component] - System Design
 
 ## Objective
 
@@ -95,7 +95,7 @@
 
 ---
 
-## Layer 3 — Tech Specs
+## Layer 3 - Tech Specs
 
 **Purpose**: Implementation reference. Exact behavior, rules, error handling, formats.  
 **Audience**: Developers building the system.  
@@ -111,7 +111,7 @@
 ### Template
 
 ```markdown
-# [Module / Feature] — Tech Spec
+# [Module / Feature] - Tech Spec
 
 ## Overview
 
@@ -139,7 +139,7 @@
 
 ---
 
-## Layer 4 — API Spec
+## Layer 4 - API Spec
 
 **Purpose**: Contract between services (frontend ↔ backend, backend ↔ card, service ↔ service).  
 **Audience**: Frontend and backend developers.  
@@ -163,7 +163,7 @@
 
 ## Authentication
 
-[Session token / HMAC / none — and how it is obtained]
+[Session token / HMAC / none - and how it is obtained]
 
 ## Endpoints
 
@@ -175,7 +175,7 @@
 
 ```json
 {
-  "field": "type — description"
+  "field": "type - description"
 }
 ```
 ````
@@ -184,7 +184,7 @@
 
 ```json
 {
-  "field": "type — description"
+  "field": "type - description"
 }
 ```
 
@@ -199,7 +199,7 @@
 
 ---
 
-## Layer 5 — Data Spec
+## Layer 5 - Data Spec
 
 **Purpose**: What is stored, where, and in what format. Schemas, layouts, migrations.
 **Audience**: Backend developers, DB admins, embedded/card developers.
@@ -214,7 +214,7 @@
 ### Template
 
 ```markdown
-# [Entity / Storage Area] — Data Spec
+# [Entity / Storage Area] - Data Spec
 
 ## Overview
 [Where this data lives and who owns it]
@@ -231,13 +231,13 @@
 ## Versioning
 | Version | Change | Migration |
 |---------|--------|-----------|
-| v1      | initial | —        |
+| v1      | initial | -        |
 | v2      | added X | [steps]  |
 ````
 
 ---
 
-## Layer 6 — Security Spec
+## Layer 6 - Security Spec
 
 **Purpose**: What is trusted, what is protected, and how. Threat model, auth flows, OWASP mitigations.  
 **Audience**: Security reviewers, architects, developers.  
@@ -254,7 +254,7 @@
 ### Template
 
 ```markdown
-# [System] — Security Spec
+# [System] - Security Spec
 
 ## Threat Actors
 
@@ -293,7 +293,7 @@
 
 ---
 
-## Layer 7 — Test Spec
+## Layer 7 - Test Spec
 
 **Purpose**: What proves the system is correct. Assertions mapped to spec claims.  
 **Audience**: QA, developers, CI owners.  
@@ -309,7 +309,7 @@
 ### Template
 
 ```markdown
-# [Feature] — Test Spec
+# [Feature] - Test Spec
 
 ## Coverage Targets
 
@@ -330,7 +330,7 @@
 
 ---
 
-## Cross-cutting — ADRs (Architecture Decision Records)
+## Cross-cutting - ADRs (Architecture Decision Records)
 
 **Purpose**: Record significant decisions, their context, and consequences.  
 **Folder**: `docs/adr/`

@@ -1,4 +1,4 @@
-# React Query (TanStack Query) — Server State Pattern
+# React Query (TanStack Query) - Server State Pattern
 
 ## Purpose
 
@@ -38,7 +38,7 @@ src/features/<feature>/
 
 ```ts
 // Spec: API Spec §5 GET /cards/{uid}
-// Pattern: React Query — server state
+// Pattern: React Query - server state
 
 import { useQuery } from "@tanstack/react-query";
 import type { ICardRepository } from "../repositories/ICardRepository";
@@ -52,7 +52,7 @@ export function useCardQuery(uid: string, repo: ICardRepository) {
   return useQuery({
     queryKey: CARD_KEYS.byUid(uid),
     queryFn: () => repo.findByUid(uid),
-    staleTime: 30_000, // Spec: System Design §17 — time validation assumptions
+    staleTime: 30_000, // Spec: System Design §17 - time validation assumptions
     enabled: Boolean(uid),
   });
 }
@@ -62,7 +62,7 @@ export function useCardQuery(uid: string, repo: ICardRepository) {
 
 ```ts
 // Spec: API Spec §5 POST /cards/{uid}/block
-// Pattern: React Query — mutation
+// Pattern: React Query - mutation
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -82,7 +82,7 @@ export function useBlockCardMutation(repo: ICardRepository) {
 ## Rules
 
 - Query functions (`queryFn`) must call repository interfaces, not raw `fetch` directly.
-- Never store server state in Redux/Zustand — that creates two sources of truth.
+- Never store server state in Redux/Zustand - that creates two sources of truth.
 - Use `queryKey` arrays that match the API Spec resource hierarchy (e.g. `['cards', uid]`).
 - Set `staleTime` based on System Design freshness requirements (offline trust model §4).
 
@@ -95,7 +95,7 @@ export function useBlockCardMutation(repo: ICardRepository) {
 ## Code Template
 
 ```dart
-// Spec: System Design §4 — Card state machine
+// Spec: System Design §4 - Card state machine
 // Pattern: BLoC
 
 // Events

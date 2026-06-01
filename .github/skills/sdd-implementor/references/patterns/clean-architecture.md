@@ -15,12 +15,12 @@ Organizes code into concentric dependency rings. Inner rings are pure domain log
 
 | Spec Layer          | Clean Arch Layer                    | Example                                    |
 | ------------------- | ----------------------------------- | ------------------------------------------ |
-| Data Spec entities  | Domain — Entities                   | `Card`, `Transaction`                      |
-| Tech Spec behaviors | Application — Use Cases             | `LoadCardUseCase`, `ProcessPaymentUseCase` |
-| API Spec endpoints  | Interface Adapters — Controllers    | `CardController`, `SessionController`      |
-| Data Spec storage   | Interface Adapters — Gateways/Repos | `CardRepositoryImpl`                       |
+| Data Spec entities  | Domain - Entities                   | `Card`, `Transaction`                      |
+| Tech Spec behaviors | Application - Use Cases             | `LoadCardUseCase`, `ProcessPaymentUseCase` |
+| API Spec endpoints  | Interface Adapters - Controllers    | `CardController`, `SessionController`      |
+| Data Spec storage   | Interface Adapters - Gateways/Repos | `CardRepositoryImpl`                       |
 | Infrastructure      | Frameworks & Drivers                | NestJS, Prisma, HTTP client                |
-| Security Spec rules | Domain — Policies                   | `BalanceCeilingPolicy`, `BlockedCardRule`  |
+| Security Spec rules | Domain - Policies                   | `BalanceCeilingPolicy`, `BlockedCardRule`  |
 
 ## Folder Structure
 
@@ -32,7 +32,7 @@ src/
     policies/
       balance_ceiling_policy.ts
     repositories/
-      i_card_repository.ts     # Interface only — no imports from outer rings
+      i_card_repository.ts     # Interface only - no imports from outer rings
   application/
     use_cases/
       load_card_use_case.ts
@@ -61,8 +61,8 @@ NEVER: domain → application, application → adapters, etc.
 ## Code Template (TypeScript / NestJS)
 
 ```ts
-// Spec: Tech Specs §3 — Card storage model
-// Pattern: Clean Architecture — Use Case
+// Spec: Tech Specs §3 - Card storage model
+// Pattern: Clean Architecture - Use Case
 
 export class LoadCardUseCase {
   constructor(private readonly repo: ICardRepository) {}

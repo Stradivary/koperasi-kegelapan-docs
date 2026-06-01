@@ -26,7 +26,7 @@
 
 ## Gate
 
-- **Purpose**: session lifecycle — checking users in and out.
+- **Purpose**: session lifecycle - checking users in and out.
 - **Operations**: read card state; open a session (`IDLE → CHECKED_IN`); close a session (`CHECKED_IN → CHECKED_OUT`); validate expiry.
 - **UI mode**: kiosk or turnstile-style interface; minimal user interaction.
 - **Simulation mode**: gates may run in simulation mode for testing without writing to live cards.

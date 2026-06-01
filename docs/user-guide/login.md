@@ -57,9 +57,9 @@ Jika Anda sudah pernah login, tenant akan muncul di daftar lokal.
 
 **Opsi yang tersedia:**
 
-- **Tenant Lokal** — Tap untuk langsung memilih
-- **Browse Server** — Cari tenant yang terdaftar di server
-- **Buat Baru** — Registrasi tenant baru
+- **Tenant Lokal** - Tap untuk langsung memilih
+- **Browse Server** - Cari tenant yang terdaftar di server
+- **Buat Baru** - Registrasi tenant baru
 
 **Browse Server:**
 
@@ -111,15 +111,15 @@ Setelah login berhasil, Anda masuk ke Station mode (dashboard admin).
 
 **Fitur yang tersedia:**
 
-- **Kartu** — Kelola kartu NFC (issue, top-up, block)
-- **Anggota** — Manajemen data member
-- **Scout** — Cek saldo & riwayat kartu
-- **Transaksi** — Lihat riwayat transaksi
-- **Pengaturan** — Konfigurasi tenant & perangkat
+- **Kartu** - Kelola kartu NFC (issue, top-up, block)
+- **Anggota** - Manajemen data member
+- **Scout** - Cek saldo & riwayat kartu
+- **Transaksi** - Lihat riwayat transaksi
+- **Pengaturan** - Konfigurasi tenant & perangkat
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Dashboard Admin — Station mode" />
+<PlaceholderImg caption="Dashboard Admin - Station mode" />
 </div>
 </div>
 
@@ -127,7 +127,7 @@ Setelah login berhasil, Anda masuk ke Station mode (dashboard admin).
 
 ## Session & Logout
 
-- Session tersimpan di perangkat — tidak perlu login ulang setiap buka app
+- Session tersimpan di perangkat - tidak perlu login ulang setiap buka app
 - Untuk logout: buka menu (hamburger icon) → tap **Logout**
 - Logout menghapus session tapi data tenant tetap tersimpan lokal
 

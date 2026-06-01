@@ -27,7 +27,7 @@ These limits are enforced by both the terminal (via session grant policy) and th
 
 **Positive:**
 
-- uint32 is 4 bytes — a known, compact, portable integer type. It fits within the card payload with zero ambiguity.
+- uint32 is 4 bytes - a known, compact, portable integer type. It fits within the card payload with zero ambiguity.
 - Integer arithmetic in the smallest unit eliminates all floating-point rounding errors.
 - The Rp 16 M ceiling bounds worst-case per-card exposure if the card is cloned or the session key is leaked.
 - The per-transaction and per-day limits further reduce the fraud surface within the offline window.
@@ -55,7 +55,7 @@ These limits are enforced by both the terminal (via session grant policy) and th
 
 ## References
 
-- Product Spec [§3 Constraints — Financial Limits](../product-spec/3_constraints.md)
+- Product Spec [§3 Constraints - Financial Limits](../product-spec/3_constraints.md)
 - Tech Specs [§3 Card Storage Model](../tech-specs/3_card-storage-model.md)
 - Tech Specs [§9 Risk & Financial Limits](../tech-specs/9_risk-financial-limits.md)
 - ADR-004 [Deferred-Trust Offline Model](4_offline-trust-model.md)

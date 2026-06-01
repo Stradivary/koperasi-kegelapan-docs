@@ -14,7 +14,7 @@ Encapsulate object creation logic. Use when the exact type to instantiate depend
 ## Factory Method Template (TypeScript)
 
 ```ts
-// Spec: System Design §12 — Key trust model
+// Spec: System Design §12 - Key trust model
 // Pattern: Factory Method
 
 export abstract class CryptoProviderFactory {
@@ -29,7 +29,7 @@ export abstract class CryptoProviderFactory {
 
 export class AesGcmProviderFactory extends CryptoProviderFactory {
   createProvider(keyId: string): ICryptoProvider {
-    // Spec: ADR §2 — AES-GCM
+    // Spec: ADR §2 - AES-GCM
     return new AesGcmProvider(keyId);
   }
 }
@@ -38,7 +38,7 @@ export class AesGcmProviderFactory extends CryptoProviderFactory {
 ## Static Factory Template (TypeScript)
 
 ```ts
-// Spec: System Design §4 — Card state machine initial state
+// Spec: System Design §4 - Card state machine initial state
 // Pattern: Static Factory
 
 export class Card {
@@ -50,7 +50,7 @@ export class Card {
   ) {}
 
   static createNew(uid: string, memberId: string): Card {
-    // Spec: Tech Specs §18 — Card initialisation state
+    // Spec: Tech Specs §18 - Card initialisation state
     return new Card(uid, memberId, new InitialState(), 0);
   }
 

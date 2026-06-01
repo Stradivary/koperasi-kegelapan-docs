@@ -1,6 +1,6 @@
 # Product Spec Index
 
-This folder defines **what the offline NFC wallet must exist and why** — from the perspective of users, operators, and the business. It is the authoritative source for acceptance criteria and scope boundaries.
+This folder defines **what the offline NFC wallet must exist and why** - from the perspective of users, operators, and the business. It is the authoritative source for acceptance criteria and scope boundaries.
 
 > Product spec focuses on goals and constraints. System Design (Layer 2) and Tech Specs (Layer 3) explain how those goals are achieved.
 

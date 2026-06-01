@@ -6,13 +6,13 @@ This folder defines **what is trusted, what is protected, and how threats are mi
 
 ## Sections
 
-1. [Overview](1_overview.md) — threat model, OWASP mapping, security goals, trust boundaries
-2. [Authentication & Authorization](2_authentication-authorization.md) — device auth, operator auth, MFA, tenant-scoped RBAC, token lifecycle
-3. [Cryptographic Controls](3_cryptographic-controls.md) — AES-GCM, HMAC-SHA256, HKDF, nonce policy, key lifecycle, prohibited algorithms
-4. [Card Tamper Detection](4_card-tamper-detection.md) — validation sequence, security events, incident response
-5. [Offline Trust Model](5_offline-trust-model.md) — session grant security, replay protection, bounding offline exposure
-6. [Data Protection](6_data-protection.md) — storage classification, PII minimisation, IndexedDB security, plaintext prohibitions
-7. [Financial Risk Controls](7_financial-risk-controls.md) — limit enforcement chain, monitoring, fraud signals, alerting
+1. [Overview](1_overview.md) - threat model, OWASP mapping, security goals, trust boundaries
+2. [Authentication & Authorization](2_authentication-authorization.md) - device auth, operator auth, MFA, tenant-scoped RBAC, token lifecycle
+3. [Cryptographic Controls](3_cryptographic-controls.md) - AES-GCM, HMAC-SHA256, HKDF, nonce policy, key lifecycle, prohibited algorithms
+4. [Card Tamper Detection](4_card-tamper-detection.md) - validation sequence, security events, incident response
+5. [Offline Trust Model](5_offline-trust-model.md) - session grant security, replay protection, bounding offline exposure
+6. [Data Protection](6_data-protection.md) - storage classification, PII minimisation, IndexedDB security, plaintext prohibitions
+7. [Financial Risk Controls](7_financial-risk-controls.md) - limit enforcement chain, monitoring, fraud signals, alerting
 
 ## Upstream sources
 

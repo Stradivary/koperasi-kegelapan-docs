@@ -1,8 +1,8 @@
-# CQRS — Command Query Responsibility Segregation
+# CQRS - Command Query Responsibility Segregation
 
 ## Purpose
 
-Separates write operations (Commands — mutate state) from read operations (Queries — return data). This prevents read complexity from polluting write logic and vice versa.
+Separates write operations (Commands - mutate state) from read operations (Queries - return data). This prevents read complexity from polluting write logic and vice versa.
 
 ## Layer Mapping from SDD
 
@@ -31,7 +31,7 @@ application/
 
 ```ts
 // Spec: API Spec §5 POST /cards/{uid}/payment
-// Pattern: CQRS — Command + Handler
+// Pattern: CQRS - Command + Handler
 
 export class ProcessPaymentCommand {
   constructor(
@@ -60,7 +60,7 @@ export class ProcessPaymentHandler {
 
 ```ts
 // Spec: API Spec §5 GET /cards/{uid}/balance
-// Pattern: CQRS — Query + Handler
+// Pattern: CQRS - Query + Handler
 
 export class GetCardBalanceQuery {
   constructor(public readonly cardUid: string) {}
@@ -77,7 +77,7 @@ export class GetCardBalanceHandler {
 
 ## Rules
 
-- Command handlers must not return domain data — only success/failure.
+- Command handlers must not return domain data - only success/failure.
 - Query handlers must not mutate state.
 - Read models can be denormalized projections optimized for display.
 - Use event publishing (optional) between write side and read side for eventual consistency.

@@ -26,7 +26,7 @@ ConcreteObserver (LogAppender, AuditRecorder, NotificationSender)
 ## Code Template (TypeScript)
 
 ```ts
-// Spec: System Design §6 — Log chain model
+// Spec: System Design §6 - Log chain model
 // Pattern: Observer (Domain Events)
 
 export interface IDomainEventHandler<T extends DomainEvent> {
@@ -45,7 +45,7 @@ export class HashChainLogHandler implements IDomainEventHandler<TransactionLogge
   constructor(private readonly logRepo: ITransactionLogRepository) {}
 
   async handle(event: TransactionLoggedEvent): Promise<void> {
-    // Spec: ADR §5 — Hash chain log entry
+    // Spec: ADR §5 - Hash chain log entry
     const previous = await this.logRepo.getLatest(event.cardUid);
     const entry = TransactionLog.create(event, previous?.hash ?? null);
     await this.logRepo.append(entry);
@@ -57,7 +57,7 @@ export class HashChainLogHandler implements IDomainEventHandler<TransactionLogge
 
 - **NestJS (backend)**: Use `EventEmitter2` or CQRS `EventBus`.
 - **React (frontend)**: Use Zustand subscriptions, Redux middleware, or custom `EventEmitter` utilities.
-- **Domain Events**: Preferred over direct calls — keeps domain decoupled from side effects.
+- **Domain Events**: Preferred over direct calls - keeps domain decoupled from side effects.
 
 ## Antipatterns
 

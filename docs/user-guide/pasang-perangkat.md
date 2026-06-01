@@ -45,7 +45,7 @@ Pastikan Anda sudah login ke tenant yang ingin dipasangi perangkat.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Dashboard admin — siap setup perangkat" />
+<PlaceholderImg caption="Dashboard admin - siap setup perangkat" />
 </div>
 </div>
 
@@ -72,7 +72,7 @@ Navigasi ke menu **Pengaturan** → **Perangkat**.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Halaman Pengaturan — section Perangkat" />
+<PlaceholderImg caption="Halaman Pengaturan - section Perangkat" />
 </div>
 </div>
 
@@ -87,10 +87,10 @@ Tentukan fungsi perangkat ini dalam operasional.
 
 **Pilihan role:**
 
-- **Gate** — Hanya bisa melakukan check-in
-- **Terminal** — Hanya bisa melakukan checkout
-- **Scout** — Hanya bisa cek saldo (read-only)
-- **Station** — Akses penuh (admin)
+- **Gate** - Hanya bisa melakukan check-in
+- **Terminal** - Hanya bisa melakukan checkout
+- **Scout** - Hanya bisa cek saldo (read-only)
+- **Station** - Akses penuh (admin)
 
 **Catatan:**
 
@@ -155,7 +155,7 @@ Untuk perangkat yang akan digunakan publik (tanpa supervisi), aktifkan mode kios
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Tampilan Mode Kiosk — UI minimal" />
+<PlaceholderImg caption="Tampilan Mode Kiosk - UI minimal" />
 </div>
 </div>
 
@@ -179,7 +179,7 @@ Untuk mengubah role atau melepas perangkat:
 1. Buka **Pengaturan** → **Perangkat**
 2. Tap perangkat yang ingin di-reset
 3. Pilih **"Reset Perangkat"**
-4. Konfirmasi — perangkat kembali ke mode Station
+4. Konfirmasi - perangkat kembali ke mode Station
 
 ---
 

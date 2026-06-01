@@ -1,6 +1,6 @@
-# Koperasi Kegelapan NFC Wallet — Documentation
+# Koperasi Kegelapan NFC Wallet - Documentation
 
-Offline NFC wallet system — system design and technical specifications, built with [Docusaurus](https://docusaurus.io/) and authored using [Spec Driven Development (SDD)](#spec-driven-development-sdd).
+Offline NFC wallet system - system design and technical specifications, built with [Docusaurus](https://docusaurus.io/) and authored using [Spec Driven Development (SDD)](#spec-driven-development-sdd).
 
 ---
 
@@ -59,11 +59,11 @@ yarn serve
 
 ```
 docs/
-  product-spec/       # Layer 1 — What must exist and why
-  system-design/      # Layer 2 — How the system thinks
-  tech-specs/         # Layer 3 — How the system behaves
-  api-spec/           # Layer 4 — Service contracts
-  data-spec/          # Layer 5 — Storage schemas and layouts
+  product-spec/       # Layer 1 - What must exist and why
+  system-design/      # Layer 2 - How the system thinks
+  tech-specs/         # Layer 3 - How the system behaves
+  api-spec/           # Layer 4 - Service contracts
+  data-spec/          # Layer 5 - Storage schemas and layouts
   adr/                # Architecture Decision Records (cross-cutting)
 src/
   css/                # Custom Docusaurus theme styles
@@ -96,7 +96,7 @@ Each spec folder follows this convention:
 
 ## Spec Driven Development (SDD)
 
-This repository uses **Spec Driven Development** — every implementation decision traces back to a written spec. Code is never ahead of the spec; the spec is the source of truth.
+This repository uses **Spec Driven Development** - every implementation decision traces back to a written spec. Code is never ahead of the spec; the spec is the source of truth.
 
 ### Spec Layer Hierarchy
 
@@ -129,7 +129,7 @@ This repo ships a GitHub Copilot **`@sdd` skill** in `.github/skills/sdd/`. Invo
 | Check spec consistency  | `@sdd consistency check between tech-specs and api-spec`  |
 | Write a new ADR         | `@sdd write an ADR for switching from AES-CBC to AES-GCM` |
 | Review a single layer   | `@sdd review system-design for gaps`                      |
-| Generate code from spec | `@sdd generate code — confirm layers 1–5 exist first`     |
+| Generate code from spec | `@sdd generate code - confirm layers 1–5 exist first`     |
 
 #### When to use @sdd
 
@@ -148,13 +148,13 @@ Run `@sdd audit all spec layers` to get a coverage table:
 
 | Layer         | Status                       | Location              | Gaps |
 | ------------- | ---------------------------- | --------------------- | ---- |
-| Product Spec  | ✅ / ⚠️ partial / ❌ missing | `docs/product-spec/`  | —    |
-| System Design | …                            | `docs/system-design/` | —    |
-| Tech Specs    | …                            | `docs/tech-specs/`    | —    |
-| API Spec      | …                            | `docs/api-spec/`      | —    |
-| Data Spec     | …                            | `docs/data-spec/`     | —    |
-| Security Spec | …                            | `docs/security-spec/` | —    |
-| Test Spec     | …                            | `docs/test-spec/`     | —    |
+| Product Spec  | ✅ / ⚠️ partial / ❌ missing | `docs/product-spec/`  | -    |
+| System Design | …                            | `docs/system-design/` | -    |
+| Tech Specs    | …                            | `docs/tech-specs/`    | -    |
+| API Spec      | …                            | `docs/api-spec/`      | -    |
+| Data Spec     | …                            | `docs/data-spec/`     | -    |
+| Security Spec | …                            | `docs/security-spec/` | -    |
+| Test Spec     | …                            | `docs/test-spec/`     | -    |
 
 #### 2. Write specs top-down
 
@@ -189,7 +189,7 @@ A spec is **complete** when it answers all five questions:
 A spec is **draft** if any of the above are missing. Mark drafts with:
 
 ```md
-> 🚧 Draft — missing: [list what is missing]
+> 🚧 Draft - missing: [list what is missing]
 ```
 
 ---

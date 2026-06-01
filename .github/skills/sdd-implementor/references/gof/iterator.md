@@ -6,14 +6,14 @@ Provide a way to sequentially access elements of a collection without exposing i
 
 ## SDD Trigger
 
-- Paginated API responses from API Spec — iterate pages without the caller managing cursors.
-- Tech Specs §14 — transaction log: iterate log entries in hash-chain order without exposing the storage structure.
+- Paginated API responses from API Spec - iterate pages without the caller managing cursors.
+- Tech Specs §14 - transaction log: iterate log entries in hash-chain order without exposing the storage structure.
 - Any Data Spec collection that has complex traversal logic (filtered, ordered, paginated).
 
-## Code Template (TypeScript — Async Iterator for paginated API)
+## Code Template (TypeScript - Async Iterator for paginated API)
 
 ```ts
-// Spec: API Spec §6 — Reconciliation log pagination
+// Spec: API Spec §6 - Reconciliation log pagination
 // Pattern: Iterator (async generator)
 
 export async function* transactionLogIterator(
@@ -32,13 +32,13 @@ export async function* transactionLogIterator(
   } while (cursor !== null);
 }
 
-// Usage — caller never manages pagination
+// Usage - caller never manages pagination
 for await (const log of transactionLogIterator(repo, "CARD-001")) {
   console.log(log.amount, log.timestamp);
 }
 ```
 
-## Code Template (TypeScript — Iterable collection class)
+## Code Template (TypeScript - Iterable collection class)
 
 ```ts
 // Pattern: Iterator (Symbol.iterator)

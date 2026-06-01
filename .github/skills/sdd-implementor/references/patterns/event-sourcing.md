@@ -6,8 +6,8 @@ Instead of storing only the current state, store every state-changing **event** 
 
 ## SDD Trigger
 
-- System Design §6 — log chain model → the hash-chain transaction log is effectively an event store.
-- ADR §5 — hash-chain log → each entry is an immutable domain event.
+- System Design §6 - log chain model → the hash-chain transaction log is effectively an event store.
+- ADR §5 - hash-chain log → each entry is an immutable domain event.
 - Any spec requirement for full audit trail, undo, or replay.
 
 ## Concepts
@@ -29,10 +29,10 @@ Projection → Read model built by processing event stream
 | System Design §4 state machine | Aggregate state rebuilt by replaying events |
 | API Spec GET endpoints         | Projections / read models                   |
 
-## Code Template (TypeScript — NestJS backend)
+## Code Template (TypeScript - NestJS backend)
 
 ```ts
-// Spec: System Design §6 — Log chain model
+// Spec: System Design §6 - Log chain model
 // Pattern: Event Sourcing
 
 // Domain event
@@ -61,7 +61,7 @@ export class Card {
   }
 
   debit(amount: number, terminalId: string): void {
-    // Spec: Tech Specs §9 — balance ceiling check before recording
+    // Spec: Tech Specs §9 - balance ceiling check before recording
     if (this.balance < amount) throw new InsufficientBalanceError();
     this.record(new CardDebitedEvent(this.uid, amount, terminalId, new Date(), null));
   }
@@ -92,13 +92,13 @@ export interface IEventStore {
 
 ## Rules
 
-- Events are **immutable** — never update or delete an event.
-- Aggregate must rebuild from events (`reconstitute`) — no direct field assignment from DB rows.
-- Separate the write side (event store) from the read side (projections) — combine with CQRS.
+- Events are **immutable** - never update or delete an event.
+- Aggregate must rebuild from events (`reconstitute`) - no direct field assignment from DB rows.
+- Separate the write side (event store) from the read side (projections) - combine with CQRS.
 - Event schema changes require versioned migration strategies (upcasting).
 
 ## Antipatterns
 
 - Storing mutable state AND events (two sources of truth).
-- Using Event Sourcing for simple CRUD with no audit requirements (over-engineering — YAGNI).
+- Using Event Sourcing for simple CRUD with no audit requirements (over-engineering - YAGNI).
 - Replaying all events on every request without snapshotting for large streams.

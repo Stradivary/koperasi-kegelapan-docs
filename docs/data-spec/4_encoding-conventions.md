@@ -12,7 +12,7 @@ This section defines the canonical encoding rules that apply to all card binary 
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | **Byte order**       | Little-endian for all multi-byte integer fields (`uint16`, `uint32`, `uint64`, `uint24`)                                       |
 | **Timestamps**       | UTC seconds since Unix epoch, stored as `uint32`; valid range: year 2024–2106                                                  |
-| **String fields**    | UTF-8, null-padded to fill the fixed byte allocation; max 31 meaningful bytes for `name` (1 byte reserved for null terminator) |
+| **String fields**    | UTF-8, null-padded to fill the fixed byte allocation; max 23 meaningful bytes for `name` (1 byte reserved for null terminator) |
 | **Currency amounts** | Integer IDR (Indonesian Rupiah), no decimal component; stored as `uint32` for balance, `uint24` for log `amount`               |
 | **Reserved fields**  | Must be written as all-zero bytes; readers must ignore reserved content rather than rejecting it                               |
 | **`uint24`**         | 3-byte unsigned integer, little-endian (not a native CPU type; written/read as 3 separate bytes)                               |
@@ -25,7 +25,7 @@ This section defines the canonical encoding rules that apply to all card binary 
 | Rule                      | Detail                                                                                                      |
 | ------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | **`cardId`**              | Hex-encoded string of the 6-byte value, lowercase, no prefix (e.g. `"a1b2c3d4e5f6"`)                        |
-| **`hash` / `chain_hash`** | Hex-encoded string of the 6-byte truncated hash, lowercase                                                  |
+| **`hash` / `chain_hash`** | Hex-encoded string of the 4-byte truncated hash, lowercase                                                  |
 | **Timestamps**            | `uint32` seconds in API payloads (integer, not ISO-8601 string); backend stores as `TIMESTAMPTZ` internally |
 | **Amounts**               | Integer IDR; no floating-point values anywhere in the financial pipeline                                    |
 | **`sessionKey`**          | Base64-encoded 32-byte key (standard base64, with padding)                                                  |
@@ -37,9 +37,9 @@ This section defines the canonical encoding rules that apply to all card binary 
 
 The `version` byte in the Header block identifies the card binary layout version. This allows future layout changes without requiring all cards to be re-issued simultaneously.
 
-| Version | Description                | Status      |
-| ------- | -------------------------- | ----------- |
-| `1`     | Initial layout (this spec) | **Current** |
+| Version | Description                                | Status      |
+| ------- | ------------------------------------------ | ----------- |
+| `4`     | Current production layout (AES-GCM + HMAC) | **Current** |
 
 **Rules for version upgrades:**
 
@@ -88,13 +88,20 @@ Key material is never stored on the card or in the backend database. It is store
 For each log entry `n`:
 
 ```
-hash[n] = SHA-256(deltaTime_n || amount_n || balanceAfter_n || flags_n || hash[n-1])[0..5]
+hash[n] = SHA-256(timestamp_n || amount_n || balanceAfter_n || flags_n || hash[n-1])[0..3]
 ```
 
-Initialisation for the first entry in a session:
+The hash input is a 16-byte buffer:
+- bytes 0-3: `timestamp` (uint32, little-endian)
+- bytes 4-6: `amount` (uint24, little-endian)
+- bytes 7-10: `balanceAfter` (uint32, little-endian)
+- byte 11: `flags` (uint8)
+- bytes 12-15: `prevHash` (4 bytes)
+
+Initialisation for the first entry:
 
 ```
-hash[0]_prev = startTime || 0x00 || 0x00  (4-byte little-endian, zero-padded to 6 bytes)
+hash[0]_prev = Uint8Array(4)  (4 zero bytes)
 ```
 
 > Full chain integrity rules: [Tech Specs §14 Transaction Log Format](../tech-specs/14_transaction-log-format.md).

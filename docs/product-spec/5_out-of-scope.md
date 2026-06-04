@@ -27,8 +27,10 @@ The following are explicitly excluded from this system. Items may be revisited i
 
 ## Real-time fraud alerts
 
-- Real-time transaction monitoring and push alerts are out of scope. Fraud signals are surfaced at reconciliation time only.
-- Automated card blocking triggered by fraud signals is not in scope for v1; a human operator must action the flag.
+- Real-time transaction monitoring and push alerts are out of scope. Fraud signals are surfaced at reconciliation/sync time only.
+- Automated card blocking triggered by real-time fraud signals is not in scope for v1; a human operator (or superadmin) must action the flag.
+
+  > Note: Administrative card blocking via the superadmin panel IS in scope (device blocking with session revocation). What's excluded is automated, ML-driven fraud detection triggering blocks without human intervention.
 
 ## Multi-currency
 
@@ -45,3 +47,15 @@ The following are explicitly excluded from this system. Items may be revisited i
 ## Card personalisation (printing / embossing)
 
 - Physical card design, printing, and personalisation are out of scope.
+
+## Weekly cumulative limits
+
+- No weekly cumulative limit is enforced in the current implementation. Only per-transaction and daily limits exist as configurable tenant policies.
+
+## Offline card reactivation
+
+- Cards in any `BLOCKED_*` status cannot be reactivated via normal on-card operations. The only recovery path for a blocked card is physical reissue (or admin reset via station for non-tamper cases using `applyResetState`).
+
+## Push notifications
+
+- No push notification system for operators or members. Status changes are visible on next sync pull or card tap.

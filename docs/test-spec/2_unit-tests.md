@@ -55,24 +55,21 @@ All unit tests run with Vitest. Each suite below lists the assertions that must 
 
 **Module**: `validation/cardValidator`
 
-**Traces to**: [Tech Specs §5](../tech-specs/5_tamper-detection-validation.md) Tamper Detection & Validation (steps 0–10)
+**Traces to**: [Tech Specs §5](../tech-specs/5_tamper-detection-validation.md) Tamper Detection & Validation (steps 0–8)
 
 Each step must be independently testable by passing a card payload with only that step's failure condition triggered.
 
 | ID        | Step                | Given                                            | When                 | Then                                                     |
 | --------- | ------------------- | ------------------------------------------------ | -------------------- | -------------------------------------------------------- |
 | U-VAL-00  | Pre-check           | Card bytes are all `0x00`                        | `validate` is called | Returns `{ state: 'uninitialised' }`; no error           |
-| U-VAL-01  | Magic / version     | `magic` field is `0xDEAD` (invalid)              | `validate` is called | Throws `InvalidMagic`                                    |
-| U-VAL-01b | Version             | `version` field is `0xFF` (unsupported)          | `validate` is called | Throws `UnsupportedVersion`                              |
-| U-VAL-02  | Key version         | Card `keyVersion` not in held grants             | `validate` is called | Throws `UnknownKeyVersion`                               |
-| U-VAL-03  | HMAC                | Trailer `HMAC` field is corrupted                | `validate` is called | Throws `HmacMismatch`; marks as `BLOCKED_TAMPER`         |
-| U-VAL-04  | GCM decryption      | Ciphertext has one byte flipped                  | `validate` is called | Throws `GcmDecryptionFailure`; marks as `BLOCKED_TAMPER` |
-| U-VAL-05  | Counter             | On-card `counter` = last known − 1               | `validate` is called | Throws `CounterRollback`; marks as `BLOCKED_TAMPER`      |
-| U-VAL-06  | Timestamp           | `lastTimestamp` = `now + 2 hours` (beyond drift) | `validate` is called | Throws `TimestampRollback`                               |
-| U-VAL-07  | Status blocked      | `status = BLOCKED_TAMPER`                        | `validate` is called | Returns `{ writable: false }`; does not throw            |
-| U-VAL-08  | Balance consistency | `balance ≠ log chain last balanceAfter`          | `validate` is called | Throws `BalanceInconsistency`; marks as `BLOCKED_TAMPER` |
-| U-VAL-09  | Log chain           | Log entry `n` has `hash` modified                | `validate` is called | Throws `LogChainMismatch` at step `n`                    |
-| U-VAL-10  | Root hash           | Trailer `rootHash` does not match chain head     | `validate` is called | Throws `RootHashMismatch`                                |
+| U-VAL-01  | Schema version      | `version` field is `3` (below minimum)           | `validate` is called | Returns `{ valid: false, reason: "Schema version mismatch" }` |
+| U-VAL-01b | Schema version      | `version` field is `5` (above current)           | `validate` is called | Returns `{ valid: false, reason: "Unrecognized schema version" }` |
+| U-VAL-02  | Key version         | Card `keyVersion` ≠ grant `keyVersion`           | `validate` is called | Returns `{ valid: false, tamper: false }` with key version mismatch reason |
+| U-VAL-03  | AES-GCM decryption  | Ciphertext has one byte flipped                  | `validate` is called | Returns `{ valid: false, tamper: true }` with decode failure |
+| U-VAL-04  | HMAC                | Trailer `HMAC` field is corrupted                | `validate` is called | Returns `{ valid: false, tamper: true, reason: "HMAC verification failed" }` |
+| U-VAL-05  | Counter-bind        | `counterBind` ≠ `lower32(wallet.counter)`        | `validate` is called | Returns `{ valid: false, tamper: true, reason: "Counter bind mismatch" }` |
+| U-VAL-06  | Tenant-bind         | `tenantBind` ≠ FNV-32a(sessionGrant.tenantId)   | `validate` is called | Returns `{ valid: false, tamper: false }` with unregistered card message |
+| U-VAL-07  | Chain hash          | Log entry `n` has `hash` modified                | `validate` is called | Returns `{ valid: false, tamper: true, reason: "Chain hash invalid" }` |
 
 ---
 
@@ -85,9 +82,9 @@ Each step must be independently testable by passing a card payload with only tha
 | ID      | From                 | Trigger                                                | Then                                               |
 | ------- | -------------------- | ------------------------------------------------------ | -------------------------------------------------- |
 | U-SM-01 | `IDLE`               | Gate check-in (valid grant with `checkin`)             | State = `CHECKED_IN`; log entry appended           |
-| U-SM-02 | `CHECKED_IN`         | Terminal begins transaction (valid grant with `debit`) | State = `TERMINAL_OPERATION`                       |
-| U-SM-03 | `TERMINAL_OPERATION` | Debit committed                                        | State returns to `CHECKED_IN`; balance decremented |
-| U-SM-04 | `CHECKED_IN`         | Gate check-out (valid grant with `checkout`)           | State = `IDLE`                                     |
+| U-SM-02 | `CHECKED_IN`         | Terminal begins transaction (valid grant with `debit`) | State = `STATION_OPERATION`                        |
+| U-SM-03 | `STATION_OPERATION`  | Debit committed                                        | State returns to `CHECKED_IN`; balance decremented |
+| U-SM-04 | `CHECKED_IN`         | Gate check-out (valid grant with `checkout`)           | State = `CHECKED_OUT`                              |
 | U-SM-05 | `IDLE`               | Debit attempted (no `checkin`)                         | Throws `InvalidStateTransition`                    |
 | U-SM-06 | `CHECKED_IN`         | Grant expired                                          | Throws `SessionExpired`; no write                  |
 | U-SM-07 | `IDLE`               | Top-up attempted offline                               | Throws `TopupRequiresConnectivity`                 |

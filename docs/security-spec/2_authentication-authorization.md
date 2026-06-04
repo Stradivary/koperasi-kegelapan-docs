@@ -1,125 +1,108 @@
 # 2. Authentication & Authorization
 
-## Two-layer authentication
+> ⚠️ This spec reflects the **code-frozen implementation** as of June 2026. MFA, device key pairs, and WebAuthn are NOT implemented. Authentication is username + password only.
 
-Every privileged request must satisfy both layers. Failure in either layer results in `401 Unauthorized`.
+## Authentication model (implemented)
 
-| Layer             | What is proved                                                                       | Mechanism                                                                     |
-| ----------------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
-| Device identity   | This browser installation is an enrolled terminal for the koperasi tenant            | Commissioning secret (one-time) → rotated to device key pair after enrollment |
-| Operator identity | This human has the correct credentials and second factor for the claimed tenant role | Password + TOTP or WebAuthn                                                   |
+Authentication uses a single layer: **operator credentials** (username + password + tenant slug).
 
-The backend issues a short-lived **access token** and a longer-lived **refresh token** only after both layers pass. Both tokens are bound to `tenantId`, `accountId`, `deviceId`, and the permitted role scope.
+| Layer             | What is proved                                             | Mechanism                                           |
+| ----------------- | ---------------------------------------------------------- | --------------------------------------------------- |
+| Operator identity | The human has valid credentials for the claimed tenant role | Password verified via PBKDF2-SHA256 (100k iterations) |
+| Device enrollment | This browser is registered with the koperasi               | Device fingerprint (hash, userAgent, platform) registered at login time |
 
----
-
-## MFA requirements
-
-| Role                          | MFA requirement                              |
-| ----------------------------- | -------------------------------------------- |
-| `tenant_admin`                | Required (TOTP or WebAuthn); may not disable |
-| `station_operator`            | Required                                     |
-| `gate_operator`               | Required                                     |
-| `terminal_operator`           | Required                                     |
-| `reconciler`                  | Required                                     |
-| `scout` (member self-service) | Optional; configurable per tenant            |
-
-MFA is enforced server-side at token issuance. A token is never issued if MFA is required and not satisfied.
-
-### TOTP constraints
-
-- Algorithm: HMAC-SHA1 (RFC 6238)
-- Time step: 30 seconds
-- Drift allowance: ±1 step (60 seconds total)
-- Seed: stored server-side as AES-256-GCM encrypted blob; never transmitted in plaintext
-
-### WebAuthn constraints
-
-- Authenticator attachment: platform or cross-platform, tenant-configurable
-- Attestation: none required for basic flow; direct attestation for high-assurance tenants
-- Resident keys: preferred to support usernameless flow on managed devices
+The backend issues a short-lived **JWT access token** (1h) and a **refresh token** (device-bound) after password verification succeeds.
 
 ---
 
-## Tenant-scoped RBAC
+## Role-scoped authorization
 
-Every authorization check enforces three conditions simultaneously:
+Every authorization check enforces:
 
-1. `tenantId` in the token matches the `tenantId` of the resource being accessed.
-2. `role` in the token grants the required permission for the requested operation.
-3. The `accountId` membership is `active` in `account_memberships`.
+1. `tenantId` from the JWT matches the resource being accessed (except superadmin which is cross-tenant).
+2. `role` in the JWT determines the permitted operations.
+3. Account `status` must be `active`.
 
-No API endpoint assumes tenant context from the request body. Tenant scope is read from the verified token only.
+No API endpoint accepts `tenantId` from the request body as authoritative. Tenant scope is always read from the verified JWT.
 
 ### Permission matrix
 
-| Permission                | tenant_admin | station_operator | gate_operator | terminal_operator | reconciler | scout |
-| ------------------------- | :----------: | :--------------: | :-----------: | :---------------: | :--------: | :---: |
-| Issue / re-key card       |      −       |        ✓         |       −       |         −         |     −      |   −   |
-| Top-up balance            |      −       |        ✓         |       −       |         −         |     −      |   −   |
-| Block card                |      ✓       |        ✓         |       ∓       |         ∓         |     −      |   −   |
-| Request session grant     |      −       |        ✓         |       ✓       |         ✓         |     −      |   −   |
-| Submit reconciliation     |      −       |        ∓         |       ∓       |         ✓         |     −      |   −   |
-| Manage accounts / devices |      ✓       |        −         |       −       |         −         |     −      |   −   |
-| View audit log            |      ✓       |        −         |       −       |         −         |     ✓      |   −   |
-| Read card state           |      ✓       |        ✓         |       ✓       |         ✓         |     ✓      |   ✓   |
+| Permission                     | admin | station | gate | terminal | kiosk | scout | superadmin |
+| ------------------------------ | :---: | :-----: | :--: | :------: | :---: | :---: | :--------: |
+| Read card state                |   ✓   |    ✓    |  ✓   |    ✓     |   ✓   |   ✓   |     −      |
+| Issue / initialise card        |   ✓   |    ✓    |  −   |    −     |   −   |   −   |     −      |
+| Top-up balance (credit)        |   ✓   |    ✓    |  −   |    −     |   −   |   −   |     −      |
+| Debit transaction              |   ✓   |    −    |  −   |    ✓     |   ✓   |   −   |     −      |
+| Check-in                       |   ✓   |    ✓    |  ✓   |    −     |   −   |   −   |     −      |
+| Check-out                      |   ✓   |    ✓    |  −   |    ✓     |   −   |   −   |     −      |
+| Block card / admin ops         |   ✓   |    ✓    |  −   |    −     |   −   |   −   |     −      |
+| Sync push/pull                 |   ✓   |    ✓    |  ✓   |    ✓     |   ✓   |   −   |     −      |
+| Manage accounts within tenant  |   ✓   |    −    |  −   |    −     |   −   |   −   |     −      |
+| Manage tenants (cross-tenant)  |   −   |    −    |  −   |    −     |   −   |   −   |     ✓      |
+| Manage accounts (cross-tenant) |   −   |    −    |  −   |    −     |   −   |   −   |     ✓      |
+| Block/unblock devices          |   −   |    −    |  −   |    −     |   −   |   −   |     ✓      |
 
-(✓ = always, ∓ = conditional, − = denied)
+(✓ = allowed, − = denied)
 
 ---
 
-## Token lifecycle
+## Token lifecycle (implemented)
 
-### Access token
+### Access token (JWT)
 
-- **TTL**: 15 minutes (recommended); configurable per tenant, minimum 5 minutes
-- **Storage**: process memory only; never written to disk, `localStorage`, or a cookie
-- **Revocation**: no server-side revocation needed given short TTL; refresh is blocked on account/device suspension
+- **Algorithm**: HMAC-SHA256 signed with `SESSION_MASTER_KEY`
+- **TTL**: 1 hour
+- **Claims**: `accountId`, `tenantId`, `role`, `deviceId`, `iat`, `exp`
+- **Storage**: Client memory only (not persisted)
+- **Revocation**: Not implemented (relies on short TTL); device block check provides immediate cutoff
 
 ### Refresh token
 
-- **TTL**: 30 days (recommended); configurable per tenant
-- **Storage client-side**: AES-256-GCM encrypted blob in IndexedDB; encryption key derived from device-bound material (WebCrypto `CryptoKey` non-extractable)
-- **Storage server-side**: `refresh_token_hash` (BLAKE2b or SHA-256 of the raw token); never the raw token
-- **Revocation**: server-side revocation on `auth_sessions.revoked_at`; device or account suspension cascades to all open sessions for that device/account
-
-### Rotation on use
-
-- Every successful refresh issues a new refresh token and invalidates the previous one (token rotation).
-- If an already-revoked refresh token is presented, the session is treated as compromised: all sessions for that device are revoked immediately.
+- **TTL**: 7 days (based on `auth_sessions.expires_at`)
+- **Storage server-side**: SHA-256 hash in `auth_sessions.refresh_token_hash`
+- **Storage client-side**: Local state (not encrypted)
+- **Rotation**: Every successful refresh rotates to a new token (single-use)
+- **Replay detection**: Reusing a rotated refresh token triggers session investigation
 
 ---
 
-## Device enrollment security
+## Device management (implemented)
 
-1. **Commissioning secret**: generated server-side; one-time-use; delivered out-of-band (e.g., QR code over TLS). The server stores only the hash of the secret.
-2. **Device key pair**: after first successful use of the commissioning secret, the client generates a non-extractable ECDSA P-256 key pair in WebCrypto; the public key is registered with the backend. Subsequent authentications use a signed challenge, not the commissioning secret.
-3. **Device suspension**: a suspended device receives `403 device_suspended` on every call. All open sessions for that device are revoked.
-
----
-
-## Session grant binding
-
-A session grant must be bound to all of the following or be rejected at the backend:
-
-| Field        | Binding                                                                 |
-| ------------ | ----------------------------------------------------------------------- |
-| `tenantId`   | Must match the active tenant in the issuing access token                |
-| `accountId`  | Must match the issuing operator                                         |
-| `deviceId`   | Must match the enrolled device presenting the access token              |
-| `allowedOps` | Restricted to the role's permission set                                 |
-| `expiresAt`  | Set by backend policy (1–24 hours)                                      |
-| `signature`  | ECDSA or HMAC-SHA256 signed by the backend with the tenant key material |
-
-A terminal must validate the grant signature before using it. An invalid or expired grant must result in a full refresh cycle.
+- Devices are identified by a browser fingerprint hash (computed from userAgent + platform).
+- Device registration occurs automatically at login when `deviceFingerprint` is provided.
+- A device record stores: `deviceId`, `tenantId`, `accountId`, `fingerprintHash`, `userAgent`, `platform`, `lastSeenAt`, `blockedUntil`.
+- **Device blocking**: superadmin can block a device for 60s–365d. Blocking revokes all auth sessions and rejects all API calls via `deviceBlockCheck` middleware.
+- Client-side `isDeviceBlocked()` check prevents sync operations proactively.
 
 ---
 
-## Logout and session termination
+## Superadmin authentication
 
-- Logout must revoke the server-side `auth_sessions` row for the active session.
-- The client must wipe `operatorSession`, `tenantContext`, and all encrypted caches from IndexedDB for the active tenant on logout.
-- A tenant switch (selecting a different koperasi) must force a new login and must invalidate all session-grant-derived key material from the previous tenant.
+- Superadmin accounts authenticate without `tenantSlug` (can omit it).
+- Superadmin bypasses tenant active status check (can log in even if their assigned tenant is suspended).
+- Superadmin authorization is verified via **defense-in-depth DB lookup**: even with a valid JWT, the `requireSuperadmin` function re-checks the account's role in the database at request time.
+- Superadmin cannot perform NFC card operations (no session grant with card ops).
+
+---
+
+## Scout anonymous access
+
+- Scout is the only role that does NOT require authentication.
+- `GET /api/session-grant?role=scout&tenantId=X` returns an anonymous grant with `allowedOps: ["read"]`.
+- No `accountId` or `deviceId` binding is enforced for scout grants.
+- Scout cannot write to cards, sync data, or access any authenticated endpoint.
+
+---
+
+## Not implemented (aspirational)
+
+The following security features are NOT part of the current implementation:
+
+- **MFA / TOTP / WebAuthn**: No second factor. Auth is password-only.
+- **Device key pairs / ECDSA challenges**: Devices use fingerprint hash, not cryptographic identity.
+- **Encrypted refresh token storage**: Refresh tokens are not encrypted at rest on client.
+- **Account lockout after failed attempts**: Rate limiting exists but no progressive lockout.
+- **Password complexity requirements**: No server-side password policy enforcement beyond "non-empty".
 
 ---
 
@@ -127,5 +110,5 @@ A terminal must validate the grant signature before using it. An invalid or expi
 
 - API Spec §2: [Authentication](../api-spec/2_auth.md)
 - Data Spec §3: [`auth_sessions` table](../data-spec/3_backend-db-schema.md)
-- Data Spec §5: [`operatorSession` IndexedDB store](../data-spec/5_multitenancy-auth-local-first.md)
+- Data Spec §5: [Multitenancy, Auth & Local-first Storage](../data-spec/5_multitenancy-auth-local-first.md)
 - Tech Specs §12: [Key Hierarchy & Session Grants](../tech-specs/12_key-hierarchy-session-grants.md)

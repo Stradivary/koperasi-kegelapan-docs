@@ -36,11 +36,15 @@ The GCM tag authenticates only the ciphertext and any Additional Authenticated D
 
 The HMAC ties all of these fields together with a single authentication code that must be verified before any trailer field is trusted.
 
-**What HMAC covers:** the full trailer block (all fields from `expiresAt` through `activePtr`) plus the full encrypted buffer bytes. This means the HMAC binds the trailer to one specific buffer - you cannot swap a valid trailer onto a different payload.
+**What HMAC covers:** the full encrypted buffer bytes (216 bytes) plus trailer anchor fields (`expiresAt`, `keyVersion`, `rootHash`, `counterBind`). This means the HMAC binds the trailer to one specific buffer state - you cannot swap a valid trailer onto a different payload. The HMAC output is **truncated to 8 bytes** to fit within the trailer's constrained space while maintaining adequate security for the threat model.
 
 ## Key model
 
-- Session-based keys are valid for a short window (1–24 hours) and are issued per terminal by the backend.
-- Per-card encryption and HMAC keys are derived from the session key and card ID using HKDF-SHA256. They are never stored or transmitted; they are re-derived on each use.
-- Keys are versioned. `keyVersion` on the card tells the terminal which key set to use for derivation.
-- Backend manages key issuance, rotation, and compatibility. See [§12 Key Trust Model](12_key-trust-model.md) and [Tech Specs §12](../tech-specs/12_key-hierarchy-session-grants.md) for the full key hierarchy.
+- **Session keys are tenant-scoped and deterministic.** Derived server-side via `HMAC-SHA256(tenantKey, "session-key")`. All devices in the same tenant with the same `keyVersion` derive the identical session key. This is intentional — it allows any device to decrypt and write cards produced by any other device in the tenant.
+- **Per-card encryption and HMAC keys** are derived from the session key and card ID using HKDF-SHA256. They are never stored or transmitted; they are re-derived on each use:
+  - Encryption key: `HKDF(sessionKey, salt=cardId, info="enc", len=32)` → AES-256-GCM key
+  - Auth key: `HKDF(sessionKey, salt=cardId, info="auth", len=32)` → HMAC-SHA256 key
+  - Nonce: `HKDF(sessionKey, salt=cardId||counter, info="nonce", len=12)` → AES-GCM IV
+- **Keys are versioned.** `keyVersion` on the card tells the terminal which key set to use for derivation. A mismatch between card `keyVersion` and session grant `keyVersion` is a hard reject (not tamper).
+- **Session grant lifetime is 24 hours.** After expiry, the terminal cannot write to any card until a new grant is obtained.
+- Backend manages key issuance and rotation. See [§12 Key Trust Model](12_key-trust-model.md) and [Tech Specs §12](../tech-specs/12_key-hierarchy-session-grants.md) for the full key hierarchy.

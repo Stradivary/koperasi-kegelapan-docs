@@ -6,9 +6,9 @@ The log chain provides a tamper-evident record of all value changes on a card. E
 
 ## Chaining model
 
-- Each log entry includes a hash computed over its own data and the hash of the previous entry.
-- The chain starts at session open time, providing an anchor that cannot be forged without knowing the session key.
-- The trailer stores the hash of the most recent entry (the chain head). This binds the full log sequence to the HMAC-protected trailer.
+- Each log entry includes a 4-byte hash computed over its own data fields and the hash of the previous entry (truncated SHA-256).
+- The chain starts with **4 zero bytes** as the initial `prevHash` anchor. This provides a fixed starting point for chain validation.
+- The trailer stores the hash of the most recent entry (the chain head) in the `rootHash` field (6 bytes, zero-padded). This binds the full log sequence to the HMAC-protected trailer.
 
 ## Security guarantees
 

@@ -1,80 +1,105 @@
 # 7. Financial Risk Controls
 
+> ⚠️ This spec reflects the **code-frozen implementation** as of June 2026.
+
 ## Limit enforcement chain
 
-Financial controls are applied at three independent checkpoints. All three must be consistent.
+Financial controls are applied at two checkpoints in the current implementation:
 
-| Checkpoint     | Enforced by        | When                         | Limits applied                                       |
-| -------------- | ------------------ | ---------------------------- | ---------------------------------------------------- |
-| Write time     | Terminal app       | Before card write            | Single-transaction maximum                           |
-| Reconciliation | Backend            | On batch receipt             | Daily cumulative, weekly cumulative, balance ceiling |
-| Policy cache   | Terminal (offline) | Cached at session grant time | All limits; refreshed when online                    |
+| Checkpoint       | Enforced by  | When               | Limits applied                                                               |
+| ---------------- | ------------ | ------------------ | ---------------------------------------------------------------------------- |
+| **Write time**   | Terminal app  | Before card write  | `MAX_BALANCE`, `MAX_TOPUP_AMOUNT`, `MIN_TOPUP_AMOUNT`, `MIN_BALANCE_BEFORE_CHECKIN` |
+| **Sync push**    | Backend API   | On batch receipt   | `MAX_TRANSACTION_AMOUNT`, `MAX_BALANCE`, topup min/max, issuance min, counter/type validation |
 
-The terminal must refuse a transaction immediately if the proposed amount exceeds the single-transaction limit, without touching the card. The backend is the authoritative enforcer for daily and weekly limits because it has the full reconciliation history.
+A third checkpoint (**policy-based limits**) is defined but **not enforced** at transaction time:
 
----
-
-## Limit values
-
-| Limit                         | Value         | Enforcement point                                |
-| ----------------------------- | ------------- | ------------------------------------------------ |
-| Maximum storable balance      | Rp 16,000,000 | Card schema `uint32` ceiling                     |
-| Recommended balance cap       | Rp 5,000,000  | Backend policy; configurable per tenant          |
-| Single transaction maximum    | Rp 1,000,000  | Terminal write-time check                        |
-| Daily cumulative debit limit  | Rp 2,000,000  | Backend reconciliation                           |
-| Weekly cumulative debit limit | Rp 5,000,000  | Backend reconciliation; triggers elevated review |
-
-Tenant admins may configure tighter limits per tenant but may not raise them above the platform defaults without platform-operator approval.
+| Checkpoint       | Status          | Limits defined                                     |
+| ---------------- | --------------- | -------------------------------------------------- |
+| Tenant policy    | NOT ENFORCED    | `maxTransactionAmount` (1M), `maxDailyTotal` (5M), `topupOnlineOnly`, `allowedTxTypes`, `sessionTimeoutHours` |
 
 ---
 
-## Anomaly detection signals
+## Implemented limit values
 
-The backend flags events for review when any of the following conditions are met:
-
-| Signal                             | Condition                                                                      | Action                                        |
-| ---------------------------------- | ------------------------------------------------------------------------------ | --------------------------------------------- |
-| Daily limit breach                 | Card cumulative debit ≥ Rp 2,000,000 in a calendar day                         | Flag `review_flag = true` in `audit_log`      |
-| Weekly limit breach                | Card cumulative debit ≥ Rp 5,000,000 in a calendar week                        | Flag + operator notification                  |
-| Rapid debits                       | > 10 debit events for the same card in < 60 minutes                            | Flag as suspicious; set `suspect_flag = true` |
-| Counter gap                        | Submitted event counter > last reconciled counter + N (configurable threshold) | Flag for investigation                        |
-| Offline batch latency              | Batch submitted > 48 hours after session grant expiry                          | Flag all events in batch                      |
-| Balance ceiling approach           | Post-transaction balance > 90% of balance cap                                  | Informational flag                            |
-| Repeated blocked card presentation | Same blocked card presented > 3 times in a session                             | Terminal report event                         |
-
----
-
-## Risk incident response
-
-| Severity     | Trigger                                                           | Response                                                                                          |
-| ------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| **Critical** | Master key or tenant key compromise                               | Emergency rotation; all terminals must re-authenticate; all cards requiring re-keying are flagged |
-| **High**     | Reconciliation fraud (crafted events without card write evidence) | Freeze card; escalate to `BLOCKED_FRAUD`; notify tenant admin                                     |
-| **High**     | Tamper event rate > 0.1% of daily taps                            | Alert; investigate source terminal or card batch                                                  |
-| **Medium**   | Reconciliation failure rate > 1%                                  | Alert; investigate batch content for malformed events                                             |
-| **Medium**   | Session grant re-use from different device                        | Revoke grant; log event; alert                                                                    |
-| **Low**      | Repeated limit breaches from same card                            | Operator review; no automatic block                                                               |
+| Limit                          | Value             | Enforcement                                      |
+| ------------------------------ | ----------------- | ------------------------------------------------ |
+| Maximum card balance           | Rp 16,000,000     | Client-side (`validateTopup`) + server-side      |
+| Maximum transaction amount     | Rp 16,000,000     | Server-side (`validateTransaction` in sync.ts)   |
+| Maximum top-up per tx          | Rp 2,000,000      | Client-side + server-side                        |
+| Minimum top-up amount          | Rp 2,000          | Client-side + server-side                        |
+| Minimum issuance balance       | Rp 2,000          | Server-side + UI validation                      |
+| Minimum balance for check-in   | Rp 10,000         | Client-side (`validateTransition`)               |
+| Parking rate                   | Rp 2,000/hour     | Client-side (`calculateCheckoutFee`)             |
+| Sync push batch size           | 500 transactions  | Server-side (returns 400 if exceeded)            |
+| Sync rate limit                | 60 req/min        | Server middleware per device_id                  |
+| Auth rate limit                | Rate-limited      | Server middleware on `/api/auth/*`               |
 
 ---
 
-## Monitoring requirements
+## Stale counter rejection
 
-The backend must expose metrics or alerts for:
+The primary anti-replay mechanism at sync push time:
+- Server maintains `cards.counter` (last known counter per card).
+- If `tx.counter <= card.counter`, the transaction is rejected with `stale_counter`.
+- This prevents replay of already-synced transactions.
 
-- Tamper event count per tenant per hour
-- Reconciliation failure rate per terminal
-- Cards with `review_flag = true` pending operator action
-- Auth failures per account per hour (credential stuffing indicator)
-- Refresh token rotation failures (stolen token reuse indicator)
-- Tenant-level daily spend against the cumulative limit
+---
 
-Alerts must be delivered to the tenant admin within the session grant TTL window so they can act before the offline exposure window closes.
+## Idempotency
+
+- Each transaction pushed via `POST /api/sync/push` includes an `idempotencyKey`.
+- Duplicate idempotency keys are silently accepted (no error, no double-write).
+- Format: `tenantId:cardIdHex:counter` — deterministic and unique per transaction.
+
+---
+
+## Risk signals (implemented)
+
+| Signal                     | Detection                                             | Response                                    |
+| -------------------------- | ----------------------------------------------------- | ------------------------------------------- |
+| Tamper detected            | HMAC/chain validation failure during card read        | Card escalated to `BLOCKED_TAMPER`          |
+| Stale counter on sync push | `tx.counter <= server card.counter`                   | Individual transaction rejected             |
+| Device compromised         | Superadmin blocks device                              | All sessions revoked, sync operations abort |
+| Invalid transaction type   | Type not in valid set during sync push                | Transaction rejected with `invalid_type`    |
+| Amount out of range        | Amount exceeds uint24 max or topup limits             | Transaction rejected                        |
+
+---
+
+## Not implemented (aspirational)
+
+The following risk controls are defined in the policy schema but are **not enforced** in code:
+
+| Control                        | Status                                                     |
+| ------------------------------ | ---------------------------------------------------------- |
+| Daily cumulative limit (5M)    | Defined in `PolicyData.maxDailyTotal`; not checked         |
+| Weekly cumulative limit        | Not defined anywhere in code                               |
+| Single tx cap (1M)             | Defined in `PolicyData.maxTransactionAmount`; not enforced at write time |
+| Automated anomaly detection    | Not implemented; no ML/scoring                             |
+| Real-time fraud alerts         | Not implemented; signals visible only at sync time         |
+| Progressive account lockout    | Not implemented; rate limiting only                        |
+| Operator notifications         | Not implemented; flagged events visible in DB only         |
+
+---
+
+## Worst-case offline exposure
+
+The maximum financial exposure from a compromised terminal operating offline is bounded by:
+
+- **Per-card maximum**: Rp 16,000,000 (hardware balance cap)
+- **Session grant duration**: 24 hours
+- **Sync push batch cap**: 500 transactions per request
+
+A compromised terminal with a valid session grant could theoretically debit multiple cards up to their balance limit during the 24h window. The primary mitigations are:
+1. Device blocking (revokes sessions, prevents sync)
+2. Short session grant TTL (24h)
+3. Stale counter detection at sync push (prevents double-spend across devices)
+4. Physical card proximity requirement (must physically tap each card)
 
 ---
 
 ## Cross-references
 
 - Tech Specs §9: [Risk & Financial Limits](../tech-specs/9_risk-financial-limits.md)
-- ADR §6: [Balance Ceiling](../adr/6_balance-ceiling.md)
-- Data Spec §3: [`audit_log` table](../data-spec/3_backend-db-schema.md)
+- Data Spec §3: [Backend DB Schema](../data-spec/3_backend-db-schema.md)
 - Security Spec §4: [Card Tamper Detection](4_card-tamper-detection.md)
+- Security Spec §5: [Offline Trust Model](5_offline-trust-model.md)

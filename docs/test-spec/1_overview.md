@@ -2,7 +2,7 @@
 
 ## Testing philosophy
 
-Every test assertion must trace to at least one claim in a spec layer above it. Tests that cannot be traced to a spec are candidates for deletion or for a spec gap to be filled. The acceptance criteria in [Product Spec §4](../product-spec/4_acceptance-criteria.md) are the top-level regression checklist; all 14 must have at least one E2E scenario.
+Every test assertion must trace to at least one claim in a spec layer above it. Tests that cannot be traced to a spec are candidates for deletion or for a spec gap to be filled. The acceptance criteria in [Product Spec §4](../product-spec/4_acceptance-criteria.md) are the top-level regression checklist; all 19 must have at least one E2E scenario.
 
 ---
 
@@ -15,7 +15,7 @@ Every test assertion must trace to at least one claim in a spec layer above it. 
 **What is unit-tested**:
 
 - Cryptographic primitives: key derivation, HMAC, nonce generation, AES-GCM encrypt/decrypt
-- The full 10-step card validation sequence (each step independently and in combination)
+- The full 8-step card validation sequence (each step independently and in combination)
 - Card state machine transitions (valid and invalid)
 - Financial limit enforcement logic
 - Local-first store operations (outbox write, retry, idempotency, dead-letter)
@@ -39,13 +39,12 @@ Every test assertion must trace to at least one claim in a spec layer above it. 
 - Session lifecycle: check-in, transaction, check-out, session expiry
 - Reconciliation: batch upload, acceptance, flag propagation
 - Tenant isolation: cross-tenant access attempts are blocked
-- Auth flows: login, MFA, session expiry, token rotation, logout
+- Auth flows: login, session expiry, token rotation, device blocking, logout
 - Financial limit enforcement from the UI through to backend flag
 
 **What is not E2E-tested**:
 
 - Physical NFC hardware failure modes (separate hardware integration tests)
-- HSM integration (covered by infrastructure tests)
 
 ---
 
@@ -78,7 +77,7 @@ Every test assertion must trace to at least one claim in a spec layer above it. 
 | Module                                        | Minimum line coverage |
 | --------------------------------------------- | --------------------- |
 | `crypto/` (key derivation, HMAC, nonce, AES)  | 100%                  |
-| `validation/` (tamper detection steps 0–10)   | 100%                  |
+| `validation/` (tamper detection steps 0–8)    | 100%                  |
 | `state-machine/` (card state transitions)     | 95%                   |
 | `limits/` (financial limit enforcement)       | 95%                   |
 | `outbox/` (local-first reconciliation outbox) | 90%                   |

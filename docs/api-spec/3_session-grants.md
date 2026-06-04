@@ -1,49 +1,72 @@
 # 3. Session Grants
 
-A session grant authorises a terminal to perform card operations for a limited time. It includes a session key, allowed operations, and a backend signature.
+A session grant authorises a client to perform NFC card operations for 24 hours. It includes a deterministic tenant-scoped session key, allowed operations, and a backend signature.
 
-> See [Tech Specs §12](../tech-specs/12_key-hierarchy-session-grants.md) for grant structure and key derivation.
+> See [Tech Specs §12](../tech-specs/12_key-hierarchy-session-grants.md) for key derivation details.
 
 ## `GET /api/session-grant`
 
-Request a session grant for the authenticated terminal.
+Request a session grant. Requires authentication (except for scout role).
 
-**Response**:
+**Query parameters**:
+
+| Param      | Required | Notes                                                    |
+| ---------- | -------- | -------------------------------------------------------- |
+| `tenantId` | Yes      | Must match the authenticated user's tenant (enforced)    |
+| `role`     | No       | If `"scout"`, anonymous access is allowed                |
+| `deviceId` | No       | Defaults to token's deviceId or "unknown"                |
+
+**Authenticated response** (`200`):
 
 ```json
 {
-  "keyVersion": 3,
-  "sessionKey": "<base64-encoded key>",
-  "expiresAt": 1746700000,
-  "allowedOps": ["read", "debit", "checkin", "checkout"],
-  "signature": "<base64 signature>"
+  "keyVersion": 1,
+  "sessionKey": "<base64-encoded 32-byte key>",
+  "expiresAt": 1778323200,
+  "allowedOps": ["read", "debit", "checkout"],
+  "tenantId": "tenant_xyz",
+  "accountId": "acc_abc123",
+  "deviceId": "dev_456",
+  "signature": "<base64url HMAC signature>"
 }
 ```
 
-- `keyVersion`: key set version for per-card key derivation.
-- `sessionKey`: terminal session key.
-- `expiresAt`: UTC seconds after which the grant is invalid.
-- `allowedOps`: permitted operations for this terminal.
-- `signature`: backend signature; must be verified before use.
+**Scout (anonymous) response** — when `role=scout`, no authentication required:
 
-Common operation values:
+```json
+{
+  "keyVersion": 1,
+  "sessionKey": "<base64-encoded 32-byte key>",
+  "expiresAt": 1778323200,
+  "allowedOps": ["read"],
+  "tenantId": "tenant_xyz",
+  "accountId": "scout-anonymous",
+  "deviceId": "unknown",
+  "signature": "<base64url HMAC signature>"
+}
+```
 
-- `read`
-- `debit`
-- `checkin`
-- `checkout`
-- `topup`
-- `reissue`
-- `block`
+**Error responses**:
 
-Common errors:
+| Code  | Error                    | Cause                                           |
+| ----- | ------------------------ | ----------------------------------------------- |
+| `400` | tenantId required        | Missing tenantId query parameter                |
+| `401` | Authentication required  | No valid token (non-scout roles)                |
+| `403` | Forbidden: tenant mismatch | Requested tenantId differs from token's tenant |
 
-- `401 invalid_token`
-- `403 terminal_suspended`
-- `429 rate_limited`
+**Implementation details**:
+- Session key is deterministic: `HMAC(HMAC(masterKey, tenantId:keyVersion), "session-key")`. All devices in the same tenant get the same session key.
+- Grant lifetime: 24 hours from issuance.
+- `allowedOps` is derived from the authenticated role via `roleToOps()`.
+- Signature covers: `{keyVersion, expiresAt, allowedOps, accountId, deviceId}` signed with the tenant key.
 
-## Grant storage rules
+**Allowed ops per role**:
 
-- Do not persist the session key to durable storage.
-- Keep the grant in memory for the session duration only.
-- After restart, request a new grant before resuming card writes.
+| Role     | allowedOps                                     |
+| -------- | ---------------------------------------------- |
+| admin    | read, debit, credit, checkin, checkout, admin, station |
+| station  | read, credit, checkin, checkout, admin         |
+| gate     | read, checkin                                  |
+| terminal | read, debit, checkout                          |
+| kiosk    | read, debit                                    |
+| scout    | read                                           |

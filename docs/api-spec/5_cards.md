@@ -1,155 +1,98 @@
 # 5. Cards
 
-Card endpoints are for station-role operations. The station token must include the appropriate grant scope.
+Card endpoints for UID checking and status management. Requires authentication.
 
-## `POST /api/cards`
+## `GET /api/cards/check-uid`
 
-Register a new card after writing its initial payload.
+Check if a card UID is already registered in the system (across all tenants).
 
-**Request**:
+**Query parameters**:
 
-```json
-{
-  "cardId": "<6-byte hex>",
-  "userId": 1042,
-  "name": "Siti Rahayu",
-  "createdAt": 1746600000,
-  "keyVersion": 3
-}
-```
+| Param | Required | Notes                                          |
+| ----- | -------- | ---------------------------------------------- |
+| `uid` | Yes      | Card UID in hex format (8-14 hex characters)   |
 
-**Response**:
+**Success response** (`200`):
 
 ```json
-{
-  "cardId": "<6-byte hex>",
-  "userId": 1042,
-  "status": "ACTIVE",
-  "balance": 0,
-  "createdAt": 1746600000
-}
+{ "exists": true, "tenantId": "tenant_xyz" }
 ```
 
-Errors:
-
-- `403 insufficient_role`
-- `409 card_already_registered`
-- `422 invalid_user`
-
-## `GET /api/cards/:cardId`
-
-Fetch the backend record for a card.
-
-**Response**:
+or:
 
 ```json
-{
-  "cardId": "<6-byte hex>",
-  "userId": 1042,
-  "status": "ACTIVE",
-  "balance": 350000,
-  "counter": 17,
-  "createdAt": 1746600000,
-  "lastActivity": 1746690000
-}
+{ "exists": false }
 ```
 
-Errors:
+**Error responses**:
 
-- `404 card_not_found`
+| Code  | Error                                            | Cause                   |
+| ----- | ------------------------------------------------ | ----------------------- |
+| `400` | uid query parameter is required                  | Missing uid             |
+| `400` | Invalid UID format: must be 8-14 hex characters  | Invalid hex format      |
 
-## `POST /api/cards/:cardId/topup`
+**Notes**:
+- UID is normalized (lowercase, non-hex characters stripped) before lookup.
+- Cards with `status: "deleted"` are excluded from the search.
+- Searches across all tenants (used during card issuance to prevent duplicates).
 
-Add balance to a card. Requires station role and online backend connectivity.
-
-**Request**:
-
-```json
-{
-  "amount": 100000,
-  "operatorId": 7,
-  "timestamp": 1746700000
-}
-```
-
-**Response**:
-
-```json
-{
-  "cardId": "<6-byte hex>",
-  "balanceBefore": 350000,
-  "balanceAfter": 450000,
-  "amount": 100000,
-  "timestamp": 1746700000
-}
-```
-
-Errors:
-
-- `403 insufficient_role`
-- `404 card_not_found`
-- `422 balance_ceiling_exceeded`
-- `422 card_blocked`
+---
 
 ## `POST /api/cards/:cardId/block`
 
-Mark a card as administratively blocked.
+Block a card by changing its server-side status. Triggers a `card_status_change` event for SSE broadcast.
 
-**Request**:
-
-```json
-{
-  "reason": "lost",
-  "operatorId": 7,
-  "timestamp": 1746701000
-}
-```
-
-**Response**:
+**Request body**:
 
 ```json
 {
-  "cardId": "<6-byte hex>",
-  "status": "BLOCKED_ADMIN",
-  "blockedAt": 1746701000,
-  "reason": "lost"
+  "reason": "blocked_admin",
+  "changedBy": "operator1"
 }
 ```
 
-Errors:
+| Field      | Required | Notes                                                                 |
+| ---------- | -------- | --------------------------------------------------------------------- |
+| `reason`   | Yes      | One of: `blocked_admin`, `blocked_tamper`, `blocked_fraud`, `blocked_expired` |
+| `changedBy`| Yes      | Identifier of the operator performing the block                       |
 
-- `403 insufficient_role`
-- `404 card_not_found`
-- `409 already_blocked`
-
-## `POST /api/cards/:cardId/reissue`
-
-Authorize a blocked card for re-issuance.
-
-**Request**:
+**Success response** (`200`):
 
 ```json
 {
-  "operatorId": 7,
-  "authCode": "<authorization code>",
-  "timestamp": 1746702000
+  "success": true,
+  "cardId": "a1b2c3d4e5f6",
+  "status": "blocked_admin",
+  "changedBy": "operator1",
+  "timestamp": 1746700000
 }
 ```
 
-**Response**:
+**Error responses**:
 
-```json
-{
-  "cardId": "<6-byte hex>",
-  "reissueGranted": true,
-  "newKeyVersion": 4,
-  "timestamp": 1746702000
-}
-```
+| Code  | Error                   | Cause                                    |
+| ----- | ----------------------- | ---------------------------------------- |
+| `400` | reason is required      | Missing or invalid reason                |
+| `400` | changedBy is required   | Missing changedBy                        |
+| `400` | Invalid reason          | Reason not in valid list                 |
+| `401` | Authentication required | Missing or invalid token                 |
+| `404` | Card not found          | cardId not found in the tenant           |
 
-Errors:
+**Implementation details**:
+- Updates the card's `status` field in the `cards` table to the corresponding enum value (e.g., `BLOCKED_ADMIN`).
+- Inserts a `card_status_change` event into the `card_events` table for SSE broadcast to other devices.
+- The block takes effect on the server side immediately. Client devices will receive the updated status on next sync pull.
+- To write the block status to the physical card, the next terminal that reads it will detect the mismatch (local DB shows blocked, on-card shows ACTIVE) and use `applyBlockStatus` to write the block to the card.
+- Card UID is scoped to the authenticated tenant (token's `tenantId`).
 
-- `403 insufficient_role`
-- `403 reissue_not_authorised`
-- `404 card_not_found`
-- `422 card_not_blocked`
+---
+
+## Card registration (via sync push-entities)
+
+Card registration (creating a new card record on the server) is handled through `POST /api/sync/push-entities` rather than a dedicated cards endpoint. When a station issues a new card:
+
+1. Station writes the initial payload to the physical NFC card locally.
+2. Station creates a local IndexedDB card record with `syncStatus: "pending"`.
+3. On next sync, the card record is pushed to the server via the entity sync mechanism.
+
+This approach maintains the offline-first architecture — card issuance doesn't require immediate connectivity.

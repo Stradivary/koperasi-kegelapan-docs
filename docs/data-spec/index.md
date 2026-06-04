@@ -4,13 +4,15 @@ This folder defines **what is stored, where, and in what format** for the offlin
 
 > Data Spec is Layer 5. It depends on Tech Specs (Layer 3) for behaviour rules and System Design (Layer 2) for the conceptual model. API Spec (Layer 4) depends on this layer for payload field definitions.
 
+> ⚠️ This spec is aligned with the **code-frozen implementation** as of June 2026.
+
 ## Sections
 
-1. [Overview](1_overview.md) - storage areas, ownership, and data flow
-2. [Card Binary Schema](2_card-binary-schema.md) - full binary layout for NFC card payload
-3. [Backend DB Schema](3_backend-db-schema.md) - server-side entities and SQL DDL
-4. [Encoding Conventions & Versioning](4_encoding-conventions.md) - endianness, encoding rules, schema versions, migrations
-5. [Multitenancy, Auth & Local-first Storage](5_multitenancy-auth-local-first.md) - tenant boundaries, account/device/session records, IndexedDB replica and outbox
+1. [Overview](1_overview.md) — storage areas, ownership, and data flow
+2. [Card Binary Schema](2_card-binary-schema.md) — full 496B binary layout for NFC card payload
+3. [Backend DB Schema](3_backend-db-schema.md) — 11 D1/SQLite tables (Drizzle ORM)
+4. [Encoding Conventions & Versioning](4_encoding-conventions.md) — endianness, encoding rules, schema v4, migrations
+5. [Multitenancy, Auth & Local-first Storage](5_multitenancy-auth-local-first.md) — tenant boundaries, Dexie IndexedDB stores, outbox pattern, sync pull/push
 
 ## Upstream sources
 

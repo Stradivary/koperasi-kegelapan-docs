@@ -42,8 +42,27 @@ Blocked cards may not transition to `ACTIVE` in the field. Re-activation require
 
 1. User presents the card at a station.
 2. Station operator verifies identity and confirms with the backend that unblock is authorized.
-3. Backend marks the card as clearable and issues a station session grant with `reissue` permission.
-4. Station rewrites the card payload with `status = ACTIVE`, a new `counter` value, and the current `keyVersion`.
-5. Station logs the re-issuance event to the backend audit trail.
+3. Backend marks the card as clearable and issues a station session grant with `admin` permission.
+4. Station calls `applyResetState(payload, nowSeconds)` which: sets `status = ACTIVE`, `state = IDLE`, zeroes session fields, increments counter, and adds an `ADMIN` log entry.
+5. Station logs the re-issuance event to the backend audit trail via sync push.
 
 Note: `BLOCKED_TAMPER` and `BLOCKED_FRAUD` require backend authorization before re-issuance. `BLOCKED_ADMIN` may be re-issued after operator confirmation. `BLOCKED_EXPIRED` can be renewed automatically if the user's account is still valid.
+
+## Writing block status to card
+
+When the local IndexedDB record indicates a card is blocked (e.g., blocked by admin via server sync) but the physical on-card status is still `ACTIVE`, the system uses `applyBlockStatus(payload, blockedStatus, nowSeconds)` to write the block to the physical card. This ensures offline enforcement:
+
+1. Local DB card record shows blocked status (received via sync pull).
+2. On next card tap, `enforceBlockOnCheckin`/`enforceBlockOnCheckout` detects the mismatch.
+3. The app calls `applyBlockStatus` to set the on-card `identity.status` to the blocked value.
+4. The counter is incremented and an `ADMIN` log entry is added to maintain chain integrity.
+5. After this write, all terminals (even fully offline ones) will respect the block.
+
+## Dual-source block enforcement
+
+Block enforcement checks TWO sources before allowing any write operation:
+
+1. **On-card status** (`payload.identity.status`) — authoritative, works fully offline
+2. **Local IndexedDB card record** (`cards.status`) — updated via sync pull from server
+
+Either source indicating a blocked status → operation rejected. This provides defense-in-depth: even if the physical card hasn't been updated yet, the local DB from sync pull provides early blocking.

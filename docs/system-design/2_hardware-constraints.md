@@ -11,10 +11,12 @@
 
 ## Capacity
 
-| Card    | Usable bytes | Buffer capacity       | Log entries |
-| ------- | ------------ | --------------------- | ----------- |
-| NTAG215 | ~504 bytes   | 216 bytes per buffer  | 5 entries   |
-| NTAG216 | ~1024 bytes  | ~448 bytes per buffer | ~21 entries |
+| Card    | Usable bytes | Total card layout             | Buffer capacity      | Log entries |
+| ------- | ------------ | ----------------------------- | -------------------- | ----------- |
+| NTAG215 | ~504 bytes   | 2×216B buffers + 64B trailer = 496B | 216 bytes per buffer | 5 entries   |
+| NTAG216 | ~1024 bytes  | Same layout (extra space unused)    | 216 bytes per buffer | 5 entries   |
+
+> Note: The wire format for NFC writes is 280 bytes (one 216B active buffer + 64B trailer). The full 496-byte card layout includes the shadow buffer for crash safety.
 
 ## Limitations
 

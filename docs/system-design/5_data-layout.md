@@ -61,9 +61,10 @@ Each log entry uses absolute timestamps (uint32 Unix seconds) rather than relati
 
 Holds verification anchors and key material references. Fields: `expiresAt`, `keyVersion`, `rootHash`, `counterBind`, `HMAC`, `activePtr`.
 
-- `rootHash` is the hash of the most recent log entry - the chain head. It ties the entire log sequence to the HMAC-protected trailer.
+- `rootHash` is a 6-byte field storing the hash of the most recent log entry (padded from the 4-byte chain hash). It ties the entire log sequence to the HMAC-protected trailer.
 - `counterBind` stores the lower 32 bits of the monotonic counter, binding the HMAC to the current write generation.
 - `activePtr` selects which zone (A or B) is the authoritative buffer for this read.
+- `HMAC` is 8 bytes — a truncated HMAC-SHA256 over the encrypted buffer + trailer anchor fields.
 - The trailer uses relative offsets with reserved/padding regions between fields for alignment and future extensibility.
 
 > Exact field sizes, types, and byte offsets: [Data Spec §2 Card Binary Schema](../data-spec/2_card-binary-schema.md).

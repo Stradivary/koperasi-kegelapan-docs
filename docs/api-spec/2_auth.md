@@ -1,67 +1,101 @@
 # 2. Authentication
 
-Authentication combines device identity and operator credentials.
+## `POST /api/auth/token`
 
-### `POST /api/auth/token`
-
-Exchange device and operator credentials for an authenticated tenant session.
+Exchange operator credentials for an authenticated session. Rate-limited.
 
 **Request body**:
 
 ```json
 {
+  "username": "operator1",
+  "password": "securepass",
   "tenantSlug": "koperasi-kegelapan",
-  "deviceId": "<device identifier>",
-  "deviceSecret": "<commissioning secret or signed assertion>",
-  "username": "<operator username>",
-  "password": "<operator password>",
-  "otpCode": "123456",
-  "role": "terminal"
+  "deviceFingerprint": {
+    "hash": "a1b2c3d4...",
+    "userAgent": "Mozilla/5.0...",
+    "platform": "Android"
+  }
 }
 ```
 
-**Response**:
+| Field              | Required | Notes                                                       |
+| ------------------ | -------- | ----------------------------------------------------------- |
+| `username`         | Yes      | Operator username                                           |
+| `password`         | Yes      | Operator password (verified via PBKDF2-SHA256)              |
+| `tenantSlug`       | No*      | Required for non-superadmin accounts. Superadmin can omit.  |
+| `deviceFingerprint`| No       | If provided, registers/upserts device and creates auth session |
+
+**Success response** (`200`):
 
 ```json
 {
-  "accessToken": "<token>",
+  "accountId": "acc_abc123",
+  "tenantId": "tenant_xyz",
+  "tenantSlug": "koperasi-kegelapan",
+  "tenantName": "Koperasi Kegelapan",
+  "role": "admin",
+  "accessToken": "<JWT>",
+  "deviceId": "dev_456",
+  "sessionId": "sess_789",
   "refreshToken": "<token>",
-  "expiresAt": 1778236800,
-  "tenantId": "<uuid>",
-  "deviceId": "<echo>",
-  "account": {
-    "accountId": "<uuid>",
-    "displayName": "<operator name>",
-    "roles": ["terminal_operator"]
-  },
-  "role": "terminal"
+  "expiresAt": 1778236800
 }
 ```
 
-**Common errors**:
+Fields `deviceId`, `sessionId`, `refreshToken`, `expiresAt` are only present when `deviceFingerprint` is provided.
 
-| Code  | Error                        | Cause                              |
-| ----- | ---------------------------- | ---------------------------------- |
-| `401` | `invalid_credentials`        | Operator credentials are invalid   |
-| `401` | `invalid_device_credentials` | Device identity is invalid         |
-| `403` | `tenant_suspended`           | Tenant is disabled                 |
-| `403` | `device_suspended`           | Device is disabled                 |
-| `403` | `account_suspended`          | Account is disabled                |
-| `422` | `invalid_role`               | Unsupported role                   |
-| `422` | `invalid_tenant`             | Tenant not found or not accessible |
+**Error responses**:
 
-## Token lifecycle
+| Code  | Error                    | Cause                                    |
+| ----- | ------------------------ | ---------------------------------------- |
+| `400` | username and password required | Missing required fields            |
+| `401` | Invalid credentials      | Wrong username or password               |
+| `401` | Tenant inactive          | Tenant status is not "active" (non-superadmin) |
+| `404` | Tenant not found         | tenantSlug doesn't match any tenant      |
 
-- Access tokens should be short-lived.
-- Refresh tokens should be revocable.
-- Offline terminals can use cached session state until it expires, but must re-authenticate before online sync or privileged write operations.
+**Notes**:
+- Without `tenantSlug`, only `superadmin` accounts can authenticate.
+- Superadmin bypasses tenant active status check.
+- Password verification uses PBKDF2-SHA256 (100,000 iterations) with constant-time comparison.
+- Device fingerprint triggers device registration in the `devices` table.
 
-## Scout tokens
+---
 
-Scout tokens allow read-only card lookup and cannot request session grants, reconciliation, or card write operations.
+## `POST /api/auth/refresh`
 
-## Security notes
+Rotate refresh token and issue a new access token.
 
-- Device secrets should be provisioned out-of-band and rotated into device-bound identity when available.
-- Refresh credentials must be stored securely, not in plaintext browser storage.
-- The API never returns passwords, OTP seeds, or raw enrollment secrets.
+**Request body**:
+
+```json
+{
+  "sessionId": "sess_789",
+  "refreshToken": "<current refresh token>"
+}
+```
+
+**Success response** (`200`):
+
+```json
+{
+  "accessToken": "<new JWT>",
+  "refreshToken": "<new rotated refresh token>",
+  "sessionId": "sess_789",
+  "expiresAt": 1778240400
+}
+```
+
+**Error responses**:
+
+| Code  | Error                 | Cause                                      |
+| ----- | --------------------- | ------------------------------------------ |
+| `400` | sessionId and refreshToken required | Missing required fields     |
+| `401` | Token expired or revoked | Refresh token has expired, been revoked, or already rotated |
+| `401` | Account inactive      | Account status is no longer "active"       |
+| `404` | Session not found      | sessionId doesn't exist                    |
+
+**Notes**:
+- Refresh tokens are single-use. Each refresh rotates to a new token.
+- Reusing an old refresh token (replay) results in session revocation.
+- The new access token includes updated `accountId`, `tenantId`, `role`, `deviceId`.

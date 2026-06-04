@@ -6,7 +6,7 @@ This system uses two orthogonal fields on the card that can look similar but mea
 
 | Field    | Where stored           | What it tracks                                                      | Values                                                                |
 | -------- | ---------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| `state`  | Wallet + Runtime Block | **Session lifecycle** - where is the card in a workflow right now?  | IDLE, CHECKED_IN, TERMINAL_OPERATION, CHECKED_OUT                     |
+| `state`  | Wallet + Runtime Block | **Session lifecycle** - where is the card in a workflow right now?  | IDLE, CHECKED_IN, STATION_OPERATION, CHECKED_OUT                      |
 | `status` | Identity Block         | **Card health / trustworthiness** - can the card be trusted at all? | ACTIVE, BLOCKED_TAMPER, BLOCKED_FRAUD, BLOCKED_EXPIRED, BLOCKED_ADMIN |
 
 A card can be `ACTIVE` (healthy) and `CHECKED_IN` (in a session) - that is normal. A card can also be `BLOCKED_TAMPER` (untrusted) and `IDLE` (no session). **Status and state are independent.** A blocked card can be in any state; the block overrides all session logic.

@@ -68,8 +68,8 @@ Full endpoint definitions - payloads, error codes, and constraints - are in the 
 | `POST /api/cards/:cardId/topup`   | [API Spec §5 Cards](../api-spec/5_cards.md)                       |
 | `POST /api/cards/:cardId/block`   | [API Spec §5 Cards](../api-spec/5_cards.md)                       |
 | `POST /api/cards/:cardId/reissue` | [API Spec §5 Cards](../api-spec/5_cards.md)                       |
-| `POST /api/reconcile`             | [API Spec §6 Reconciliation](../api-spec/6_reconciliation.md)     |
-| `POST /api/terminal-report`       | [API Spec §7 Terminal Reports](../api-spec/7_terminal-reports.md) |
+| `POST /api/reconcile`             | [API Spec §8 Reconciliation](../api-spec/8_reconciliation.md)     |
+| `POST /api/sync/push`             | [API Spec §6 Sync](../api-spec/6_sync.md)                         |
 
 ## Terminal behavior
 

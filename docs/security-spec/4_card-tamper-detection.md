@@ -77,4 +77,4 @@ After any validation failure, the terminal must treat the card as **unverified**
 - Tech Specs §5: [Tamper Detection & Validation](../tech-specs/5_tamper-detection-validation.md)
 - System Design §3: [Security Model](../system-design/3_security-model.md)
 - System Design §10: [Verification Rules](../system-design/10_verification-rules.md)
-- API Spec §7: [Terminal Reports](../api-spec/7_terminal-reports.md)
+- API Spec §6: [Sync](../api-spec/6_sync.md)

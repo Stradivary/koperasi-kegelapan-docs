@@ -5,7 +5,7 @@
 | State               | Code | Description                                                        |
 | ------------------- | ---- | ------------------------------------------------------------------ |
 | `IDLE`              | `0`  | Card is issued but no session is open                              |
-| `CHECKED_IN`        | `1`  | Gate has opened a session; terminal/kiosk operations are permitted |
+| `CHECKED_IN`        | `1`  | Gate has opened a session; terminal operations are permitted |
 | `STATION_OPERATION` | `2`  | A terminal is actively processing a multi-step operation           |
 | `CHECKED_OUT`       | `3`  | Session has been closed by a gate checkout or force checkout       |
 

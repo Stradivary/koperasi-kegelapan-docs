@@ -5,7 +5,7 @@
 | State               | Code | Meaning                                                                                           |
 | ------------------- | ---- | ------------------------------------------------------------------------------------------------- |
 | `IDLE`              | 0    | Card is issued but no session is open. Waiting for gate check-in.                                 |
-| `CHECKED_IN`        | 1    | Gate has opened a session. Terminal/kiosk debit operations and station operations are permitted.   |
+| `CHECKED_IN`        | 1    | Gate has opened a session. Terminal debit operations and station operations are permitted.   |
 | `STATION_OPERATION` | 2    | A terminal has started a multi-step operation (e.g. debit). Intermediate state during processing. |
 | `CHECKED_OUT`       | 3    | Session was closed by a gate/force checkout. Card is reconcilable; awaits next check-in or reset. |
 

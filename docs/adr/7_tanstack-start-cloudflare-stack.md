@@ -1,63 +1,73 @@
-# ADR-007: TanStack Start and Cloudflare Pages/KV/D1 as the Application Platform
+# ADR-007: Vite React SPA + Hono Workers as the Application Platform
 
 **Date**: 2026-05-06  
-**Status**: Accepted
+**Status**: Accepted (supersedes original TanStack Start decision)  
+**Updated**: 2026-06 — reflects actual implementation (Vite + React Router + Hono)
 
 ## Context
 
-The application must run in browser environments that support Web NFC and Web Crypto while still offering low-latency APIs for session grants, policy checks, and reconciliation uploads. The platform choice must satisfy four constraints:
+The application must run in browser environments that support Web NFC and Web Crypto while still offering low-latency APIs for session grants, policy checks, and sync. The platform choice must satisfy four constraints:
 
 1. Frontend and backend should be implemented in a unified TypeScript-first stack with minimal integration friction.
-2. Hosting should provide global edge distribution and straightforward CI/CD for docs and app assets.
-3. Session and blacklist lookups require a low-latency key-value store near the execution edge.
-4. Reconciliation and audit persistence needs a relational store with operational simplicity for modest write-heavy workloads.
-
-Next.js was considered but is not selected for this project because the architecture and existing tech specs already align with TanStack Start conventions and a Cloudflare-native deployment model.
+2. Hosting should provide global edge distribution and straightforward CI/CD.
+3. The backend needs a relational store (SQLite-compatible) for tenant data, transactions, and audit.
+4. The frontend must support offline-first operation as a PWA with Service Worker caching.
 
 ## Decision
 
-The application platform is standardized as follows:
+The application platform is:
 
-- **Frontend framework**: TanStack Start (React + TypeScript).
-- **Hosting and edge runtime**: Cloudflare Pages (including Pages Functions/Workers runtime capability for server routes).
-- **Edge key-value store**: Cloudflare KV for session grants, blacklist state, and cache-like policy lookups.
-- **Relational persistence**: Cloudflare D1 for reconciliation records and audit-oriented relational queries.
+- **Frontend framework**: React 19 + Vite + TanStack Router + TanStack Query
+- **Backend framework**: Hono (TypeScript, edge-first) on Cloudflare Workers
+- **Hosting**: Cloudflare Pages (frontend SPA) + Cloudflare Workers (API)
+- **Database**: Cloudflare D1 (SQLite, edge-distributed)
+- **ORM**: Drizzle ORM (D1 adapter, typed schema, migrations)
+- **Analytics**: Cloudflare Analytics Engine (sync metrics, client errors)
+- **Local storage**: IndexedDB via Dexie.js (structured) + raw IndexedDB (journal, session)
 
-Next.js is explicitly rejected as the primary framework for this system.
+**Explicit non-choices:**
+- No Cloudflare KV (not needed — D1 handles all persistence)
+- No Cloudflare R2 (no large object storage needed)
+- No TanStack Start (moved to client-only SPA with separate API worker)
+- No Next.js
 
 ## Consequences
 
 **Positive:**
 
-- A single Cloudflare-first deployment path reduces platform variance between environments.
-- TanStack Start aligns with the current tech spec direction and keeps the frontend architecture focused on route-first React patterns.
-- KV provides fast global reads for session and policy checks, reducing online validation latency.
-- D1 provides managed SQL persistence without introducing separate database hosting operations for initial scale.
-- Pages + edge runtime simplifies static asset delivery and colocated API endpoints.
+- Single Cloudflare deployment target for both frontend and API — simple CI/CD
+- Hono on Workers provides sub-50ms cold start and global edge distribution
+- D1 provides managed SQLite without separate database infrastructure
+- Vite provides fast development builds and efficient production bundles
+- Drizzle provides type-safe schema with migration support for D1
+- React + TanStack Router gives file-based routing with type safety
 
 **Negative:**
 
-- The stack is more provider-specific; moving off Cloudflare later requires migration work (runtime bindings, KV, and D1 access patterns).
-- D1 and KV consistency/transaction semantics are different from traditional centralized SQL deployments; developers must design around those constraints.
-- Some Next.js ecosystem tooling and examples are no longer directly reusable.
+- D1 is single-region write leader (eventually consistent reads at edge) — acceptable for current scale
+- Workers have CPU time limits (50ms free, 30s paid) — must avoid expensive operations
+- Vendor lock-in to Cloudflare ecosystem — migration would require rewriting bindings
+- No server-side rendering — but not needed for an offline-first PWA
 
 **Risks:**
 
-- If future requirements demand complex relational workloads or strict multi-row transactional guarantees beyond D1 comfort zones, datastore strategy may need revision.
-- Team members familiar with Next.js may face a short-term onboarding cost to TanStack Start conventions.
+- D1 transaction semantics are limited compared to PostgreSQL — must design around single-statement atomicity where possible
+- Workers memory limits (128MB) constrain in-memory operations — acceptable for API-sized payloads
 
 ## Alternatives Considered
 
-| Option                                       | Reason Rejected                                                                                                               |
-| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Next.js + Vercel**                         | Not chosen to avoid split platform assumptions and to stay aligned with the existing TanStack Start-oriented technical specs. |
-| **TanStack Start + mixed hosting/providers** | Increases operational variance and weakens reproducibility between environments.                                              |
-| **Cloudflare stack with external DB only**   | Adds infrastructure complexity too early for current reconciliation scale and operational goals.                              |
-| **Node server on VM/container**              | More operational overhead than a managed edge/serverless deployment model for current requirements.                           |
+| Option                             | Reason Rejected                                                                                          |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **TanStack Start (full-stack)**    | SSR not needed for offline PWA. Separate SPA + API is simpler and better understood.                    |
+| **Next.js + Vercel**               | Split platform assumption. Workers + D1 integration is more natural on Cloudflare.                      |
+| **Express/Fastify on VM**          | More operational overhead. No edge distribution without additional infra.                                |
+| **Remix**                          | SSR-oriented. Offline-first PWA doesn't benefit from server rendering.                                   |
+| **Supabase (PostgreSQL)**          | Adds external database dependency. D1 is sufficient and co-located with Workers.                        |
 
 ## References
 
-- System Design [§16 Infrastructure & Stack](../system-design/16_infrastructure-stack.md)
-- Tech Specs [§16 Infrastructure Stack](../tech-specs/16_infrastructure-stack.md)
-- Tech Specs [§2 System Architecture](../tech-specs/2_system-architecture.md)
-- Tech Specs [§8 Backend-Frontend Interfaces](../tech-specs/8_backend-frontend-interfaces.md)
+- System Design §16: [Infrastructure Stack](../system-design/16_infrastructure-stack.md)
+- Tech Specs §16: [Infrastructure Stack](../tech-specs/16_infrastructure-stack.md)
+- `wrangler.api.jsonc` — Worker configuration
+- `wrangler.jsonc` — Pages configuration
+- `package.json` — dependency list

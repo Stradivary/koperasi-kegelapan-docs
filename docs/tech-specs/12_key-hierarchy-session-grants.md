@@ -46,7 +46,7 @@ A session grant is a signed JSON object issued by `GET /api/session-grant`. It p
 
 ### Issuance rules
 
-- **Authenticated roles** (admin, station, gate, terminal, kiosk): require a valid JWT. The token's `tenantId` and `role` are used. Requesting a grant for a different tenant returns 403.
+- **Authenticated roles** (admin, station, gate, terminal): require a valid JWT. The token's `tenantId` and `role` are used. Requesting a grant for a different tenant returns 403.
 - **Scout (anonymous)**: no authentication required. The endpoint returns a read-only grant with `allowedOps: ["read"]` and `accountId: "scout-anonymous"`.
 - **Grant lifetime**: `SESSION_KEY_LIFETIME_SECONDS = 86,400` (24 hours from `Date.now()`).
 

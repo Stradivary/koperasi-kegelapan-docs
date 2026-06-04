@@ -1,7 +1,8 @@
 # ADR-005: Hash-Chain Transaction Log
 
 **Date**: 2025-01-01  
-**Status**: Accepted
+**Status**: Accepted  
+**Updated**: 2026-06 (corrected hash size from 6 to 4 bytes, anchor from startTime to zeros)
 
 ## Context
 
@@ -11,20 +12,29 @@ Additionally, the card log must fit within the tight byte budget of NTAG215 (~49
 
 ## Decision
 
-The transaction log uses a **hash chain**: each log entry contains a truncated SHA-256 hash that covers the content of the current entry plus the hash field of the previous entry. The first entry (the anchor) is chained from a `rootHash` stored in the trailer, which is itself covered by the trailer HMAC.
+The transaction log uses a **hash chain**: each log entry contains a truncated SHA-256 hash that covers the content of the current entry plus the hash field of the previous entry. The chain is anchored with **4 zero bytes** as the initial `prevHash`, and the trailer `rootHash` (which is HMAC-protected) stores the final chain head.
 
 **Chain structure:**
 
 ```
-rootHash (trailer, HMAC-protected)
-  └─ entry[0]: hash = SHA256(entry[0].data || rootHash)[0:6]
-       └─ entry[1]: hash = SHA256(entry[1].data || entry[0].hash)[0:6]
-            └─ entry[N]: hash = SHA256(entry[N].data || entry[N-1].hash)[0:6]
+Initial anchor: prevHash = Uint8Array(4)  [4 zero bytes]
+  └─ entry[0]: hash = SHA256(timestamp || amount || balanceAfter || flags || prevHash)[0:3]
+       └─ entry[1]: hash = SHA256(timestamp || amount || balanceAfter || flags || entry[0].hash)[0:3]
+            └─ entry[N]: hash = SHA256(...data... || entry[N-1].hash)[0:3]
+
+Trailer rootHash = entry[last].hash (4 bytes, zero-padded to 6 bytes in trailer)
 ```
 
-- Hash fields are **6 bytes** (48 bits, truncated SHA-256). This is a practical collision-resistance size given the attacker has no ability to precompute chains without the session key (required to modify any field that feeds into the chain anchor `rootHash` via the HMAC).
-- The log is a **ring buffer**: when full, the oldest entry is overwritten. The `rootHash` in the trailer is updated on every ring-buffer wrap to reflect the new chain anchor.
-- Each entry is 16 bytes: 2B delta-time, 3B amount, 4B balance-after, 1B type/flags, 6B hash. See Tech Specs [§14](../tech-specs/14_transaction-log-format.md).
+**Hash input (16 bytes):**
+- bytes 0-3: `timestamp` (uint32, little-endian)
+- bytes 4-6: `amount` (uint24, little-endian)
+- bytes 7-10: `balanceAfter` (uint32, little-endian)
+- byte 11: `flags` (uint8)
+- bytes 12-15: `prevHash` (4 bytes)
+
+- Hash fields are **4 bytes** (32 bits, truncated SHA-256). This is a practical size given the attacker cannot precompute chains without the session key (required to produce a valid HMAC over the trailer containing `rootHash`).
+- The log is a **ring buffer**: when full (5 entries on NTAG215), the oldest entry is overwritten. The chain is recomputed from surviving entries on each write via `recomputeChainHashes`.
+- Each entry is 16 bytes: 4B timestamp, 3B amount, 4B balanceAfter, 1B flags, 4B hash.
 
 ## Consequences
 

@@ -8,7 +8,6 @@
 | station     | Station app    | AdminLayout| /station      | read, credit, checkin, checkout, admin         |
 | gate        | Gate app       | KioskLayout| /gate         | read, checkin                                  |
 | terminal    | Terminal app   | KioskLayout| /terminal     | read, debit, checkout                          |
-| kiosk       | Kiosk app      | KioskLayout| /kiosk        | read, debit                                    |
 | scout       | Scout app      | KioskLayout| /scout        | read                                           |
 | superadmin  | Superadmin UI  | AdminLayout| /superadmin   | (API-level management, no card ops)            |
 
@@ -20,7 +19,6 @@ All interactive roles run inside an explicit tenant context (except superadmin w
 - **Station** registers new cards (initialisation), loads value (top-up), issues and blocks cards, and performs check-in/checkout. Always online.
 - **Gate** handles entry workflows — check-in only. Validates card status/balance before allowing check-in. Operates offline within session grant.
 - **Terminal** performs debit and checkout operations within a session. Operates offline within session grant.
-- **Kiosk** is a simplified self-service terminal for debit operations only. Operates offline within session grant. No checkout capability.
 - **Scout** provides read-only member balance and transaction history. Uses an anonymous session grant — no authentication required. Cannot modify card state.
 - **Superadmin** manages platform infrastructure: tenants (CRUD, status), accounts (CRUD, password reset), devices (view, block/unblock). No direct card interaction.
 

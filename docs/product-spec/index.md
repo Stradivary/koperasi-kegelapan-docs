@@ -9,7 +9,7 @@ This folder defines **what the offline NFC wallet must do and why** — from the
 ## Sections
 
 1. [Problem Statement](1_problem-statement.md) — Why the system exists and what it solves
-2. [Users & Roles](2_users-and-roles.md) — 7 roles: member, admin, terminal, gate, kiosk, station, superadmin
+2. [Users & Roles](2_users-and-roles.md) — 6 roles: member, admin, terminal, gate, station, superadmin
 3. [Constraints](3_constraints.md) — Hardware, financial, connectivity, security, state, and multi-tenancy constraints
 4. [Acceptance Criteria](4_acceptance-criteria.md) — 19 testable acceptance criteria covering offline flow, tamper detection, financial limits, session lifecycle, audit, tenant management, and sync
 5. [Out of Scope](5_out-of-scope.md) — Explicit exclusions (EMV, native apps, KYC, real-time fraud, multi-currency, P2P, weekly limits)

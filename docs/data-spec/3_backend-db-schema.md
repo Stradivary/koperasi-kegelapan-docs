@@ -50,7 +50,7 @@ The backend uses **Cloudflare D1 (SQLite)** as its persistence layer, managed vi
 | `tenant_id`     | TEXT    | FK → tenants, NOT NULL   | Owning koperasi                                                          |
 | `username`      | TEXT    | UNIQUE, NOT NULL         | Login username                                                           |
 | `password_hash` | TEXT    | NOT NULL                 | PBKDF2-SHA256 hash (format: `pbkdf2$saltHex$hashHex` or `iters:salt:hash`) |
-| `role`          | TEXT    | NOT NULL                 | `admin`, `station`, `gate`, `terminal`, `scout`, `superadmin`, `kiosk`   |
+| `role`          | TEXT    | NOT NULL                 | `admin`, `station`, `gate`, `terminal`, `scout`, `superadmin`   |
 | `status`        | TEXT    | NOT NULL, default 'active' | `active`, `suspended`                                                  |
 | `created_at`    | INTEGER | NOT NULL (unixepoch)     | Creation timestamp                                                       |
 | `updated_at`    | INTEGER | NOT NULL (unixepoch)     | Last modification timestamp                                              |

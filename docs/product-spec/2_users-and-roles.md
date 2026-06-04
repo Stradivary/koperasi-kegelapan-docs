@@ -8,7 +8,6 @@
 | **Koperasi admin**   | Tenant administrator for a single koperasi. Manages operator accounts, devices, policies, members, cards, and audit access for that koperasi.     | Trusted within tenant scope only                                                         | Admin UI         |
 | **Terminal operator** | Staff at a point-of-sale. Executes debits and checkouts. Operates primarily offline within a session grant.                                       | Conditionally trusted - terminal acts within the scope of a backend-issued session grant | Terminal app     |
 | **Gate operator**    | Staff managing entry points. Validates card status and performs check-in operations.                                                               | Conditionally trusted - same session grant model as terminal                             | Gate app         |
-| **Kiosk operator**   | Self-service debit terminal. Performs read and debit operations only. Simplified interface for unmanned points.                                   | Conditionally trusted - limited to read + debit operations via session grant             | Kiosk app        |
 | **Station operator** | Administrative staff. Registers new cards, tops up balances, issues and blocks cards, performs check-in/checkout. Always requires backend connectivity. | Trusted - all station operations are online and backend-validated                    | Station app      |
 | **Superadmin**       | Platform-level administrator. Manages tenants (create, suspend, archive), manages all accounts cross-tenant, blocks/unblocks devices.             | Authoritative - full cross-tenant access, bypasses tenant status checks                  | Superadmin UI    |
 | **System (backend)** | Issues session grants, validates sync batches, enforces financial limits, maintains the audit log, derives key material.                          | Authoritative - the root of trust for all policy and key material                        | Cloudflare Workers API |
@@ -19,7 +18,6 @@
 - Every authenticated human actor (except superadmin) belongs to exactly one koperasi tenant. All permissions, cards, devices, and reports are scoped to the currently selected tenant.
 - A **terminal operator** may only execute operations permitted by the current session grant (`read`, `debit`, `checkout`). The grant is bound to the tenant and the logged-in operator.
 - A **gate operator** may only execute `read` and `checkin` operations via the session grant.
-- A **kiosk operator** may only execute `read` and `debit` operations via the session grant.
 - A **station operator** has full card operations (`read`, `credit`, `checkin`, `checkout`, `admin`) and must be online to issue a session grant; no offline top-ups are permitted.
 - A **koperasi admin** inherits all station operations plus cross-device management within their tenant. They may create, suspend, and rotate credentials for operators and devices inside their own tenant. They may not access other tenants.
 - A **superadmin** can authenticate without specifying a tenant. They can manage tenants (create, activate, suspend, archive), manage all accounts across tenants, view and block/unblock devices, and change account passwords. Superadmin bypasses tenant active status checks.
@@ -32,7 +30,6 @@
 | terminal  | read, debit, checkout                            |
 | gate      | read, checkin                                    |
 | scout     | read                                             |
-| kiosk     | read, debit                                      |
 | station   | read, credit, checkin, checkout, admin           |
 | admin     | read, debit, credit, checkin, checkout, admin, station |
 | superadmin| (API-level access, not card operations)          |
@@ -47,8 +44,6 @@ Member card
     ├─── read + debit + checkout ► Terminal app (within tenant-scoped session grant)
     │
     ├─── read + checkin ────► Gate app (check-in only)
-    │
-    ├─── read + debit ──────► Kiosk app (self-service debit)
     │
     └─── register + top-up + admin ► Station app (online only)
                                     │

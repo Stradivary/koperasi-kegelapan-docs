@@ -1,0 +1,413 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1680" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#E8F0FE"/>
+      <stop offset="100%" style="stop-color:#D2E3FC"/>
+    </linearGradient>
+    <linearGradient id="identityGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#E6F4EA"/>
+      <stop offset="100%" style="stop-color:#CEEAD6"/>
+    </linearGradient>
+    <linearGradient id="walletGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FEF7E0"/>
+      <stop offset="100%" style="stop-color:#FDE293"/>
+    </linearGradient>
+    <linearGradient id="sessionGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FCE8E6"/>
+      <stop offset="100%" style="stop-color:#F8CFCB"/>
+    </linearGradient>
+    <linearGradient id="logGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F3E8FD"/>
+      <stop offset="100%" style="stop-color:#E8D5F5"/>
+    </linearGradient>
+    <linearGradient id="trailerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#E0F2F1"/>
+      <stop offset="100%" style="stop-color:#B2DFDB"/>
+    </linearGradient>
+    <linearGradient id="titleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#CC001E"/>
+      <stop offset="100%" style="stop-color:#FF4D6A"/>
+    </linearGradient>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1400" height="1680" fill="#FAFBFC" rx="12"/>
+
+  <!-- Title Section -->
+  <text x="700" y="52" text-anchor="middle" font-size="28" font-weight="700" fill="url(#titleGrad)">Koperasi Kegelapan — NFC Card Memory Layout</text>
+  <text x="700" y="78" text-anchor="middle" font-size="14" fill="#5F6368">NTAG215 (504 bytes usable) · Dense Byte Assignment &amp; Rationale</text>
+
+  <!-- NTAG215 Spec Box -->
+  <rect x="40" y="100" width="1320" height="110" rx="10" fill="#FFFFFF" stroke="#DADCE0" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="60" y="128" font-size="16" font-weight="600" fill="#202124">NTAG215 Physical Specification</text>
+  <line x1="60" y1="136" x2="380" y2="136" stroke="#CC001E" stroke-width="2"/>
+
+  <text x="60" y="158" font-size="12" fill="#5F6368">Total Memory:</text>
+  <text x="180" y="158" font-size="12" font-weight="600" fill="#202124">540 bytes (135 pages × 4 bytes/page)</text>
+  <text x="440" y="158" font-size="12" fill="#5F6368">Usable Data:</text>
+  <text x="560" y="158" font-size="12" font-weight="600" fill="#202124">504 bytes (pages 4–129)</text>
+  <text x="780" y="158" font-size="12" fill="#5F6368">UID:</text>
+  <text x="810" y="158" font-size="12" font-weight="600" fill="#202124">7 bytes (pages 0–1)</text>
+  <text x="1000" y="158" font-size="12" fill="#5F6368">Lock/OTP:</text>
+  <text x="1090" y="158" font-size="12" font-weight="600" fill="#202124">Pages 2–3 (reserved)</text>
+
+  <text x="60" y="182" font-size="12" fill="#5F6368">Our Usage:</text>
+  <text x="150" y="182" font-size="12" font-weight="600" fill="#CC001E">496 bytes (CARD_SIZE) = Buffer A (216B) + Buffer B (216B) + Trailer (64B)</text>
+  <text x="700" y="182" font-size="12" fill="#5F6368">Wire Format:</text>
+  <text x="810" y="182" font-size="12" font-weight="600" fill="#1A73E8">280 bytes (WIRE_SIZE) = Active Buffer (216B) + Trailer (64B)</text>
+
+  <text x="60" y="200" font-size="11" fill="#80868B" font-style="italic">Magic: 0x4B4F5057 ("KOPW") · Schema Version: 4 · All integers: Little-Endian · Strings: UTF-8 null-padded</text>
+
+  <!-- Dual Buffer Architecture -->
+  <rect x="40" y="225" width="1320" height="70" rx="10" fill="#FFF8E1" stroke="#FFC107" stroke-width="1" filter="url(#shadow)"/>
+  <text x="60" y="250" font-size="14" font-weight="600" fill="#E65100">⚡ Dual-Buffer A/B Architecture (Wear-Leveling + Atomic Writes)</text>
+  <text x="60" y="272" font-size="11" fill="#5F6368">• Buffer A (bytes 0–215) and Buffer B (bytes 216–431) hold identical structure — only ONE is "active" at a time (trailer.activePtr selects it)</text>
+  <text x="60" y="288" font-size="11" fill="#5F6368">• On write: update INACTIVE buffer → flip activePtr → ensures card is never in a half-written corrupt state (power-loss safe)</text>
+
+  <!-- Memory Map Overview Bar -->
+  <rect x="40" y="310" width="1320" height="60" rx="8" fill="#FFFFFF" stroke="#DADCE0" stroke-width="1" filter="url(#shadow)"/>
+  <text x="700" y="332" text-anchor="middle" font-size="13" font-weight="600" fill="#202124">Full Card Memory Map (496 bytes total)</text>
+
+  <!-- Buffer A -->
+  <rect x="60" y="340" width="570" height="22" rx="4" fill="#E3F2FD" stroke="#1976D2" stroke-width="1"/>
+  <text x="345" y="355" text-anchor="middle" font-size="10" font-weight="600" fill="#1565C0">Buffer A — bytes 0–215 (216 B)</text>
+
+  <!-- Buffer B -->
+  <rect x="635" y="340" width="570" height="22" rx="4" fill="#F3E5F5" stroke="#7B1FA2" stroke-width="1"/>
+  <text x="920" y="355" text-anchor="middle" font-size="10" font-weight="600" fill="#6A1B9A">Buffer B — bytes 216–431 (216 B)</text>
+
+  <!-- Trailer -->
+  <rect x="1210" y="340" width="130" height="22" rx="4" fill="#E0F2F1" stroke="#00796B" stroke-width="1"/>
+  <text x="1275" y="355" text-anchor="middle" font-size="10" font-weight="600" fill="#004D40">Trailer 432–495 (64 B)</text>
+
+  <!-- ============================================================= -->
+  <!-- BUFFER DETAIL (Single Buffer = 216 bytes) -->
+  <!-- ============================================================= -->
+  <text x="700" y="405" text-anchor="middle" font-size="18" font-weight="700" fill="#202124">Single Buffer Layout (216 bytes)</text>
+  <text x="700" y="425" text-anchor="middle" font-size="12" fill="#5F6368">Each buffer (A or B) contains 5 sections — offsets are relative to buffer start</text>
+
+  <!-- ─── HEADER (16 bytes) ─── -->
+  <rect x="40" y="445" width="1320" height="180" rx="10" fill="url(#headerGrad)" stroke="#4285F4" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="60" y="470" font-size="15" font-weight="700" fill="#1A73E8">HEADER — 16 bytes (offset 0–15)</text>
+  <text x="350" y="470" font-size="11" fill="#5F6368">Card identification &amp; integrity anchor</text>
+
+  <!-- Header fields table -->
+  <rect x="60" y="480" width="1280" height="18" rx="3" fill="#1A73E8" opacity="0.1"/>
+  <text x="70" y="493" font-size="10" font-weight="600" fill="#1565C0">Offset</text>
+  <text x="140" y="493" font-size="10" font-weight="600" fill="#1565C0">Size</text>
+  <text x="210" y="493" font-size="10" font-weight="600" fill="#1565C0">Field</text>
+  <text x="370" y="493" font-size="10" font-weight="600" fill="#1565C0">Type</text>
+  <text x="500" y="493" font-size="10" font-weight="600" fill="#1565C0">Value / Range</text>
+  <text x="750" y="493" font-size="10" font-weight="600" fill="#1565C0">Reason</text>
+
+  <text x="70" y="513" font-size="11" fill="#202124">0–3</text>
+  <text x="140" y="513" font-size="11" fill="#202124">4 B</text>
+  <text x="210" y="513" font-size="11" font-weight="600" fill="#202124">magic</text>
+  <text x="370" y="513" font-size="11" fill="#5F6368">uint32</text>
+  <text x="500" y="513" font-size="11" font-family="monospace" fill="#1A73E8">0x4B4F5057 ("KOPW")</text>
+  <text x="750" y="513" font-size="10" fill="#5F6368">Fast rejection of non-system cards; prevents accidental decode of foreign NDEF</text>
+
+  <text x="70" y="533" font-size="11" fill="#202124">4</text>
+  <text x="140" y="533" font-size="11" fill="#202124">1 B</text>
+  <text x="210" y="533" font-size="11" font-weight="600" fill="#202124">version</text>
+  <text x="370" y="533" font-size="11" fill="#5F6368">uint8</text>
+  <text x="500" y="533" font-size="11" font-family="monospace" fill="#1A73E8">4 (current)</text>
+  <text x="750" y="533" font-size="10" fill="#5F6368">Schema evolution — decoder can handle old/new layouts gracefully</text>
+
+  <text x="70" y="553" font-size="11" fill="#202124">5</text>
+  <text x="140" y="553" font-size="11" fill="#202124">1 B</text>
+  <text x="210" y="553" font-size="11" font-weight="600" fill="#202124">type</text>
+  <text x="370" y="553" font-size="11" fill="#5F6368">uint8</text>
+  <text x="500" y="553" font-size="11" font-family="monospace" fill="#1A73E8">0 (member card)</text>
+  <text x="750" y="553" font-size="10" fill="#5F6368">Future expansion: staff card, visitor pass, multi-purpose card types</text>
+
+  <text x="70" y="573" font-size="11" fill="#202124">6–11</text>
+  <text x="140" y="573" font-size="11" fill="#202124">6 B</text>
+  <text x="210" y="573" font-size="11" font-weight="600" fill="#202124">cardId</text>
+  <text x="370" y="573" font-size="11" fill="#5F6368">bytes</text>
+  <text x="500" y="573" font-size="11" font-family="monospace" fill="#1A73E8">random (2⁴⁸ space)</text>
+  <text x="750" y="573" font-size="10" fill="#5F6368">Logical card identity independent from NFC UID — survives card replacement/cloning</text>
+
+  <text x="70" y="593" font-size="11" fill="#202124">12–15</text>
+  <text x="140" y="593" font-size="11" fill="#202124">4 B</text>
+  <text x="210" y="593" font-size="11" font-weight="600" fill="#202124">tenantBind</text>
+  <text x="370" y="593" font-size="11" fill="#5F6368">uint32</text>
+  <text x="500" y="593" font-size="11" font-family="monospace" fill="#1A73E8">FNV-32a(tenantId)</text>
+  <text x="750" y="593" font-size="10" fill="#5F6368">Multi-tenant isolation — cards bound to a single koperasi branch, rejects cross-tenant reads</text>
+
+  <line x1="60" y1="606" x2="1340" y2="606" stroke="#4285F4" stroke-width="0.5" opacity="0.3"/>
+  <text x="60" y="620" font-size="10" fill="#80868B" font-style="italic">💡 16 bytes is 4 NTAG215 pages — minimal overhead, fits in a single NFC read command for fast validation</text>
+
+  <!-- ─── IDENTITY (48 bytes) ─── -->
+  <rect x="40" y="635" width="1320" height="175" rx="10" fill="url(#identityGrad)" stroke="#34A853" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="60" y="660" font-size="15" font-weight="700" fill="#137333">IDENTITY — 48 bytes (offset 16–63)</text>
+  <text x="380" y="660" font-size="11" fill="#5F6368">Member personal data (on-card for offline display)</text>
+
+  <rect x="60" y="670" width="1280" height="18" rx="3" fill="#137333" opacity="0.08"/>
+  <text x="70" y="683" font-size="10" font-weight="600" fill="#137333">Offset</text>
+  <text x="140" y="683" font-size="10" font-weight="600" fill="#137333">Size</text>
+  <text x="210" y="683" font-size="10" font-weight="600" fill="#137333">Field</text>
+  <text x="370" y="683" font-size="10" font-weight="600" fill="#137333">Type</text>
+  <text x="500" y="683" font-size="10" font-weight="600" fill="#137333">Value / Range</text>
+  <text x="750" y="683" font-size="10" font-weight="600" fill="#137333">Reason</text>
+
+  <text x="70" y="703" font-size="11" fill="#202124">16–39</text>
+  <text x="140" y="703" font-size="11" fill="#202124">24 B</text>
+  <text x="210" y="703" font-size="11" font-weight="600" fill="#202124">name</text>
+  <text x="370" y="703" font-size="11" fill="#5F6368">UTF-8 ø-pad</text>
+  <text x="500" y="703" font-size="11" fill="#5F6368">Max 24 chars (ASCII) / ~8 CJK</text>
+  <text x="750" y="703" font-size="10" fill="#5F6368">Scout kiosk displays name without server lookup — critical for offline UX</text>
+
+  <text x="70" y="723" font-size="11" fill="#202124">40–47</text>
+  <text x="140" y="723" font-size="11" fill="#202124">8 B</text>
+  <text x="210" y="723" font-size="11" font-weight="600" fill="#202124">userId</text>
+  <text x="370" y="723" font-size="11" fill="#5F6368">ASCII ø-pad</text>
+  <text x="500" y="723" font-size="11" font-family="monospace" fill="#137333">e.g. "GJWt7u3g"</text>
+  <text x="750" y="723" font-size="10" fill="#5F6368">8-char alphanumeric links to backend user — compact yet collision-resistant (62⁸ ≈ 218T)</text>
+
+  <text x="70" y="743" font-size="11" fill="#202124">48</text>
+  <text x="140" y="743" font-size="11" fill="#202124">1 B</text>
+  <text x="210" y="743" font-size="11" font-weight="600" fill="#202124">gender</text>
+  <text x="370" y="743" font-size="11" fill="#5F6368">uint8</text>
+  <text x="500" y="743" font-size="11" fill="#5F6368">0=unspecified, 1=M, 2=F</text>
+  <text x="750" y="743" font-size="10" fill="#5F6368">Statistics &amp; UI personalization (optional)</text>
+
+  <text x="70" y="763" font-size="11" fill="#202124">49</text>
+  <text x="140" y="763" font-size="11" fill="#202124">1 B</text>
+  <text x="210" y="763" font-size="11" font-weight="600" fill="#202124">status</text>
+  <text x="370" y="763" font-size="11" fill="#5F6368">uint8</text>
+  <text x="500" y="763" font-size="11" font-family="monospace" fill="#137333">CardStatus enum (0–4)</text>
+  <text x="750" y="763" font-size="10" fill="#5F6368">On-card block flag — gate/terminal can reject without DB lookup (instant offline block)</text>
+
+  <text x="70" y="783" font-size="11" fill="#202124">52–55</text>
+  <text x="140" y="783" font-size="11" fill="#202124">4 B</text>
+  <text x="210" y="783" font-size="11" font-weight="600" fill="#202124">createdAt</text>
+  <text x="370" y="783" font-size="11" fill="#5F6368">uint32</text>
+  <text x="500" y="783" font-size="11" fill="#5F6368">Unix timestamp (seconds)</text>
+  <text x="750" y="783" font-size="10" fill="#5F6368">Issuance audit — detects cloned cards with mismatched timestamps vs server record</text>
+
+  <text x="60" y="803" font-size="10" fill="#80868B" font-style="italic">💡 Bytes 50–51 reserved (2B padding for alignment). 48 bytes = 12 pages — one contiguous NFC read burst</text>
+
+  <!-- ─── WALLET (24 bytes) ─── -->
+  <rect x="40" y="820" width="1320" height="190" rx="10" fill="url(#walletGrad)" stroke="#F9AB00" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="60" y="845" font-size="15" font-weight="700" fill="#E37400">WALLET — 24 bytes (offset 64–87)</text>
+  <text x="340" y="845" font-size="11" fill="#5F6368">Financial state — the "money" layer</text>
+
+  <rect x="60" y="855" width="1280" height="18" rx="3" fill="#E37400" opacity="0.08"/>
+  <text x="70" y="868" font-size="10" font-weight="600" fill="#E37400">Offset</text>
+  <text x="140" y="868" font-size="10" font-weight="600" fill="#E37400">Size</text>
+  <text x="210" y="868" font-size="10" font-weight="600" fill="#E37400">Field</text>
+  <text x="370" y="868" font-size="10" font-weight="600" fill="#E37400">Type</text>
+  <text x="500" y="868" font-size="10" font-weight="600" fill="#E37400">Value / Range</text>
+  <text x="750" y="868" font-size="10" font-weight="600" fill="#E37400">Reason</text>
+
+  <text x="70" y="888" font-size="11" fill="#202124">64–67</text>
+  <text x="140" y="888" font-size="11" fill="#202124">4 B</text>
+  <text x="210" y="888" font-size="11" font-weight="600" fill="#202124">balance</text>
+  <text x="370" y="888" font-size="11" fill="#5F6368">uint32</text>
+  <text x="500" y="888" font-size="11" fill="#5F6368">0 – 4,294,967,295 (Rp, max ~4.2B)</text>
+  <text x="750" y="888" font-size="10" fill="#5F6368">Current balance in Rupiah — uint32 supports far beyond 16M business limit</text>
+
+  <text x="70" y="908" font-size="11" fill="#202124">68–71</text>
+  <text x="140" y="908" font-size="11" fill="#202124">4 B</text>
+  <text x="210" y="908" font-size="11" font-weight="600" fill="#202124">lastBalance</text>
+  <text x="370" y="908" font-size="11" fill="#5F6368">uint32</text>
+  <text x="500" y="908" font-size="11" fill="#5F6368">Previous transaction balance</text>
+  <text x="750" y="908" font-size="10" fill="#5F6368">Tamper detection — balance delta must match last log entry amount</text>
+
+  <text x="70" y="928" font-size="11" fill="#202124">72–79</text>
+  <text x="140" y="928" font-size="11" fill="#202124">8 B</text>
+  <text x="210" y="928" font-size="11" font-weight="600" fill="#202124">counter</text>
+  <text x="370" y="928" font-size="11" fill="#5F6368">uint64</text>
+  <text x="500" y="928" font-size="11" fill="#5F6368">Monotonic (never resets)</text>
+  <text x="750" y="928" font-size="10" fill="#5F6368">Replay protection — server rejects if counter ≤ last seen; uint64 = never overflows</text>
+
+  <text x="70" y="948" font-size="11" fill="#202124">80–83</text>
+  <text x="140" y="948" font-size="11" fill="#202124">4 B</text>
+  <text x="210" y="948" font-size="11" font-weight="600" fill="#202124">lastTimestamp</text>
+  <text x="370" y="948" font-size="11" fill="#5F6368">uint32</text>
+  <text x="500" y="948" font-size="11" fill="#5F6368">Unix seconds of last tx</text>
+  <text x="750" y="948" font-size="10" fill="#5F6368">Time-order validation — rejects backdated transactions (anti-replay complement)</text>
+
+  <text x="70" y="968" font-size="11" fill="#202124">84</text>
+  <text x="140" y="968" font-size="11" fill="#202124">1 B</text>
+  <text x="210" y="968" font-size="11" font-weight="600" fill="#202124">state</text>
+  <text x="370" y="968" font-size="11" fill="#5F6368">uint8</text>
+  <text x="500" y="968" font-size="11" font-family="monospace" fill="#E37400">CardState enum (0–3)</text>
+  <text x="750" y="968" font-size="10" fill="#5F6368">State machine: IDLE→CHECKED_IN→STATION_OP→CHECKED_OUT — enforces flow at gate/terminal</text>
+
+  <text x="70" y="988" font-size="11" fill="#202124">85</text>
+  <text x="140" y="988" font-size="11" fill="#202124">1 B</text>
+  <text x="210" y="988" font-size="11" font-weight="600" fill="#202124">flags</text>
+  <text x="370" y="988" font-size="11" fill="#5F6368">uint8</text>
+  <text x="500" y="988" font-size="11" fill="#5F6368">Bitfield (reserved)</text>
+  <text x="750" y="988" font-size="10" fill="#5F6368">Future: VIP flag, discount tier, special access — no schema bump needed</text>
+
+  <text x="60" y="1004" font-size="10" fill="#80868B" font-style="italic">💡 24 bytes = 6 pages. Intentionally compact — debit/credit operations write only this section + trailer (fast NFC write)</text>
+
+  <!-- ─── SESSION (16 bytes) ─── -->
+  <rect x="40" y="1020" width="1320" height="140" rx="10" fill="url(#sessionGrad)" stroke="#EA4335" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="60" y="1045" font-size="15" font-weight="700" fill="#C5221F">SESSION — 16 bytes (offset 88–103)</text>
+  <text x="380" y="1045" font-size="11" fill="#5F6368">Active check-in/out session tracking</text>
+
+  <rect x="60" y="1055" width="1280" height="18" rx="3" fill="#C5221F" opacity="0.08"/>
+  <text x="70" y="1068" font-size="10" font-weight="600" fill="#C5221F">Offset</text>
+  <text x="140" y="1068" font-size="10" font-weight="600" fill="#C5221F">Size</text>
+  <text x="210" y="1068" font-size="10" font-weight="600" fill="#C5221F">Field</text>
+  <text x="370" y="1068" font-size="10" font-weight="600" fill="#C5221F">Type</text>
+  <text x="500" y="1068" font-size="10" font-weight="600" fill="#C5221F">Value / Range</text>
+  <text x="750" y="1068" font-size="10" font-weight="600" fill="#C5221F">Reason</text>
+
+  <text x="70" y="1088" font-size="11" fill="#202124">88–91</text>
+  <text x="140" y="1088" font-size="11" fill="#202124">4 B</text>
+  <text x="210" y="1088" font-size="11" font-weight="600" fill="#202124">startTime</text>
+  <text x="370" y="1088" font-size="11" fill="#5F6368">uint32</text>
+  <text x="500" y="1088" font-size="11" fill="#5F6368">Unix seconds (check-in time)</text>
+  <text x="750" y="1088" font-size="10" fill="#5F6368">Parking fee calculation: ceil((endTime - startTime) / 3600) × Rp 2.000</text>
+
+  <text x="70" y="1108" font-size="11" fill="#202124">92–95</text>
+  <text x="140" y="1108" font-size="11" fill="#202124">4 B</text>
+  <text x="210" y="1108" font-size="11" font-weight="600" fill="#202124">endTime</text>
+  <text x="370" y="1108" font-size="11" fill="#5F6368">uint32</text>
+  <text x="500" y="1108" font-size="11" fill="#5F6368">Unix seconds (check-out time)</text>
+  <text x="750" y="1108" font-size="10" fill="#5F6368">Stored on card for receipt display — terminal shows duration without server call</text>
+
+  <text x="70" y="1128" font-size="11" fill="#202124">96–99</text>
+  <text x="140" y="1128" font-size="11" fill="#202124">4 B</text>
+  <text x="210" y="1128" font-size="11" font-weight="600" fill="#202124">terminalId</text>
+  <text x="370" y="1128" font-size="11" fill="#5F6368">uint32</text>
+  <text x="500" y="1128" font-size="11" fill="#5F6368">Device identifier</text>
+  <text x="750" y="1128" font-size="10" fill="#5F6368">Audit trail — which terminal processed this session (fraud investigation)</text>
+
+  <text x="60" y="1150" font-size="10" fill="#80868B" font-style="italic">💡 Bytes 100–103: 4B reserved padding. 16 bytes = 4 pages — session data is zeroed on checkout complete</text>
+
+  <!-- ─── LOG RING (80 bytes for 5 entries) ─── -->
+  <rect x="40" y="1165" width="1320" height="170" rx="10" fill="url(#logGrad)" stroke="#9C27B0" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="60" y="1190" font-size="15" font-weight="700" fill="#7B1FA2">TX LOG — 80 bytes (offset 104–183), 5 entries × 16 bytes</text>
+  <text x="580" y="1190" font-size="11" fill="#5F6368">On-card transaction history (circular ring buffer)</text>
+
+  <rect x="60" y="1200" width="1280" height="18" rx="3" fill="#7B1FA2" opacity="0.08"/>
+  <text x="70" y="1213" font-size="10" font-weight="600" fill="#7B1FA2">Byte</text>
+  <text x="140" y="1213" font-size="10" font-weight="600" fill="#7B1FA2">Size</text>
+  <text x="210" y="1213" font-size="10" font-weight="600" fill="#7B1FA2">Field</text>
+  <text x="370" y="1213" font-size="10" font-weight="600" fill="#7B1FA2">Type</text>
+  <text x="500" y="1213" font-size="10" font-weight="600" fill="#7B1FA2">Value / Range</text>
+  <text x="750" y="1213" font-size="10" font-weight="600" fill="#7B1FA2">Reason</text>
+
+  <text x="70" y="1233" font-size="11" fill="#202124">+0 – +3</text>
+  <text x="140" y="1233" font-size="11" fill="#202124">4 B</text>
+  <text x="210" y="1233" font-size="11" font-weight="600" fill="#202124">timestamp</text>
+  <text x="370" y="1233" font-size="11" fill="#5F6368">uint32</text>
+  <text x="500" y="1233" font-size="11" fill="#5F6368">Absolute Unix seconds</text>
+  <text x="750" y="1233" font-size="10" fill="#5F6368">When the transaction happened — supports offline history display on scout kiosk</text>
+
+  <text x="70" y="1253" font-size="11" fill="#202124">+4 – +6</text>
+  <text x="140" y="1253" font-size="11" fill="#202124">3 B</text>
+  <text x="210" y="1253" font-size="11" font-weight="600" fill="#202124">amount</text>
+  <text x="370" y="1253" font-size="11" fill="#5F6368">uint24</text>
+  <text x="500" y="1253" font-size="11" fill="#5F6368">Max Rp 16,777,215</text>
+  <text x="750" y="1253" font-size="10" fill="#5F6368">3 bytes saves 1B per entry vs uint32 — max single tx is 2M anyway (business rule)</text>
+
+  <text x="70" y="1273" font-size="11" fill="#202124">+7 – +10</text>
+  <text x="140" y="1273" font-size="11" fill="#202124">4 B</text>
+  <text x="210" y="1273" font-size="11" font-weight="600" fill="#202124">balanceAfter</text>
+  <text x="370" y="1273" font-size="11" fill="#5F6368">uint32</text>
+  <text x="500" y="1273" font-size="11" fill="#5F6368">Running balance snapshot</text>
+  <text x="750" y="1273" font-size="10" fill="#5F6368">Chain verification — each entry's balanceAfter must equal next entry's (balanceAfter ± amount)</text>
+
+  <text x="70" y="1293" font-size="11" fill="#202124">+11</text>
+  <text x="140" y="1293" font-size="11" fill="#202124">1 B</text>
+  <text x="210" y="1293" font-size="11" font-weight="600" fill="#202124">flags</text>
+  <text x="370" y="1293" font-size="11" fill="#5F6368">uint8</text>
+  <text x="500" y="1293" font-size="11" font-family="monospace" fill="#7B1FA2">TxType: 0=DEBIT..4=ADMIN</text>
+  <text x="750" y="1293" font-size="10" fill="#5F6368">Distinguishes credit/debit/checkin/checkout/admin ops in the log ring</text>
+
+  <text x="70" y="1313" font-size="11" fill="#202124">+12 – +15</text>
+  <text x="140" y="1313" font-size="11" fill="#202124">4 B</text>
+  <text x="210" y="1313" font-size="11" font-weight="600" fill="#202124">hash</text>
+  <text x="370" y="1313" font-size="11" fill="#5F6368">bytes</text>
+  <text x="500" y="1313" font-size="11" fill="#5F6368">Truncated SHA-256 chain</text>
+  <text x="750" y="1313" font-size="10" fill="#5F6368">Hash chain integrity — each entry's hash = SHA256(prev_hash + entry_data)[0:4]; all-zero = empty slot</text>
+
+  <text x="60" y="1330" font-size="10" fill="#80868B" font-style="italic">💡 5 entries × 16B = 80B. Remaining buffer space (bytes 184–215) = 32B reserved for future log expansion or metadata</text>
+
+  <!-- ─── TRAILER (64 bytes) ─── -->
+  <rect x="40" y="1345" width="1320" height="220" rx="10" fill="url(#trailerGrad)" stroke="#00796B" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="60" y="1370" font-size="15" font-weight="700" fill="#004D40">TRAILER — 64 bytes (offset 432–495 in full card, or byte 216–279 in wire format)</text>
+  <text x="750" y="1370" font-size="11" fill="#5F6368">Cryptographic seal &amp; buffer management</text>
+
+  <rect x="60" y="1380" width="1280" height="18" rx="3" fill="#004D40" opacity="0.08"/>
+  <text x="70" y="1393" font-size="10" font-weight="600" fill="#004D40">Offset</text>
+  <text x="140" y="1393" font-size="10" font-weight="600" fill="#004D40">Size</text>
+  <text x="210" y="1393" font-size="10" font-weight="600" fill="#004D40">Field</text>
+  <text x="370" y="1393" font-size="10" font-weight="600" fill="#004D40">Type</text>
+  <text x="500" y="1393" font-size="10" font-weight="600" fill="#004D40">Value / Range</text>
+  <text x="750" y="1393" font-size="10" font-weight="600" fill="#004D40">Reason</text>
+
+  <text x="70" y="1413" font-size="11" fill="#202124">+0 – +3</text>
+  <text x="140" y="1413" font-size="11" fill="#202124">4 B</text>
+  <text x="210" y="1413" font-size="11" font-weight="600" fill="#202124">expiresAt</text>
+  <text x="370" y="1413" font-size="11" fill="#5F6368">uint32</text>
+  <text x="500" y="1413" font-size="11" fill="#5F6368">Unix seconds</text>
+  <text x="750" y="1413" font-size="10" fill="#5F6368">Card expiration — gate rejects expired cards offline without server check</text>
+
+  <text x="70" y="1433" font-size="11" fill="#202124">+4</text>
+  <text x="140" y="1433" font-size="11" fill="#202124">1 B</text>
+  <text x="210" y="1433" font-size="11" font-weight="600" fill="#202124">keyVersion</text>
+  <text x="370" y="1433" font-size="11" fill="#5F6368">uint8</text>
+  <text x="500" y="1433" font-size="11" fill="#5F6368">1–255</text>
+  <text x="750" y="1433" font-size="10" fill="#5F6368">Key rotation — stations know which AES key to use for decrypt; enables seamless key rollover</text>
+
+  <text x="70" y="1453" font-size="11" fill="#202124">+5 – +7</text>
+  <text x="140" y="1453" font-size="11" fill="#202124">3 B</text>
+  <text x="210" y="1453" font-size="11" font-weight="600" fill="#5F6368">reserved₁</text>
+  <text x="370" y="1453" font-size="11" fill="#5F6368">—</text>
+  <text x="500" y="1453" font-size="11" fill="#80868B">0x000000</text>
+  <text x="750" y="1453" font-size="10" fill="#5F6368">Alignment padding — keeps rootHash on 8-byte boundary for efficient reads</text>
+
+  <text x="70" y="1473" font-size="11" fill="#202124">+8 – +13</text>
+  <text x="140" y="1473" font-size="11" fill="#202124">6 B</text>
+  <text x="210" y="1473" font-size="11" font-weight="600" fill="#202124">rootHash</text>
+  <text x="370" y="1473" font-size="11" fill="#5F6368">bytes</text>
+  <text x="500" y="1473" font-size="11" fill="#5F6368">SHA-256 of buffer[0:6]</text>
+  <text x="750" y="1473" font-size="10" fill="#5F6368">Fast buffer integrity check — server compares without full decrypt to detect corruption</text>
+
+  <text x="70" y="1493" font-size="11" fill="#202124">+14 – +15</text>
+  <text x="140" y="1493" font-size="11" fill="#202124">2 B</text>
+  <text x="210" y="1493" font-size="11" font-weight="600" fill="#5F6368">reserved₂</text>
+  <text x="370" y="1493" font-size="11" fill="#5F6368">—</text>
+  <text x="500" y="1493" font-size="11" fill="#80868B">0x0000</text>
+  <text x="750" y="1493" font-size="10" fill="#5F6368">Future use — could hold flags or additional checksum bits</text>
+
+  <text x="70" y="1513" font-size="11" fill="#202124">+16 – +19</text>
+  <text x="140" y="1513" font-size="11" fill="#202124">4 B</text>
+  <text x="210" y="1513" font-size="11" font-weight="600" fill="#202124">counterBind</text>
+  <text x="370" y="1513" font-size="11" fill="#5F6368">uint32</text>
+  <text x="500" y="1513" font-size="11" fill="#5F6368">Low 32 bits of counter</text>
+  <text x="750" y="1513" font-size="10" fill="#5F6368">HMAC includes counterBind → prevents replay of old signed trailers on new buffer data</text>
+
+  <text x="70" y="1533" font-size="11" fill="#202124">+20 – +27</text>
+  <text x="140" y="1533" font-size="11" fill="#202124">8 B</text>
+  <text x="210" y="1533" font-size="11" font-weight="600" fill="#202124">hmac</text>
+  <text x="370" y="1533" font-size="11" fill="#5F6368">bytes</text>
+  <text x="500" y="1533" font-size="11" fill="#5F6368">HMAC-SHA256 truncated</text>
+  <text x="750" y="1533" font-size="10" fill="#5F6368">Tamper seal — covers entire buffer + trailer anchors; 8 bytes = 2⁶⁴ brute-force resistance</text>
+
+  <text x="70" y="1553" font-size="11" fill="#202124">+28</text>
+  <text x="140" y="1553" font-size="11" fill="#202124">1 B</text>
+  <text x="210" y="1553" font-size="11" font-weight="600" fill="#202124">activePtr</text>
+  <text x="370" y="1553" font-size="11" fill="#5F6368">uint8</text>
+  <text x="500" y="1553" font-size="11" font-family="monospace" fill="#004D40">0=Buffer A, 1=Buffer B</text>
+  <text x="750" y="1553" font-size="10" fill="#5F6368">Selects which buffer is current — flip after successful write for atomic update guarantee</text>
+
+  <text x="60" y="1558" font-size="10" fill="#80868B" font-style="italic">💡 Bytes 29–63 (35B) unused — reserved for future crypto extensions. 64B trailer = 16 pages; written last for atomic commit</text>
+
+  <!-- Footer -->
+  <rect x="40" y="1600" width="1320" height="65" rx="10" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1"/>
+  <text x="700" y="1622" text-anchor="middle" font-size="12" font-weight="600" fill="#202124">Total: 496 bytes used of 504 available — 98.4% utilization · AES-256-GCM encrypted body · HMAC-SHA256 signed trailer</text>
+  <text x="700" y="1642" text-anchor="middle" font-size="11" fill="#5F6368">Security: Body encrypted per-session key (from SessionGrant) · Trailer signed with tenant HMAC key · Counter monotonic · Dual-buffer atomic writes</text>
+  <text x="700" y="1658" text-anchor="middle" font-size="10" fill="#80868B">Koperasi Kegelapan · KK Wallet · NFC Dompet Koperasi · Schema v4</text>
+</svg>

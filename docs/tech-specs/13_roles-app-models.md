@@ -2,36 +2,36 @@
 
 ## Permission matrix
 
-| Operation                 | Admin | Station | Gate | Terminal | Kiosk | Scout | Superadmin |
-| ------------------------- | ----- | ------- | ---- | -------- | ----- | ----- | ---------- |
-| Read card state           | ✓     | ✓       | ✓    | ✓        | ✓     | ✓     | −          |
-| Issue / initialise card   | ✓     | ✓       | −    | −        | −     | −     | −          |
-| Top-up balance (credit)   | ✓     | ✓       | −    | −        | −     | −     | −          |
-| Check-in (open session)   | ✓     | ✓       | ✓    | −        | −     | −     | −          |
-| Check-out (close session) | ✓     | ✓       | −    | ✓        | −     | −     | −          |
-| Debit transaction         | ✓     | −       | −    | ✓        | ✓     | −     | −          |
-| Block card (admin op)     | ✓     | ✓       | −    | −        | −     | −     | −          |
-| Reset card state          | ✓     | ✓       | −    | −        | −     | −     | −          |
-| View transaction logs     | ✓     | ✓       | ✓    | ✓        | ✓     | ✓     | −          |
-| Sync push/pull            | ✓     | ✓       | ✓    | ✓        | ✓     | −     | −          |
-| Manage members            | ✓     | ✓       | −    | −        | −     | −     | −          |
-| Manage cards (CRUD)       | ✓     | ✓       | −    | −        | −     | −     | −          |
-| Manage tenants            | −     | −       | −    | −        | −     | −     | ✓          |
-| Manage accounts (cross-tenant) | −  | −      | −    | −        | −     | −     | ✓          |
-| Block/unblock devices     | −     | −       | −    | −        | −     | −     | ✓          |
+| Operation                      | Admin | Station | Gate | Terminal | Kiosk | Scout | Superadmin |
+| ------------------------------ | ----- | ------- | ---- | -------- | ----- | ----- | ---------- |
+| Read card state                | ✓     | ✓       | ✓    | ✓        | ✓     | ✓     | −          |
+| Issue / initialise card        | ✓     | ✓       | −    | −        | −     | −     | −          |
+| Top-up balance (credit)        | ✓     | ✓       | −    | −        | −     | −     | −          |
+| Check-in (open session)        | ✓     | ✓       | ✓    | −        | −     | −     | −          |
+| Check-out (close session)      | ✓     | ✓       | −    | ✓        | −     | −     | −          |
+| Debit transaction              | ✓     | −       | −    | ✓        | ✓     | −     | −          |
+| Block card (admin op)          | ✓     | ✓       | −    | −        | −     | −     | −          |
+| Reset card state               | ✓     | ✓       | −    | −        | −     | −     | −          |
+| View transaction logs          | ✓     | ✓       | ✓    | ✓        | ✓     | ✓     | −          |
+| Sync push/pull                 | ✓     | ✓       | ✓    | ✓        | ✓     | −     | −          |
+| Manage members                 | ✓     | ✓       | −    | −        | −     | −     | −          |
+| Manage cards (CRUD)            | ✓     | ✓       | −    | −        | −     | −     | −          |
+| Manage tenants                 | −     | −       | −    | −        | −     | −     | ✓          |
+| Manage accounts (cross-tenant) | −     | −       | −    | −        | −     | −     | ✓          |
+| Block/unblock devices          | −     | −       | −    | −        | −     | −     | ✓          |
 
 (✓ = allowed, − = not allowed)
 
 ## Role → Allowed Ops (from `roleOps.ts`)
 
-| Role      | `allowedOps` in session grant                    |
-| --------- | ------------------------------------------------ |
-| admin     | read, debit, credit, checkin, checkout, admin, station |
-| station   | read, credit, checkin, checkout, admin           |
-| gate      | read, checkin                                    |
-| terminal  | read, debit, checkout                            |
-| kiosk     | read, debit                                      |
-| scout     | read                                             |
+| Role     | `allowedOps` in session grant                          |
+| -------- | ------------------------------------------------------ |
+| admin    | read, debit, credit, checkin, checkout, admin, station |
+| station  | read, credit, checkin, checkout, admin                 |
+| gate     | read, checkin                                          |
+| terminal | read, debit, checkout                                  |
+| kiosk    | read, debit                                            |
+| scout    | read                                                   |
 
 ## Admin
 
@@ -92,6 +92,7 @@
 ## Authentication model
 
 All roles (except scout) authenticate via `POST /api/auth/token`:
+
 - **Input**: `username`, `password`, `tenantSlug` (optional for superadmin), `deviceFingerprint` (optional)
 - **Output**: JWT access token (1h), refresh token (device-bound), account details
 - **Refresh**: `POST /api/auth/refresh` with `sessionId` + `refreshToken` → new access token + rotated refresh token

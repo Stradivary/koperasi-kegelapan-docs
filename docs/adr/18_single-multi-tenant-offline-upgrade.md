@@ -18,6 +18,7 @@ A koperasi may start in offline mode (testing, initial setup, poor connectivity 
 Support both single-tenant offline and multi-tenant online modes with an **upgrade path from local to synced**:
 
 **Offline-only mode:**
+
 - Tenant is created locally in IndexedDB with a generated `tenantId`
 - Accounts, members, cards created locally with `syncStatus: "pending"`
 - No API calls made — `syncPull` skips if no access token exists
@@ -25,12 +26,14 @@ Support both single-tenant offline and multi-tenant online modes with an **upgra
 - All roles function from a single device
 
 **Online mode:**
+
 - Tenant registered on backend (superadmin or self-registration)
 - Device authenticates via `POST /api/auth/token` with tenant slug
 - Session grants fetched from `GET /api/session-grant` (server-derived)
 - Data syncs bidirectionally via push/pull
 
 **Upgrade path (local → synced):**
+
 1. Operator registers the tenant on the backend (or admin creates it via superadmin)
 2. Operator logs in with server credentials from the device
 3. Local pending entities (members, cards, transactions) are pushed to server via entity sync
@@ -38,6 +41,7 @@ Support both single-tenant offline and multi-tenant online modes with an **upgra
 5. Subsequent operations sync normally
 
 **Key design choices:**
+
 - 1 tenant can be registered on multiple devices if it has been online-enrolled at least once
 - Offline-only mode has no device limit enforcement (single device assumption)
 - Tenant `slug` is the public identifier used for login — must be unique globally
@@ -67,12 +71,12 @@ Support both single-tenant offline and multi-tenant online modes with an **upgra
 
 ## Alternatives Considered
 
-| Option                           | Reason Rejected                                                                         |
-| -------------------------------- | --------------------------------------------------------------------------------------- |
-| **Online-only (no offline mode)**| Target users include rural/venue koperasi with no reliable internet. Blocks adoption.   |
-| **Offline-only (no upgrade)**    | Limits growth — koperasi that want multi-device must start over.                        |
-| **Hybrid from day 1 (always sync)** | Requires internet for initial setup. Chicken-and-egg for rural deployments.          |
-| **Export/import migration**      | Manual data transfer is error-prone and user-unfriendly.                                |
+| Option                              | Reason Rejected                                                                       |
+| ----------------------------------- | ------------------------------------------------------------------------------------- |
+| **Online-only (no offline mode)**   | Target users include rural/venue koperasi with no reliable internet. Blocks adoption. |
+| **Offline-only (no upgrade)**       | Limits growth — koperasi that want multi-device must start over.                      |
+| **Hybrid from day 1 (always sync)** | Requires internet for initial setup. Chicken-and-egg for rural deployments.           |
+| **Export/import migration**         | Manual data transfer is error-prone and user-unfriendly.                              |
 
 ## References
 

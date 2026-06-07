@@ -2,14 +2,14 @@
 
 ## Roles and apps
 
-| Role        | App            | Layout     | Route Prefix  | Allowed Card Ops                              |
-| ----------- | -------------- | ---------- | ------------- | --------------------------------------------- |
-| admin       | Admin UI       | AdminLayout| /admin        | read, debit, credit, checkin, checkout, admin, station |
-| station     | Station app    | AdminLayout| /station      | read, credit, checkin, checkout, admin         |
-| gate        | Gate app       | KioskLayout| /gate         | read, checkin                                  |
-| terminal    | Terminal app   | KioskLayout| /terminal     | read, debit, checkout                          |
-| scout       | Scout app      | KioskLayout| /scout        | read                                           |
-| superadmin  | Superadmin UI  | AdminLayout| /superadmin   | (API-level management, no card ops)            |
+| Role       | App           | Layout      | Route Prefix | Allowed Card Ops                                       |
+| ---------- | ------------- | ----------- | ------------ | ------------------------------------------------------ |
+| admin      | Admin UI      | AdminLayout | /admin       | read, debit, credit, checkin, checkout, admin, station |
+| station    | Station app   | AdminLayout | /station     | read, credit, checkin, checkout, admin                 |
+| gate       | Gate app      | KioskLayout | /gate        | read, checkin                                          |
+| terminal   | Terminal app  | KioskLayout | /terminal    | read, debit, checkout                                  |
+| scout      | Scout app     | KioskLayout | /scout       | read                                                   |
+| superadmin | Superadmin UI | AdminLayout | /superadmin  | (API-level management, no card ops)                    |
 
 All interactive roles run inside an explicit tenant context (except superadmin which operates cross-tenant). A valid operating session requires both an authenticated user session and an enrolled device identity.
 
@@ -35,6 +35,7 @@ All interactive roles run inside an explicit tenant context (except superadmin w
 ## Scout anonymous access
 
 The Scout app is the only client that operates without user authentication:
+
 - It requests a session grant with `role=scout` and receives an anonymous grant.
 - The grant contains only `["read"]` in `allowedOps`.
 - No `accountId` or `deviceId` binding is enforced.

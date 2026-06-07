@@ -59,17 +59,17 @@ All unit tests run with Vitest. Each suite below lists the assertions that must 
 
 Each step must be independently testable by passing a card payload with only that step's failure condition triggered.
 
-| ID        | Step                | Given                                            | When                 | Then                                                     |
-| --------- | ------------------- | ------------------------------------------------ | -------------------- | -------------------------------------------------------- |
-| U-VAL-00  | Pre-check           | Card bytes are all `0x00`                        | `validate` is called | Returns `{ state: 'uninitialised' }`; no error           |
-| U-VAL-01  | Schema version      | `version` field is `3` (below minimum)           | `validate` is called | Returns `{ valid: false, reason: "Schema version mismatch" }` |
-| U-VAL-01b | Schema version      | `version` field is `5` (above current)           | `validate` is called | Returns `{ valid: false, reason: "Unrecognized schema version" }` |
-| U-VAL-02  | Key version         | Card `keyVersion` ≠ grant `keyVersion`           | `validate` is called | Returns `{ valid: false, tamper: false }` with key version mismatch reason |
-| U-VAL-03  | AES-GCM decryption  | Ciphertext has one byte flipped                  | `validate` is called | Returns `{ valid: false, tamper: true }` with decode failure |
-| U-VAL-04  | HMAC                | Trailer `HMAC` field is corrupted                | `validate` is called | Returns `{ valid: false, tamper: true, reason: "HMAC verification failed" }` |
-| U-VAL-05  | Counter-bind        | `counterBind` ≠ `lower32(wallet.counter)`        | `validate` is called | Returns `{ valid: false, tamper: true, reason: "Counter bind mismatch" }` |
-| U-VAL-06  | Tenant-bind         | `tenantBind` ≠ FNV-32a(sessionGrant.tenantId)   | `validate` is called | Returns `{ valid: false, tamper: false }` with unregistered card message |
-| U-VAL-07  | Chain hash          | Log entry `n` has `hash` modified                | `validate` is called | Returns `{ valid: false, tamper: true, reason: "Chain hash invalid" }` |
+| ID        | Step               | Given                                         | When                 | Then                                                                         |
+| --------- | ------------------ | --------------------------------------------- | -------------------- | ---------------------------------------------------------------------------- |
+| U-VAL-00  | Pre-check          | Card bytes are all `0x00`                     | `validate` is called | Returns `{ state: 'uninitialised' }`; no error                               |
+| U-VAL-01  | Schema version     | `version` field is `3` (below minimum)        | `validate` is called | Returns `{ valid: false, reason: "Schema version mismatch" }`                |
+| U-VAL-01b | Schema version     | `version` field is `5` (above current)        | `validate` is called | Returns `{ valid: false, reason: "Unrecognized schema version" }`            |
+| U-VAL-02  | Key version        | Card `keyVersion` ≠ grant `keyVersion`        | `validate` is called | Returns `{ valid: false, tamper: false }` with key version mismatch reason   |
+| U-VAL-03  | AES-GCM decryption | Ciphertext has one byte flipped               | `validate` is called | Returns `{ valid: false, tamper: true }` with decode failure                 |
+| U-VAL-04  | HMAC               | Trailer `HMAC` field is corrupted             | `validate` is called | Returns `{ valid: false, tamper: true, reason: "HMAC verification failed" }` |
+| U-VAL-05  | Counter-bind       | `counterBind` ≠ `lower32(wallet.counter)`     | `validate` is called | Returns `{ valid: false, tamper: true, reason: "Counter bind mismatch" }`    |
+| U-VAL-06  | Tenant-bind        | `tenantBind` ≠ FNV-32a(sessionGrant.tenantId) | `validate` is called | Returns `{ valid: false, tamper: false }` with unregistered card message     |
+| U-VAL-07  | Chain hash         | Log entry `n` has `hash` modified             | `validate` is called | Returns `{ valid: false, tamper: true, reason: "Chain hash invalid" }`       |
 
 ---
 
@@ -79,16 +79,16 @@ Each step must be independently testable by passing a card payload with only tha
 
 **Traces to**: [Tech Specs §6](../tech-specs/6_state-machine-session-rules.md) State Machine & Session Rules, [System Design §4](../system-design/4_card-state-machine.md)
 
-| ID      | From                 | Trigger                                                | Then                                               |
-| ------- | -------------------- | ------------------------------------------------------ | -------------------------------------------------- |
-| U-SM-01 | `IDLE`               | Gate check-in (valid grant with `checkin`)             | State = `CHECKED_IN`; log entry appended           |
-| U-SM-02 | `CHECKED_IN`         | Terminal begins transaction (valid grant with `debit`) | State = `STATION_OPERATION`                        |
-| U-SM-03 | `STATION_OPERATION`  | Debit committed                                        | State returns to `CHECKED_IN`; balance decremented |
-| U-SM-04 | `CHECKED_IN`         | Gate check-out (valid grant with `checkout`)           | State = `CHECKED_OUT`                              |
-| U-SM-05 | `IDLE`               | Debit attempted (no `checkin`)                         | Throws `InvalidStateTransition`                    |
-| U-SM-06 | `CHECKED_IN`         | Grant expired                                          | Throws `SessionExpired`; no write                  |
-| U-SM-07 | `IDLE`               | Top-up attempted offline                               | Throws `TopupRequiresConnectivity`                 |
-| U-SM-08 | Any                  | Card in `BLOCKED_*` status                             | Throws `CardBlocked`; no write                     |
+| ID      | From                | Trigger                                                | Then                                               |
+| ------- | ------------------- | ------------------------------------------------------ | -------------------------------------------------- |
+| U-SM-01 | `IDLE`              | Gate check-in (valid grant with `checkin`)             | State = `CHECKED_IN`; log entry appended           |
+| U-SM-02 | `CHECKED_IN`        | Terminal begins transaction (valid grant with `debit`) | State = `STATION_OPERATION`                        |
+| U-SM-03 | `STATION_OPERATION` | Debit committed                                        | State returns to `CHECKED_IN`; balance decremented |
+| U-SM-04 | `CHECKED_IN`        | Gate check-out (valid grant with `checkout`)           | State = `CHECKED_OUT`                              |
+| U-SM-05 | `IDLE`              | Debit attempted (no `checkin`)                         | Throws `InvalidStateTransition`                    |
+| U-SM-06 | `CHECKED_IN`        | Grant expired                                          | Throws `SessionExpired`; no write                  |
+| U-SM-07 | `IDLE`              | Top-up attempted offline                               | Throws `TopupRequiresConnectivity`                 |
+| U-SM-08 | Any                 | Card in `BLOCKED_*` status                             | Throws `CardBlocked`; no write                     |
 
 ---
 

@@ -1,0 +1,219 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="onlineGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#E6F4EA"/><stop offset="100%" stop-color="#CEEAD6"/></linearGradient>
+    <linearGradient id="offlineGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FEF7E0"/><stop offset="100%" stop-color="#FDE293"/></linearGradient>
+    <linearGradient id="reconnGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#E8F0FE"/><stop offset="100%" stop-color="#D2E3FC"/></linearGradient>
+    <marker id="ah" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#5F6368"/></marker>
+    <marker id="ahRed" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#CC001E"/></marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="540" fill="#FFFFFF" rx="4"/>
+
+  <!-- Title -->
+  <text x="480" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#CC001E">Koperasi Kegelapan — Data Flow</text>
+  <text x="480" y="44" text-anchor="middle" font-size="9" fill="#5F6368">Online Mode → Offline Mode → Reconnect Sync · Three operational states with seamless transitions</text>
+
+  <!-- ===== ONLINE MODE ===== -->
+  <rect x="20" y="58" width="295" height="335" rx="8" fill="url(#onlineGrad)" stroke="#34A853" stroke-width="1.2"/>
+  <text x="167" y="76" text-anchor="middle" font-size="10" font-weight="700" fill="#137333">ONLINE MODE</text>
+  <text x="167" y="88" text-anchor="middle" font-size="7" fill="#5F6368">Server connected — full sync</text>
+
+  <!-- Online steps -->
+  <rect x="32" y="96" width="271" height="28" rx="4" fill="#FFFFFF" stroke="#34A853" stroke-width="0.5"/>
+  <circle cx="46" cy="110" r="8" fill="#34A853"/><text x="46" y="113" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">1</text>
+  <text x="60" y="107" font-size="7" font-weight="600" fill="#202124">POST /api/auth/token</text>
+  <text x="60" y="118" font-size="6.5" fill="#5F6368">Login with credentials → session + refresh token</text>
+
+  <rect x="32" y="130" width="271" height="28" rx="4" fill="#FFFFFF" stroke="#34A853" stroke-width="0.5"/>
+  <circle cx="46" cy="144" r="8" fill="#34A853"/><text x="46" y="147" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">2</text>
+  <text x="60" y="141" font-size="7" font-weight="600" fill="#202124">GET /api/session-grant</text>
+  <text x="60" y="152" font-size="6.5" fill="#5F6368">Signed grant (24h TTL, tenant/device/ops scoped)</text>
+
+  <rect x="32" y="164" width="271" height="28" rx="4" fill="#FFFFFF" stroke="#34A853" stroke-width="0.5"/>
+  <circle cx="46" cy="178" r="8" fill="#34A853"/><text x="46" y="181" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">3</text>
+  <text x="60" y="175" font-size="7" font-weight="600" fill="#202124">GET /api/policy</text>
+  <text x="60" y="186" font-size="6.5" fill="#5F6368">Tenant policy (limits, rules, allowed operations)</text>
+
+  <rect x="32" y="198" width="271" height="28" rx="4" fill="#FFFFFF" stroke="#34A853" stroke-width="0.5"/>
+  <circle cx="46" cy="212" r="8" fill="#34A853"/><text x="46" y="215" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">4</text>
+  <text x="60" y="209" font-size="7" font-weight="600" fill="#202124">Store in IndexedDB</text>
+  <text x="60" y="220" font-size="6.5" fill="#5F6368">Cache grant + policy for offline use</text>
+
+  <rect x="32" y="232" width="271" height="28" rx="4" fill="#FFFFFF" stroke="#34A853" stroke-width="0.5"/>
+  <circle cx="46" cy="246" r="8" fill="#34A853"/><text x="46" y="249" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">5</text>
+  <text x="60" y="243" font-size="7" font-weight="600" fill="#202124">Bidirectional Sync</text>
+  <text x="60" y="254" font-size="6.5" fill="#5F6368">SSE real-time events + entity push/pull</text>
+
+  <rect x="32" y="266" width="271" height="28" rx="4" fill="#FFFFFF" stroke="#34A853" stroke-width="0.5"/>
+  <circle cx="46" cy="280" r="8" fill="#34A853"/><text x="46" y="283" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">6</text>
+  <text x="60" y="277" font-size="7" font-weight="600" fill="#202124">POST /api/sync/push-entities</text>
+  <text x="60" y="288" font-size="6.5" fill="#5F6368">Push new members, cards to backend</text>
+
+  <!-- Online diagram -->
+  <rect x="32" y="300" width="271" height="80" rx="4" fill="#FFFFFF" stroke="#34A853" stroke-width="0.5"/>
+  <text x="50" y="318" font-size="7" font-weight="600" fill="#137333">Terminal</text>
+  <path d="M 88 315 L 130 315" stroke="#5F6368" stroke-width="1" marker-end="url(#ah)"/>
+  <text x="150" y="318" font-size="7" font-weight="600" fill="#137333">Workers API</text>
+  <path d="M 210 315 L 250 315" stroke="#5F6368" stroke-width="1" marker-end="url(#ah)"/>
+  <text x="262" y="318" font-size="7" font-weight="600" fill="#137333">D1</text>
+
+  <text x="100" y="335" text-anchor="middle" font-size="6" fill="#5F6368">auth/grant/policy</text>
+  <text x="230" y="335" text-anchor="middle" font-size="6" fill="#5F6368">verify/store</text>
+
+  <text x="50" y="355" font-size="7" font-weight="600" fill="#137333">Terminal</text>
+  <path d="M 88 352 L 130 352" stroke="#5F6368" stroke-width="1" marker-end="url(#ah)"/>
+  <text x="150" y="355" font-size="7" font-weight="600" fill="#137333">SSE</text>
+  <path d="M 170 352 L 175 352" stroke="none"/>
+  <text x="190" y="355" font-size="6.5" fill="#5F6368">(real-time card events)</text>
+
+  <text x="167" y="373" text-anchor="middle" font-size="6" fill="#80868B" font-style="italic">Rate limit: 60 req/min per device</text>
+
+  <!-- ===== OFFLINE MODE ===== -->
+  <rect x="332" y="58" width="295" height="335" rx="8" fill="url(#offlineGrad)" stroke="#F9AB00" stroke-width="1.2"/>
+  <text x="479" y="76" text-anchor="middle" font-size="10" font-weight="700" fill="#E37400">OFFLINE MODE</text>
+  <text x="479" y="88" text-anchor="middle" font-size="7" fill="#5F6368">No connectivity — local crypto validation</text>
+
+  <!-- Offline steps -->
+  <rect x="344" y="96" width="271" height="28" rx="4" fill="#FFFFFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <circle cx="358" cy="110" r="8" fill="#E37400"/><text x="358" y="113" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">1</text>
+  <text x="372" y="107" font-size="7" font-weight="600" fill="#202124">Load Session Grant</text>
+  <text x="372" y="118" font-size="6.5" fill="#5F6368">Read cached grant from IndexedDB</text>
+
+  <rect x="344" y="130" width="271" height="28" rx="4" fill="#FFFFFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <circle cx="358" cy="144" r="8" fill="#E37400"/><text x="358" y="147" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">2</text>
+  <text x="372" y="141" font-size="7" font-weight="600" fill="#202124">Validate Grant</text>
+  <text x="372" y="152" font-size="6.5" fill="#5F6368">Check expiry, device match, allowed operations</text>
+
+  <rect x="344" y="164" width="271" height="28" rx="4" fill="#FFFFFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <circle cx="358" cy="178" r="8" fill="#E37400"/><text x="358" y="181" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">3</text>
+  <text x="372" y="175" font-size="7" font-weight="600" fill="#202124">NFC Read + Decode</text>
+  <text x="372" y="186" font-size="6.5" fill="#5F6368">Read 496B → decrypt → decode binary payload</text>
+
+  <rect x="344" y="198" width="271" height="28" rx="4" fill="#FFFFFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <circle cx="358" cy="212" r="8" fill="#E37400"/><text x="358" y="215" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">4</text>
+  <text x="372" y="209" font-size="7" font-weight="600" fill="#202124">Validate Card Integrity</text>
+  <text x="372" y="220" font-size="6.5" fill="#5F6368">HMAC · Counter · Hash chain · Tenant bind</text>
+
+  <rect x="344" y="232" width="271" height="28" rx="4" fill="#FFFFFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <circle cx="358" cy="246" r="8" fill="#E37400"/><text x="358" y="249" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">5</text>
+  <text x="372" y="243" font-size="7" font-weight="600" fill="#202124">Process Transaction</text>
+  <text x="372" y="254" font-size="6.5" fill="#5F6368">State transition + balance update + new log entry</text>
+
+  <rect x="344" y="266" width="271" height="28" rx="4" fill="#FFFFFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <circle cx="358" cy="280" r="8" fill="#E37400"/><text x="358" y="283" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">6</text>
+  <text x="372" y="277" font-size="7" font-weight="600" fill="#202124">Encode + Write to Card</text>
+  <text x="372" y="288" font-size="6.5" fill="#5F6368">Encode → encrypt → write to inactive buffer → flip</text>
+
+  <rect x="344" y="300" width="271" height="28" rx="4" fill="#FFFFFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <circle cx="358" cy="314" r="8" fill="#E37400"/><text x="358" y="317" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">7</text>
+  <text x="372" y="311" font-size="7" font-weight="600" fill="#202124">Queue to Outbox</text>
+  <text x="372" y="322" font-size="6.5" fill="#5F6368">Store tx in reconciliation outbox (IndexedDB)</text>
+
+  <!-- Offline pipeline diagram -->
+  <rect x="344" y="334" width="271" height="47" rx="4" fill="#FFFFFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="479" y="350" text-anchor="middle" font-size="7" font-weight="600" fill="#E37400">NFC Pipeline (fully local)</text>
+  <text x="354" y="368" font-size="6.5" fill="#5F6368">Card</text>
+  <path d="M 374 365 L 390 365" stroke="#5F6368" stroke-width="0.8" marker-end="url(#ah)"/>
+  <text x="395" y="368" font-size="6.5" fill="#5F6368">Read</text>
+  <path d="M 415 365 L 430 365" stroke="#5F6368" stroke-width="0.8" marker-end="url(#ah)"/>
+  <text x="435" y="368" font-size="6.5" fill="#5F6368">Validate</text>
+  <path d="M 467 365 L 480 365" stroke="#5F6368" stroke-width="0.8" marker-end="url(#ah)"/>
+  <text x="485" y="368" font-size="6.5" fill="#5F6368">Process</text>
+  <path d="M 518 365 L 531 365" stroke="#5F6368" stroke-width="0.8" marker-end="url(#ah)"/>
+  <text x="536" y="368" font-size="6.5" fill="#5F6368">Encode</text>
+  <path d="M 565 365 L 578 365" stroke="#5F6368" stroke-width="0.8" marker-end="url(#ah)"/>
+  <text x="583" y="368" font-size="6.5" fill="#5F6368">Write</text>
+
+  <!-- ===== RECONNECT MODE ===== -->
+  <rect x="644" y="58" width="298" height="335" rx="8" fill="url(#reconnGrad)" stroke="#4285F4" stroke-width="1.2"/>
+  <text x="793" y="76" text-anchor="middle" font-size="10" font-weight="700" fill="#1A73E8">RECONNECT SYNC</text>
+  <text x="793" y="88" text-anchor="middle" font-size="7" fill="#5F6368">Connectivity restored — batch reconcile</text>
+
+  <!-- Reconnect steps -->
+  <rect x="656" y="96" width="274" height="28" rx="4" fill="#FFFFFF" stroke="#4285F4" stroke-width="0.5"/>
+  <circle cx="670" cy="110" r="8" fill="#1A73E8"/><text x="670" y="113" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">1</text>
+  <text x="684" y="107" font-size="7" font-weight="600" fill="#202124">Detect Connectivity</text>
+  <text x="684" y="118" font-size="6.5" fill="#5F6368">navigator.onLine + fetch probe</text>
+
+  <rect x="656" y="130" width="274" height="28" rx="4" fill="#FFFFFF" stroke="#4285F4" stroke-width="0.5"/>
+  <circle cx="670" cy="144" r="8" fill="#1A73E8"/><text x="670" y="147" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">2</text>
+  <text x="684" y="141" font-size="7" font-weight="600" fill="#202124">POST /api/reconcile</text>
+  <text x="684" y="152" font-size="6.5" fill="#5F6368">Batch upload outbox entries (idempotency keys)</text>
+
+  <rect x="656" y="164" width="274" height="28" rx="4" fill="#FFFFFF" stroke="#4285F4" stroke-width="0.5"/>
+  <circle cx="670" cy="178" r="8" fill="#1A73E8"/><text x="670" y="181" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">3</text>
+  <text x="684" y="175" font-size="7" font-weight="600" fill="#202124">Server Validates</text>
+  <text x="684" y="186" font-size="6.5" fill="#5F6368">Check limits, counters, audit trail integrity</text>
+
+  <rect x="656" y="198" width="274" height="28" rx="4" fill="#FFFFFF" stroke="#4285F4" stroke-width="0.5"/>
+  <circle cx="670" cy="212" r="8" fill="#1A73E8"/><text x="670" y="215" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">4</text>
+  <text x="684" y="209" font-size="7" font-weight="600" fill="#202124">Persist Transactions</text>
+  <text x="684" y="220" font-size="6.5" fill="#5F6368">Update D1 projection · Create audit entries</text>
+
+  <rect x="656" y="232" width="274" height="28" rx="4" fill="#FFFFFF" stroke="#4285F4" stroke-width="0.5"/>
+  <circle cx="670" cy="246" r="8" fill="#1A73E8"/><text x="670" y="249" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">5</text>
+  <text x="684" y="243" font-size="7" font-weight="600" fill="#202124">Return Result</text>
+  <text x="684" y="254" font-size="6.5" fill="#5F6368">Success/fail per entry · New sync cursor</text>
+
+  <rect x="656" y="266" width="274" height="28" rx="4" fill="#FFFFFF" stroke="#4285F4" stroke-width="0.5"/>
+  <circle cx="670" cy="280" r="8" fill="#1A73E8"/><text x="670" y="283" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">6</text>
+  <text x="684" y="277" font-size="7" font-weight="600" fill="#202124">Clear Outbox</text>
+  <text x="684" y="288" font-size="6.5" fill="#5F6368">Remove reconciled entries from IndexedDB</text>
+
+  <rect x="656" y="300" width="274" height="28" rx="4" fill="#FFFFFF" stroke="#4285F4" stroke-width="0.5"/>
+  <circle cx="670" cy="314" r="8" fill="#1A73E8"/><text x="670" y="317" text-anchor="middle" font-size="7" font-weight="700" fill="#FFF">7</text>
+  <text x="684" y="311" font-size="7" font-weight="600" fill="#202124">Refresh Grants + Policy</text>
+  <text x="684" y="322" font-size="6.5" fill="#5F6368">Fetch fresh session grant + updated policy</text>
+
+  <!-- Conflict resolution note -->
+  <rect x="656" y="334" width="274" height="47" rx="4" fill="#FFFFFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="793" y="350" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">Conflict Resolution</text>
+  <text x="666" y="365" font-size="6.5" fill="#5F6368">• Server-authoritative for backend projection</text>
+  <text x="666" y="376" font-size="6.5" fill="#5F6368">• Card-authoritative for current balance/state</text>
+
+  <!-- ===== BOTTOM: Transition Arrows + Notes ===== -->
+  <rect x="20" y="402" width="922" height="125" rx="6" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1"/>
+  <text x="30" y="418" font-size="9" font-weight="700" fill="#202124">Mode Transitions &amp; Data Authority</text>
+  <rect x="30" y="424" width="902" height="0.5" fill="#DADCE0"/>
+
+  <!-- Transition flow -->
+  <rect x="50" y="434" width="120" height="24" rx="4" fill="#E6F4EA" stroke="#34A853" stroke-width="0.8"/>
+  <text x="110" y="450" text-anchor="middle" font-size="7" font-weight="600" fill="#137333">ONLINE</text>
+
+  <path d="M 175 446 L 230 446" stroke="#5F6368" stroke-width="1.2" marker-end="url(#ah)"/>
+  <text x="202" y="440" text-anchor="middle" font-size="6" fill="#5F6368">connection lost</text>
+
+  <rect x="235" y="434" width="120" height="24" rx="4" fill="#FEF7E0" stroke="#F9AB00" stroke-width="0.8"/>
+  <text x="295" y="450" text-anchor="middle" font-size="7" font-weight="600" fill="#E37400">OFFLINE</text>
+
+  <path d="M 360 446 L 415 446" stroke="#5F6368" stroke-width="1.2" marker-end="url(#ah)"/>
+  <text x="387" y="440" text-anchor="middle" font-size="6" fill="#5F6368">connectivity restored</text>
+
+  <rect x="420" y="434" width="120" height="24" rx="4" fill="#E8F0FE" stroke="#4285F4" stroke-width="0.8"/>
+  <text x="480" y="450" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">RECONNECT</text>
+
+  <path d="M 545 446 L 600 446" stroke="#5F6368" stroke-width="1.2" marker-end="url(#ah)"/>
+  <text x="572" y="440" text-anchor="middle" font-size="6" fill="#5F6368">sync complete</text>
+
+  <rect x="605" y="434" width="120" height="24" rx="4" fill="#E6F4EA" stroke="#34A853" stroke-width="0.8"/>
+  <text x="665" y="450" text-anchor="middle" font-size="7" font-weight="600" fill="#137333">ONLINE</text>
+
+  <!-- Data authority table -->
+  <text x="30" y="480" font-size="7" font-weight="600" fill="#202124">Data Authority:</text>
+  <text x="30" y="494" font-size="7" fill="#5F6368">Balance / State:</text>
+  <text x="110" y="494" font-size="7" font-weight="600" fill="#E37400">Card-authoritative</text>
+  <text x="215" y="494" font-size="7" fill="#5F6368">(physical card holds truth until reconciled)</text>
+
+  <text x="30" y="507" font-size="7" fill="#5F6368">Members / Accounts:</text>
+  <text x="130" y="507" font-size="7" font-weight="600" fill="#1A73E8">Server-authoritative</text>
+  <text x="245" y="507" font-size="7" fill="#5F6368">(backend is source of truth, pulled to device)</text>
+
+  <text x="30" y="520" font-size="7" fill="#5F6368">Session Grant:</text>
+  <text x="105" y="520" font-size="7" font-weight="600" fill="#C5221F">Time-limited trust</text>
+  <text x="210" y="520" font-size="7" fill="#5F6368">(24h TTL, must re-fetch online when expired)</text>
+
+  <!-- Footer -->
+  <line x1="20" y1="533" x2="942" y2="533" stroke="#DADCE0" stroke-width="0.5"/>
+  <text x="480" y="538" text-anchor="middle" font-size="6" fill="#80868B">Koperasi Kegelapan · KK Wallet · Data Flow Architecture · By Ahmad Muzaki</text>
+</svg>

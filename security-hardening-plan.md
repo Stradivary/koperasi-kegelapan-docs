@@ -17,6 +17,7 @@ This single phase eliminates the root cause behind ~70% of the attack surface.
 **File:** `api/src/routes/auth.ts`
 
 **Changes:**
+
 1. Replace `buildAccessToken()` to use HMAC-SHA256 signing with `SESSION_MASTER_KEY`
 2. Change `alg` from `"none"` to `"HS256"`
 3. Generate signature: `HMAC-SHA256(base64(header) + "." + base64(payload), masterKey)`
@@ -42,6 +43,7 @@ function buildAccessToken(payload, masterKey: string) {
 ```
 
 **Acceptance criteria:**
+
 - All issued tokens are signed
 - Tokens include `exp` claim
 - Existing unsigned tokens are rejected after deployment
@@ -53,6 +55,7 @@ function buildAccessToken(payload, masterKey: string) {
 **New file:** `api/src/middleware/verifyToken.ts`
 
 **Responsibilities:**
+
 1. Extract Bearer token from Authorization header
 2. Verify HMAC-SHA256 signature against `SESSION_MASTER_KEY`
 3. Check `exp` claim (reject expired tokens)
@@ -82,6 +85,7 @@ export const verifyToken = createMiddleware<{ Bindings: Env }>(async (c, next) =
 **File:** `api/src/index.ts`
 
 **Changes:**
+
 1. Apply `verifyToken` middleware to all `/api/*` routes EXCEPT `/api/auth/token` and `/api/auth/refresh`
 2. Update `tokenExtract.ts` to use verified payload from context instead of re-parsing
 
@@ -107,6 +111,7 @@ app.route("/api/policy", policyRoute);
 **File:** `src/server/superadminAuth.ts`
 
 **Changes:**
+
 - Remove manual token parsing (now handled by middleware)
 - Read `accountId` from verified context
 - Keep the DB role check (defense in depth)
@@ -118,6 +123,7 @@ app.route("/api/policy", policyRoute);
 **New route:** `POST /api/auth/refresh`
 
 **Logic:**
+
 1. Accept `{ refreshToken, sessionId }` in body
 2. Hash the refresh token, look up session by `sessionId`
 3. Verify hash matches, session not revoked, not expired
@@ -125,6 +131,7 @@ app.route("/api/policy", policyRoute);
 5. Return new `{ accessToken, refreshToken, expiresAt }`
 
 **Security:**
+
 - Detect refresh token reuse (compromised token detection) - revoke all device sessions
 - Rate limit: 10 requests/minute per sessionId
 
@@ -137,6 +144,7 @@ app.route("/api/policy", policyRoute);
 **File:** `api/src/middleware/cors.ts`
 
 **Changes:**
+
 - Replace `*.pages.dev` wildcard with specific project URL (e.g., `koperasi-kegelapan.pages.dev`)
 - Remove `*.workers.dev` entirely (use specific worker URL)
 - Keep localhost for dev
@@ -161,6 +169,7 @@ if (ALLOWED_PAGES.includes(origin)) return origin;
 **New file:** `api/src/middleware/authRateLimit.ts`
 
 **Design:**
+
 - Sliding window: 5 failed attempts per username per 15 minutes
 - After 5 failures: return 429 with `Retry-After: 900`
 - Successful login resets the counter
@@ -175,6 +184,7 @@ if (ALLOWED_PAGES.includes(origin)) return origin;
 **File:** `api/src/index.ts`
 
 **Design:**
+
 - Global rate limit: 120 req/min per `accountId` (from verified token)
 - Unauthenticated routes (auth): 30 req/min per connecting IP (via `CF-Connecting-IP` header)
 
@@ -200,6 +210,7 @@ api/src/schemas/
 ```
 
 **Pattern:**
+
 ```typescript
 import { z } from "zod";
 
@@ -207,15 +218,18 @@ export const loginSchema = z.object({
   username: z.string().min(1).max(100).trim(),
   password: z.string().min(1).max(128),
   tenantSlug: z.string().min(3).max(50).optional(),
-  deviceFingerprint: z.object({
-    hash: z.string().length(64),
-    userAgent: z.string().max(500),
-    platform: z.string().max(100),
-  }).optional(),
+  deviceFingerprint: z
+    .object({
+      hash: z.string().length(64),
+      userAgent: z.string().max(500),
+      platform: z.string().max(100),
+    })
+    .optional(),
 });
 ```
 
 **Apply via helper:**
+
 ```typescript
 function validate<T>(schema: z.ZodSchema<T>, data: unknown): T | Response {
   const result = schema.safeParse(data);
@@ -263,6 +277,7 @@ export const securityHeaders = createMiddleware(async (c, next) => {
 **All route files**
 
 **Changes:**
+
 - Replace `return c.json({ error: msg }, 500)` with generic messages
 - Log detailed errors server-side (Cloudflare Logpush or console)
 - Never expose stack traces, DB errors, or internal paths to clients
@@ -288,23 +303,40 @@ catch (e) {
 ### Task 4.1: Remove Hardcoded Master Key from Client
 
 **Files:**
+
 - `src/lib/localSessionGrant.ts` - remove `LOCAL_MASTER_KEY`
 - `src/hooks/useSessionGrant.ts` - remove `LOCAL_MASTER_SEED`
 
 **Replacement strategy:**
+
 - Local-only tenants: derive a key from the admin's password hash (already stored in IndexedDB) using HKDF. This means the key is never hardcoded - it's derived at runtime from user credentials.
 - Online tenants: always fetch session grants from server. Remove local fallback for online mode.
 
 ```typescript
 // New approach for local tenants
-async function deriveLocalSessionKey(adminPasswordHash: string, tenantId: string): Promise<Uint8Array> {
+async function deriveLocalSessionKey(
+  adminPasswordHash: string,
+  tenantId: string,
+): Promise<Uint8Array> {
   const keyMaterial = await crypto.subtle.importKey(
-    "raw", ENC.encode(adminPasswordHash), "HKDF", false, ["deriveBits"]
+    "raw",
+    ENC.encode(adminPasswordHash),
+    "HKDF",
+    false,
+    ["deriveBits"],
   );
-  return new Uint8Array(await crypto.subtle.deriveBits(
-    { name: "HKDF", hash: "SHA-256", salt: ENC.encode(tenantId), info: ENC.encode("local-session-v2") },
-    keyMaterial, 256
-  ));
+  return new Uint8Array(
+    await crypto.subtle.deriveBits(
+      {
+        name: "HKDF",
+        hash: "SHA-256",
+        salt: ENC.encode(tenantId),
+        info: ENC.encode("local-session-v2"),
+      },
+      keyMaterial,
+      256,
+    ),
+  );
 }
 ```
 
@@ -315,11 +347,13 @@ async function deriveLocalSessionKey(adminPasswordHash: string, tenantId: string
 **File:** `src/lib/indexeddb.ts`
 
 **Changes:**
+
 - Derive an encryption key from the user's session (e.g., HKDF from access token hash)
 - Encrypt session grants and tokens before storing in IndexedDB
 - Decrypt on read
 
 **Scope:** Encrypt these stores:
+
 - `sessionGrantCache` (contains crypto keys)
 - `authTokenCache` (contains access tokens)
 - `localAccounts` (contains password hashes)
@@ -333,6 +367,7 @@ async function deriveLocalSessionKey(adminPasswordHash: string, tenantId: string
 **File:** `src/lib/api.ts`
 
 **Changes:**
+
 - Remove `localStorage.setItem(ACCESS_TOKEN_LS_KEY, token)`
 - Keep in-memory cache only
 - Use `sessionStorage` as fallback (cleared on tab close)
@@ -345,12 +380,14 @@ async function deriveLocalSessionKey(adminPasswordHash: string, tenantId: string
 ### Task 4.4: Strengthen Password Policy
 
 **Files:**
+
 - `api/src/routes/accounts.ts`
 - `src/server/superadminAccounts.ts`
 - `src/server/superadminTenants.ts`
 - `src/hooks/useLocalSetup.ts`
 
 **New policy:**
+
 - Minimum 8 characters (keep)
 - At least 1 uppercase, 1 lowercase, 1 digit
 - Maximum 128 characters (keep)
@@ -376,6 +413,7 @@ function validatePassword(password: string): string | null {
 **File:** `src/db/seed.ts`
 
 **Changes:**
+
 - Add environment check: skip seeding if `NODE_ENV === "production"`
 - Add a migration that checks for `username = "superadmin"` with the default hash and forces a password change
 - Document in deployment runbook
@@ -387,6 +425,7 @@ function validatePassword(password: string): string | null {
 **File:** `api/src/routes/sync.ts`
 
 **Changes:**
+
 - Currently logs a warning on tenantId mismatch between token and payload
 - Change to hard reject: `return c.json({ error: "tenant_mismatch" }, 403)`
 
@@ -409,6 +448,7 @@ if (tokenPayload.tenantId !== body.tenantId) {
 **File:** `src/lib/deviceFingerprint.ts`
 
 **Changes:**
+
 - Add server-side device binding: on first login, store the fingerprint hash server-side
 - On subsequent requests, if the fingerprint changes for the same deviceId, flag for review
 - This doesn't prevent forgery but adds a detection layer
@@ -420,6 +460,7 @@ if (tokenPayload.tenantId !== body.tenantId) {
 **Location:** Cloudflare Dashboard / Terraform
 
 **Rules:**
+
 - Block requests without valid `Origin` header to API routes
 - Challenge requests from known bot ASNs
 - Rate limit by IP at the edge (backup for in-app rate limiting)
@@ -431,6 +472,7 @@ if (tokenPayload.tenantId !== body.tenantId) {
 **New file:** `docs/production-security-checklist.md`
 
 Contents:
+
 - [ ] `SESSION_MASTER_KEY` is a 32+ byte random value (not the dev default)
 - [ ] Seed accounts don't exist in production D1
 - [ ] CORS origins are restricted to production domains only
@@ -509,6 +551,7 @@ function verifyJwt(token: string, masterKey: string): Payload | null {
 ## Testing Strategy
 
 Each phase should include:
+
 - **Unit tests** for new middleware/utilities (token signing, verification, rate limiting)
 - **Integration tests** for auth flow (login → get token → access protected route)
 - **Negative tests** for each vulnerability (forged token rejected, unauthenticated request blocked)
@@ -520,13 +563,13 @@ Each phase should include:
 
 After all phases are complete:
 
-| Previous Risk | New Status |
-|---------------|------------|
-| Token forgery | Eliminated (HMAC-SHA256) |
-| Unauthenticated endpoints | Eliminated (auth middleware) |
-| CORS exploitation | Mitigated (specific origins) |
-| Brute force login | Mitigated (rate limiting) |
-| Client key exposure | Mitigated (password-derived keys) |
-| XSS token theft | Reduced (memory-only + encrypted storage) |
-| Missing headers | Eliminated (CSP, HSTS, etc.) |
-| Input injection | Mitigated (Zod validation) |
+| Previous Risk             | New Status                                |
+| ------------------------- | ----------------------------------------- |
+| Token forgery             | Eliminated (HMAC-SHA256)                  |
+| Unauthenticated endpoints | Eliminated (auth middleware)              |
+| CORS exploitation         | Mitigated (specific origins)              |
+| Brute force login         | Mitigated (rate limiting)                 |
+| Client key exposure       | Mitigated (password-derived keys)         |
+| XSS token theft           | Reduced (memory-only + encrypted storage) |
+| Missing headers           | Eliminated (CSP, HSTS, etc.)              |
+| Input injection           | Mitigated (Zod validation)                |

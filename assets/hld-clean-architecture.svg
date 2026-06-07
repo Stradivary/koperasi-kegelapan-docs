@@ -1,0 +1,225 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="coreG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FEF7E0"/><stop offset="100%" stop-color="#FDE293"/></linearGradient>
+    <linearGradient id="appG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FCE8E6"/><stop offset="100%" stop-color="#F8CFCB"/></linearGradient>
+    <linearGradient id="infraG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#E8F0FE"/><stop offset="100%" stop-color="#D2E3FC"/></linearGradient>
+    <linearGradient id="presG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#E6F4EA"/><stop offset="100%" stop-color="#CEEAD6"/></linearGradient>
+    <linearGradient id="ruleG" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#F3E8FD"/><stop offset="100%" stop-color="#E8D5F5"/></linearGradient>
+    <marker id="depA" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#5F6368"/></marker>
+    <marker id="depRed" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="#CC001E"/></marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="540" fill="#FFFFFF" rx="4"/>
+
+  <!-- Title -->
+  <text x="480" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#CC001E">Koperasi Kegelapan — Clean Architecture</text>
+  <text x="480" y="44" text-anchor="middle" font-size="9" fill="#5F6368">Dependency Rule: outer layers depend on inner layers, never the reverse · Separation of Concerns · Testable &amp; Scalable</text>
+
+  <!-- ===== CONCENTRIC RINGS (Conceptual) ===== -->
+  <!-- Core (innermost) -->
+  <rect x="20" y="56" width="225" height="275" rx="8" fill="url(#coreG)" stroke="#F9AB00" stroke-width="1.5"/>
+  <text x="132" y="74" text-anchor="middle" font-size="9" font-weight="700" fill="#E37400">🎯 CORE (Domain)</text>
+  <text x="132" y="86" text-anchor="middle" font-size="6.5" fill="#5F6368">Zero dependencies · Pure logic · Testable in isolation</text>
+
+  <rect x="30" y="94" width="205" height="18" rx="3" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="35" y="106" font-size="6.5" font-weight="600" fill="#E37400">core/nfc/</text>
+  <text x="90" y="106" font-size="6.5" fill="#5F6368">Engine, State Machine, Pipeline, Adapters</text>
+
+  <rect x="30" y="116" width="205" height="18" rx="3" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="35" y="128" font-size="6.5" font-weight="600" fill="#E37400">core/payload/</text>
+  <text x="100" y="128" font-size="6.5" fill="#5F6368">496B encode/decode, tenant bind</text>
+
+  <rect x="30" y="138" width="205" height="18" rx="3" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="35" y="150" font-size="6.5" font-weight="600" fill="#E37400">core/crypto/</text>
+  <text x="95" y="150" font-size="6.5" fill="#5F6368">AES-GCM, HMAC, HKDF engine</text>
+
+  <rect x="30" y="160" width="205" height="18" rx="3" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="35" y="172" font-size="6.5" font-weight="600" fill="#E37400">core/validation/</text>
+  <text x="105" y="172" font-size="6.5" fill="#5F6368">Block enforcer, UID, slug</text>
+
+  <rect x="30" y="182" width="205" height="18" rx="3" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="35" y="194" font-size="6.5" font-weight="600" fill="#E37400">core/state-machine/</text>
+  <text x="120" y="194" font-size="6.5" fill="#5F6368">Generic engine</text>
+
+  <rect x="30" y="204" width="205" height="18" rx="3" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="35" y="216" font-size="6.5" font-weight="600" fill="#E37400">core/sync/</text>
+  <text x="85" y="216" font-size="6.5" fill="#5F6368">Conflict resolver (pure)</text>
+
+  <rect x="30" y="226" width="205" height="18" rx="3" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="35" y="238" font-size="6.5" font-weight="600" fill="#E37400">core/auth/</text>
+  <text x="85" y="238" font-size="6.5" fill="#5F6368">Rules, policy, role ops</text>
+
+  <rect x="30" y="248" width="205" height="18" rx="3" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="35" y="260" font-size="6.5" font-weight="600" fill="#E37400">core/interfaces/</text>
+  <text x="105" y="260" font-size="6.5" fill="#5F6368">Repository contracts</text>
+
+  <text x="132" y="282" text-anchor="middle" font-size="6" fill="#80868B" font-style="italic">Imports: NOTHING external</text>
+  <text x="132" y="293" text-anchor="middle" font-size="6" fill="#80868B" font-style="italic">No React, no fetch, no IndexedDB</text>
+  <text x="132" y="304" text-anchor="middle" font-size="6" fill="#80868B" font-style="italic">Pure TypeScript functions &amp; types</text>
+  <text x="132" y="318" text-anchor="middle" font-size="6" font-weight="600" fill="#E37400">100% unit-testable without mocks</text>
+
+  <!-- Application (second ring) -->
+  <rect x="255" y="56" width="225" height="275" rx="8" fill="url(#appG)" stroke="#EA4335" stroke-width="1.5"/>
+  <text x="367" y="74" text-anchor="middle" font-size="9" font-weight="700" fill="#C5221F">⚡ APPLICATION (Use Cases)</text>
+  <text x="367" y="86" text-anchor="middle" font-size="6.5" fill="#5F6368">Orchestrates core logic · Business workflows</text>
+
+  <rect x="265" y="94" width="205" height="18" rx="3" fill="#FFF" stroke="#EA4335" stroke-width="0.5"/>
+  <text x="270" y="106" font-size="6.5" font-weight="600" fill="#C5221F">application/sync/</text>
+  <text x="352" y="106" font-size="6.5" fill="#5F6368">Pull, Push, Reconcile</text>
+
+  <rect x="265" y="116" width="205" height="18" rx="3" fill="#FFF" stroke="#EA4335" stroke-width="0.5"/>
+  <text x="270" y="128" font-size="6.5" font-weight="600" fill="#C5221F">application/auth/</text>
+  <text x="350" y="128" font-size="6.5" fill="#5F6368">Session, Grant issuance</text>
+
+  <rect x="265" y="138" width="205" height="18" rx="3" fill="#FFF" stroke="#EA4335" stroke-width="0.5"/>
+  <text x="270" y="150" font-size="6.5" font-weight="600" fill="#C5221F">application/device/</text>
+  <text x="360" y="150" font-size="6.5" fill="#5F6368">Device registry</text>
+
+  <rect x="265" y="160" width="205" height="18" rx="3" fill="#FFF" stroke="#EA4335" stroke-width="0.5"/>
+  <text x="270" y="172" font-size="6.5" font-weight="600" fill="#C5221F">application/tenant/</text>
+  <text x="358" y="172" font-size="6.5" fill="#5F6368">Search, Sync tenants</text>
+
+  <rect x="265" y="182" width="205" height="18" rx="3" fill="#FFF" stroke="#EA4335" stroke-width="0.5"/>
+  <text x="270" y="194" font-size="6.5" font-weight="600" fill="#C5221F">application/admin/</text>
+  <text x="352" y="194" font-size="6.5" fill="#5F6368">Superadmin ops</text>
+
+  <text x="367" y="224" text-anchor="middle" font-size="6" fill="#80868B" font-style="italic">Imports: core/ only</text>
+  <text x="367" y="235" text-anchor="middle" font-size="6" fill="#80868B" font-style="italic">Accepts infrastructure via DI / params</text>
+  <text x="367" y="246" text-anchor="middle" font-size="6" fill="#80868B" font-style="italic">Each use case = single responsibility</text>
+
+  <text x="367" y="266" text-anchor="middle" font-size="6.5" font-weight="600" fill="#C5221F">Pattern:</text>
+  <rect x="280" y="272" width="175" height="42" rx="3" fill="#FFF" stroke="#EA4335" stroke-width="0.5"/>
+  <text x="290" y="284" font-size="6" font-family="monospace" fill="#202124">class SyncPullUseCase {</text>
+  <text x="290" y="294" font-size="6" font-family="monospace" fill="#202124">  execute(deps): Result</text>
+  <text x="290" y="304" font-size="6" font-family="monospace" fill="#202124">}</text>
+
+  <!-- Infrastructure (third ring) -->
+  <rect x="490" y="56" width="225" height="275" rx="8" fill="url(#infraG)" stroke="#4285F4" stroke-width="1.5"/>
+  <text x="602" y="74" text-anchor="middle" font-size="9" font-weight="700" fill="#1A73E8">🔌 INFRASTRUCTURE</text>
+  <text x="602" y="86" text-anchor="middle" font-size="6.5" fill="#5F6368">External world adapters · Side effects</text>
+
+  <rect x="500" y="94" width="205" height="18" rx="3" fill="#FFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="505" y="106" font-size="6.5" font-weight="600" fill="#1A73E8">infrastructure/api/</text>
+  <text x="598" y="106" font-size="6.5" fill="#5F6368">HTTP client, rate limiter</text>
+
+  <rect x="500" y="116" width="205" height="18" rx="3" fill="#FFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="505" y="128" font-size="6.5" font-weight="600" fill="#1A73E8">infrastructure/persistence/</text>
+  <text x="627" y="128" font-size="6.5" fill="#5F6368">Dexie, Drizzle</text>
+
+  <rect x="500" y="138" width="205" height="18" rx="3" fill="#FFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="505" y="150" font-size="6.5" font-weight="600" fill="#1A73E8">infrastructure/error/</text>
+  <text x="605" y="150" font-size="6.5" fill="#5F6368">Error tracker (API)</text>
+
+  <rect x="500" y="160" width="205" height="18" rx="3" fill="#FFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="505" y="172" font-size="6.5" font-weight="600" fill="#1A73E8">infrastructure/device/</text>
+  <text x="610" y="172" font-size="6.5" fill="#5F6368">Fingerprint, haptics</text>
+
+  <rect x="500" y="182" width="205" height="18" rx="3" fill="#FFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="505" y="194" font-size="6.5" font-weight="600" fill="#1A73E8">infrastructure/sync/</text>
+  <text x="603" y="194" font-size="6.5" fill="#5F6368">Peer sync coordinator</text>
+
+  <text x="602" y="224" text-anchor="middle" font-size="6" fill="#80868B" font-style="italic">Imports: core/ + application/</text>
+  <text x="602" y="235" text-anchor="middle" font-size="6" fill="#80868B" font-style="italic">Implements repository interfaces</text>
+  <text x="602" y="246" text-anchor="middle" font-size="6" fill="#80868B" font-style="italic">Manages IndexedDB, fetch, WebNFC</text>
+
+  <text x="602" y="266" text-anchor="middle" font-size="6.5" font-weight="600" fill="#1A73E8">Implements:</text>
+  <rect x="515" y="272" width="175" height="42" rx="3" fill="#FFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="525" y="284" font-size="6" font-family="monospace" fill="#202124">// core/interfaces/</text>
+  <text x="525" y="294" font-size="6" font-family="monospace" fill="#202124">CardRepository</text>
+  <text x="525" y="304" font-size="6" font-family="monospace" fill="#202124">UserRepository</text>
+
+  <!-- Presentation (outermost) -->
+  <rect x="725" y="56" width="215" height="275" rx="8" fill="url(#presG)" stroke="#34A853" stroke-width="1.5"/>
+  <text x="832" y="74" text-anchor="middle" font-size="9" font-weight="700" fill="#137333">🖥️ PRESENTATION (UI)</text>
+  <text x="832" y="86" text-anchor="middle" font-size="6.5" fill="#5F6368">React components · Hooks · Routes</text>
+
+  <rect x="735" y="94" width="195" height="18" rx="3" fill="#FFF" stroke="#34A853" stroke-width="0.5"/>
+  <text x="740" y="106" font-size="6.5" font-weight="600" fill="#137333">presentation/routes/</text>
+  <text x="840" y="106" font-size="6.5" fill="#5F6368">TanStack Router</text>
+
+  <rect x="735" y="116" width="195" height="18" rx="3" fill="#FFF" stroke="#34A853" stroke-width="0.5"/>
+  <text x="740" y="128" font-size="6.5" font-weight="600" fill="#137333">presentation/hooks/</text>
+  <text x="837" y="128" font-size="6.5" fill="#5F6368">NFC, sync, auth</text>
+
+  <rect x="735" y="138" width="195" height="18" rx="3" fill="#FFF" stroke="#34A853" stroke-width="0.5"/>
+  <text x="740" y="150" font-size="6.5" font-weight="600" fill="#137333">components/section/</text>
+  <text x="843" y="150" font-size="6.5" fill="#5F6368">Orchestrators</text>
+
+  <rect x="735" y="160" width="195" height="18" rx="3" fill="#FFF" stroke="#34A853" stroke-width="0.5"/>
+  <text x="740" y="172" font-size="6.5" font-weight="600" fill="#137333">components/block/</text>
+  <text x="835" y="172" font-size="6.5" fill="#5F6368">Pure render</text>
+
+  <rect x="735" y="182" width="195" height="18" rx="3" fill="#FFF" stroke="#34A853" stroke-width="0.5"/>
+  <text x="740" y="194" font-size="6.5" font-weight="600" fill="#137333">components/layout/</text>
+  <text x="840" y="194" font-size="6.5" fill="#5F6368">Slot structures</text>
+
+  <rect x="735" y="204" width="195" height="18" rx="3" fill="#FFF" stroke="#34A853" stroke-width="0.5"/>
+  <text x="740" y="216" font-size="6.5" font-weight="600" fill="#137333">components/ui/</text>
+  <text x="820" y="216" font-size="6.5" fill="#5F6368">Primitives (shadcn)</text>
+
+  <rect x="735" y="226" width="195" height="18" rx="3" fill="#FFF" stroke="#34A853" stroke-width="0.5"/>
+  <text x="740" y="238" font-size="6.5" font-weight="600" fill="#137333">presentation/providers/</text>
+  <text x="852" y="238" font-size="6.5" fill="#5F6368">Context</text>
+
+  <text x="832" y="264" text-anchor="middle" font-size="6" fill="#80868B" font-style="italic">Imports: ALL layers (outermost)</text>
+  <text x="832" y="275" text-anchor="middle" font-size="6" fill="#80868B" font-style="italic">No business logic in components</text>
+  <text x="832" y="286" text-anchor="middle" font-size="6" fill="#80868B" font-style="italic">Hooks bridge app → UI</text>
+  <text x="832" y="300" text-anchor="middle" font-size="6" font-weight="600" fill="#137333">Rule: UI only renders &amp; delegates</text>
+
+  <!-- ===== DEPENDENCY ARROWS ===== -->
+  <path d="M 732 330 L 710 330 L 710 340 L 480 340 L 480 330" stroke="#5F6368" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#depA)"/>
+  <path d="M 480 330 L 480 340 L 250 340 L 250 330" stroke="#5F6368" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#depA)"/>
+  <path d="M 250 330 L 250 340 L 30 340 L 30 330" stroke="#5F6368" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#depA)"/>
+  <text x="480" y="354" text-anchor="middle" font-size="7" font-weight="600" fill="#5F6368">← Dependency Direction (outer depends on inner, NEVER reverse) →</text>
+
+  <!-- ===== BOTTOM: Dependency Rules ===== -->
+  <rect x="20" y="368" width="920" height="158" rx="6" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1"/>
+  <text x="30" y="385" font-size="9" font-weight="700" fill="#202124">Dependency Rules &amp; Boundaries</text>
+  <rect x="30" y="391" width="900" height="0.5" fill="#DADCE0"/>
+
+  <!-- Rules table header -->
+  <text x="35" y="406" font-size="7" font-weight="600" fill="#5F6368">Layer</text>
+  <text x="150" y="406" font-size="7" font-weight="600" fill="#5F6368">Can Import From</text>
+  <text x="330" y="406" font-size="7" font-weight="600" fill="#5F6368">Cannot Import From</text>
+  <text x="530" y="406" font-size="7" font-weight="600" fill="#5F6368">Responsibility</text>
+  <text x="780" y="406" font-size="7" font-weight="600" fill="#5F6368">Example</text>
+  <rect x="30" y="410" width="900" height="0.3" fill="#DADCE0"/>
+
+  <text x="35" y="423" font-size="7" font-weight="600" fill="#E37400">Core</text>
+  <text x="150" y="423" font-size="7" fill="#202124">Nothing (self-contained)</text>
+  <text x="330" y="423" font-size="7" fill="#CC001E">app, infra, presentation, React</text>
+  <text x="530" y="423" font-size="7" fill="#5F6368">Business rules, types, pure functions</text>
+  <text x="780" y="423" font-size="6.5" font-family="monospace" fill="#5F6368">classifyCard(bytes)</text>
+
+  <text x="35" y="437" font-size="7" font-weight="600" fill="#C5221F">Application</text>
+  <text x="150" y="437" font-size="7" fill="#202124">core/</text>
+  <text x="330" y="437" font-size="7" fill="#CC001E">infra, presentation, React</text>
+  <text x="530" y="437" font-size="7" fill="#5F6368">Orchestrate core logic, define workflows</text>
+  <text x="780" y="437" font-size="6.5" font-family="monospace" fill="#5F6368">syncPull.execute()</text>
+
+  <text x="35" y="451" font-size="7" font-weight="600" fill="#1A73E8">Infrastructure</text>
+  <text x="150" y="451" font-size="7" fill="#202124">core/ + application/</text>
+  <text x="330" y="451" font-size="7" fill="#CC001E">presentation, React</text>
+  <text x="530" y="451" font-size="7" fill="#5F6368">Implement interfaces, I/O, side effects</text>
+  <text x="780" y="451" font-size="6.5" font-family="monospace" fill="#5F6368">DexieCardRepo.save()</text>
+
+  <text x="35" y="465" font-size="7" font-weight="600" fill="#137333">Presentation</text>
+  <text x="150" y="465" font-size="7" fill="#202124">core/ + app/ + infra/</text>
+  <text x="330" y="465" font-size="7" fill="#137333">— (outermost layer)</text>
+  <text x="530" y="465" font-size="7" fill="#5F6368">Render UI, delegate all logic to hooks</text>
+  <text x="780" y="465" font-size="6.5" font-family="monospace" fill="#5F6368">&lt;TerminalSection/&gt;</text>
+
+  <rect x="30" y="474" width="900" height="0.3" fill="#DADCE0"/>
+
+  <!-- Benefits -->
+  <text x="35" y="490" font-size="7" font-weight="600" fill="#202124">Why This Matters:</text>
+  <text x="35" y="504" font-size="6.5" fill="#5F6368">✅ Core logic testable without React, IndexedDB, or network — pure unit tests with fast-check property testing</text>
+  <text x="35" y="516" font-size="6.5" fill="#5F6368">✅ React components never contain business logic — they only render state and delegate actions to hooks/use cases</text>
+  <text x="520" y="504" font-size="6.5" fill="#5F6368">✅ Swappable infrastructure (e.g. IndexedDB → SQLite) without touching core</text>
+  <text x="520" y="516" font-size="6.5" fill="#5F6368">✅ NFC pipeline, crypto, and validation all testable in Node.js (no browser)</text>
+
+  <!-- Footer -->
+  <line x1="20" y1="533" x2="942" y2="533" stroke="#DADCE0" stroke-width="0.5"/>
+  <text x="480" y="538" text-anchor="middle" font-size="6" fill="#80868B">Koperasi Kegelapan · KK Wallet · Clean Architecture · By Ahmad Muzaki</text>
+</svg>

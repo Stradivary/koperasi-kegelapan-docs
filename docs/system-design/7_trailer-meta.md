@@ -4,16 +4,16 @@ The trailer is a 64-byte block stored after the two payload buffers. It stores v
 
 ## Fields and purpose
 
-| Field         | Offset | Size    | Purpose                                                                                          |
-| ------------- | ------ | ------- | ------------------------------------------------------------------------------------------------ |
-| `expiresAt`   | 0      | 4 bytes | Bounds the card payload lifetime; the card is rejected for new operations after this timestamp   |
-| `keyVersion`  | 4      | 1 byte  | Identifies the key set used to derive card keys; enables key rotation without re-issuance        |
-| `reserved_1`  | 5      | 3 bytes | Padding for alignment and future use                                                             |
+| Field         | Offset | Size    | Purpose                                                                                                             |
+| ------------- | ------ | ------- | ------------------------------------------------------------------------------------------------------------------- |
+| `expiresAt`   | 0      | 4 bytes | Bounds the card payload lifetime; the card is rejected for new operations after this timestamp                      |
+| `keyVersion`  | 4      | 1 byte  | Identifies the key set used to derive card keys; enables key rotation without re-issuance                           |
+| `reserved_1`  | 5      | 3 bytes | Padding for alignment and future use                                                                                |
 | `rootHash`    | 8      | 6 bytes | The chain head of the transaction log (last entry's 4-byte hash, zero-padded to 6); anchors the entire log sequence |
-| `reserved_2`  | 14     | 2 bytes | Padding for alignment                                                                            |
-| `counterBind` | 16     | 4 bytes | Lower 32 bits of the wallet's monotonic counter; binds the HMAC to the current write generation  |
-| `HMAC`        | 20     | 8 bytes | Truncated HMAC-SHA256 authentication tag; verified on every read                                 |
-| `activePtr`   | 28     | 1 byte  | Selects which of the two payload buffers (A=0, B=1) is currently authoritative                   |
+| `reserved_2`  | 14     | 2 bytes | Padding for alignment                                                                                               |
+| `counterBind` | 16     | 4 bytes | Lower 32 bits of the wallet's monotonic counter; binds the HMAC to the current write generation                     |
+| `HMAC`        | 20     | 8 bytes | Truncated HMAC-SHA256 authentication tag; verified on every read                                                    |
+| `activePtr`   | 28     | 1 byte  | Selects which of the two payload buffers (A=0, B=1) is currently authoritative                                      |
 
 ## Integrity model
 

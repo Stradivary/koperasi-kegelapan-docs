@@ -2,28 +2,28 @@
 
 ## Valid states
 
-| State               | Code | Description                                                        |
-| ------------------- | ---- | ------------------------------------------------------------------ |
-| `IDLE`              | `0`  | Card is issued but no session is open                              |
+| State               | Code | Description                                                  |
+| ------------------- | ---- | ------------------------------------------------------------ |
+| `IDLE`              | `0`  | Card is issued but no session is open                        |
 | `CHECKED_IN`        | `1`  | Gate has opened a session; terminal operations are permitted |
-| `STATION_OPERATION` | `2`  | A terminal is actively processing a multi-step operation           |
-| `CHECKED_OUT`       | `3`  | Session has been closed by a gate checkout or force checkout       |
+| `STATION_OPERATION` | `2`  | A terminal is actively processing a multi-step operation     |
+| `CHECKED_OUT`       | `3`  | Session has been closed by a gate checkout or force checkout |
 
 > **Note**: `BLOCKED` is a **status**, not a state. Status and state are independent dimensions stored in separate card fields. A blocked card can be in any state; the `status` field overrides all session logic. See [§15 Status Codes & Block Rules](15_status-codes-block-rules.md) for status codes and block enforcement.
 
 ## State transitions
 
-| From              | To                | Trigger          | Condition                                                       |
-| ----------------- | ----------------- | ---------------- | --------------------------------------------------------------- |
-| `IDLE`            | `CHECKED_IN`      | `gate_checkin`   | Valid session grant; `status == ACTIVE`; balance ≥ Rp 10,000    |
-| `IDLE`            | `CHECKED_OUT`     | `force_checkout` | Valid session grant; `status == ACTIVE`                          |
-| `CHECKED_IN`      | `STATION_OPERATION` | `terminal_start` | Valid session grant; `status == ACTIVE`                        |
-| `CHECKED_IN`      | `CHECKED_OUT`     | `gate_checkout`  | Session was open (allowed even when session expired)            |
-| `CHECKED_IN`      | `CHECKED_OUT`     | `force_checkout` | Always allowed                                                  |
-| `STATION_OPERATION` | `CHECKED_IN`    | `terminal_end`   | Write verified; counter incremented                             |
-| `STATION_OPERATION` | `CHECKED_OUT`   | `force_checkout` | Always allowed                                                  |
-| `CHECKED_OUT`     | `IDLE`            | `admin_reset`    | Station/admin privilege required                                |
-| `CHECKED_OUT`     | `IDLE`            | `gate_checkin`   | Re-entry after checkout (resets to IDLE then to CHECKED_IN)     |
+| From                | To                  | Trigger          | Condition                                                    |
+| ------------------- | ------------------- | ---------------- | ------------------------------------------------------------ |
+| `IDLE`              | `CHECKED_IN`        | `gate_checkin`   | Valid session grant; `status == ACTIVE`; balance ≥ Rp 10,000 |
+| `IDLE`              | `CHECKED_OUT`       | `force_checkout` | Valid session grant; `status == ACTIVE`                      |
+| `CHECKED_IN`        | `STATION_OPERATION` | `terminal_start` | Valid session grant; `status == ACTIVE`                      |
+| `CHECKED_IN`        | `CHECKED_OUT`       | `gate_checkout`  | Session was open (allowed even when session expired)         |
+| `CHECKED_IN`        | `CHECKED_OUT`       | `force_checkout` | Always allowed                                               |
+| `STATION_OPERATION` | `CHECKED_IN`        | `terminal_end`   | Write verified; counter incremented                          |
+| `STATION_OPERATION` | `CHECKED_OUT`       | `force_checkout` | Always allowed                                               |
+| `CHECKED_OUT`       | `IDLE`              | `admin_reset`    | Station/admin privilege required                             |
+| `CHECKED_OUT`       | `IDLE`              | `gate_checkin`   | Re-entry after checkout (resets to IDLE then to CHECKED_IN)  |
 
 ## Session rules
 
@@ -37,6 +37,7 @@
 ## Check-in validation
 
 Before a `gate_checkin` transition is allowed, `validateTransition` enforces:
+
 - `status == ACTIVE` (card not blocked)
 - Session not expired (for cards already in an active state)
 - `balance >= MIN_BALANCE_BEFORE_CHECKIN` (Rp 10,000)
@@ -44,6 +45,7 @@ Before a `gate_checkin` transition is allowed, `validateTransition` enforces:
 ## Write eligibility check
 
 Before any card write, `isWriteEligible(payload, grant, requiredOp, nowSeconds)` validates:
+
 - Card status must be `ACTIVE`
 - Session grant must not have expired (`nowSeconds < grant.expiresAt`)
 - The requested operation (e.g., "debit", "checkin") must be in `grant.allowedOps`
@@ -57,11 +59,11 @@ Before any card write, `isWriteEligible(payload, grant, requiredOp, nowSeconds)`
 
 ## Applied operations
 
-| Function           | Trigger          | Effect                                                                 |
-| ------------------ | ---------------- | ---------------------------------------------------------------------- |
-| `applyCheckin`     | `gate_checkin`   | state→CHECKED_IN, set session.startTime, log CHECKIN entry             |
-| `applyCheckout`    | `gate_checkout`  | state→CHECKED_OUT, deduct fee, set session.endTime, log CHECKOUT entry |
-| `applyDebit`       | terminal debit   | decrement balance, log DEBIT entry                                     |
-| `applyTopup`       | station top-up   | increment balance, log CREDIT entry                                    |
-| `applyResetState`  | `admin_reset`    | state→IDLE, status→ACTIVE, zero session, log ADMIN entry               |
-| `applyBlockStatus` | admin block      | set status to specified BLOCKED_* value, log ADMIN entry               |
+| Function           | Trigger         | Effect                                                                 |
+| ------------------ | --------------- | ---------------------------------------------------------------------- |
+| `applyCheckin`     | `gate_checkin`  | state→CHECKED_IN, set session.startTime, log CHECKIN entry             |
+| `applyCheckout`    | `gate_checkout` | state→CHECKED_OUT, deduct fee, set session.endTime, log CHECKOUT entry |
+| `applyDebit`       | terminal debit  | decrement balance, log DEBIT entry                                     |
+| `applyTopup`       | station top-up  | increment balance, log CREDIT entry                                    |
+| `applyResetState`  | `admin_reset`   | state→IDLE, status→ACTIVE, zero session, log ADMIN entry               |
+| `applyBlockStatus` | admin block     | set status to specified BLOCKED\_\* value, log ADMIN entry             |

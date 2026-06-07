@@ -26,6 +26,7 @@ The application platform is:
 - **Local storage**: IndexedDB via Dexie.js (structured) + raw IndexedDB (journal, session)
 
 **Explicit non-choices:**
+
 - No Cloudflare KV (not needed — D1 handles all persistence)
 - No Cloudflare R2 (no large object storage needed)
 - No TanStack Start (moved to client-only SPA with separate API worker)
@@ -56,13 +57,13 @@ The application platform is:
 
 ## Alternatives Considered
 
-| Option                             | Reason Rejected                                                                                          |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| **TanStack Start (full-stack)**    | SSR not needed for offline PWA. Separate SPA + API is simpler and better understood.                    |
-| **Next.js + Vercel**               | Split platform assumption. Workers + D1 integration is more natural on Cloudflare.                      |
-| **Express/Fastify on VM**          | More operational overhead. No edge distribution without additional infra.                                |
-| **Remix**                          | SSR-oriented. Offline-first PWA doesn't benefit from server rendering.                                   |
-| **Supabase (PostgreSQL)**          | Adds external database dependency. D1 is sufficient and co-located with Workers.                        |
+| Option                          | Reason Rejected                                                                      |
+| ------------------------------- | ------------------------------------------------------------------------------------ |
+| **TanStack Start (full-stack)** | SSR not needed for offline PWA. Separate SPA + API is simpler and better understood. |
+| **Next.js + Vercel**            | Split platform assumption. Workers + D1 integration is more natural on Cloudflare.   |
+| **Express/Fastify on VM**       | More operational overhead. No edge distribution without additional infra.            |
+| **Remix**                       | SSR-oriented. Offline-first PWA doesn't benefit from server rendering.               |
+| **Supabase (PostgreSQL)**       | Adds external database dependency. D1 is sufficient and co-located with Workers.     |
 
 ## References
 

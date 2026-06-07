@@ -15,13 +15,13 @@ This section defines the data contracts for multi-tenant isolation, authenticati
 
 ## Authentication data model
 
-| Entity         | Stored where                 | Notes                                                                             |
-| -------------- | ---------------------------- | --------------------------------------------------------------------------------- |
-| Password hash  | `accounts.password_hash`     | PBKDF2-SHA256, 100k iterations. Format: `pbkdf2$saltHex$hashHex` or `iters:salt:hash` |
-| Access token   | Client memory only           | JWT HMAC-SHA256, 1h expiry. Contains: accountId, tenantId, role, deviceId         |
-| Refresh token  | `auth_sessions.refresh_token_hash` | SHA-256 hash stored. Token rotated on each refresh. Single-use.            |
-| Session grant  | Client memory only           | 24h lifetime. Contains session key, allowedOps, signature. Never persisted.       |
-| Device record  | `devices` table              | Fingerprint hash, userAgent, platform. Registered at login time.                  |
+| Entity        | Stored where                       | Notes                                                                                 |
+| ------------- | ---------------------------------- | ------------------------------------------------------------------------------------- |
+| Password hash | `accounts.password_hash`           | PBKDF2-SHA256, 100k iterations. Format: `pbkdf2$saltHex$hashHex` or `iters:salt:hash` |
+| Access token  | Client memory only                 | JWT HMAC-SHA256, 1h expiry. Contains: accountId, tenantId, role, deviceId             |
+| Refresh token | `auth_sessions.refresh_token_hash` | SHA-256 hash stored. Token rotated on each refresh. Single-use.                       |
+| Session grant | Client memory only                 | 24h lifetime. Contains session key, allowedOps, signature. Never persisted.           |
+| Device record | `devices` table                    | Fingerprint hash, userAgent, platform. Registered at login time.                      |
 
 ### Auth flow
 
@@ -44,53 +44,53 @@ The client maintains a tenant-scoped local replica in IndexedDB, managed through
 
 ### `users` (members)
 
-| Field       | Type   | Index                         | Description                        |
-| ----------- | ------ | ----------------------------- | ---------------------------------- |
-| `tenantId`  | string | compound: `[tenantId+userId]` | Tenant scope                       |
-| `userId`    | string |                               | 8-char member ID                   |
-| `name`      | string |                               | Member display name                |
-| `status`    | string | compound: `[tenantId+syncStatus]` | active/suspended/closed/deleted |
-| `createdAt` | number |                               | Creation timestamp                 |
-| `updatedAt` | number |                               | Last server update                 |
-| `syncStatus`| string |                               | `synced` or `pending`              |
+| Field        | Type   | Index                             | Description                     |
+| ------------ | ------ | --------------------------------- | ------------------------------- |
+| `tenantId`   | string | compound: `[tenantId+userId]`     | Tenant scope                    |
+| `userId`     | string |                                   | 8-char member ID                |
+| `name`       | string |                                   | Member display name             |
+| `status`     | string | compound: `[tenantId+syncStatus]` | active/suspended/closed/deleted |
+| `createdAt`  | number |                                   | Creation timestamp              |
+| `updatedAt`  | number |                                   | Last server update              |
+| `syncStatus` | string |                                   | `synced` or `pending`           |
 
 ### `cards`
 
-| Field           | Type   | Index                           | Description                   |
-| --------------- | ------ | ------------------------------- | ----------------------------- |
-| `tenantId`      | string | compound: `[tenantId+cardId]`   | Tenant scope                  |
-| `cardId`        | string |                                 | Card identifier (hex)         |
-| `userId`        | string |                                 | Optional linked member        |
-| `status`        | string | compound: `[tenantId+syncStatus]` | Card health status          |
-| `balance`       | number |                                 | Last synced balance           |
-| `counter`       | number |                                 | Last synced counter           |
-| `keyVersion`    | number |                                 | Key version                   |
-| `syncStatus`    | string |                                 | `synced` or `pending`         |
+| Field        | Type   | Index                             | Description            |
+| ------------ | ------ | --------------------------------- | ---------------------- |
+| `tenantId`   | string | compound: `[tenantId+cardId]`     | Tenant scope           |
+| `cardId`     | string |                                   | Card identifier (hex)  |
+| `userId`     | string |                                   | Optional linked member |
+| `status`     | string | compound: `[tenantId+syncStatus]` | Card health status     |
+| `balance`    | number |                                   | Last synced balance    |
+| `counter`    | number |                                   | Last synced counter    |
+| `keyVersion` | number |                                   | Key version            |
+| `syncStatus` | string |                                   | `synced` or `pending`  |
 
 ### `transactionLog`
 
-| Field           | Type   | Index                                     | Description             |
-| --------------- | ------ | ----------------------------------------- | ----------------------- |
-| `id`            | number | auto                                      | Local auto-ID           |
-| `tenantId`      | string | compound: `[tenantId+cardId+counter]`     | Tenant scope            |
-| `cardId`        | string |                                           | Card identifier         |
-| `counter`       | number |                                           | Transaction counter     |
-| `type`          | string |                                           | debit/credit/checkin/etc|
-| `amount`        | number |                                           | Transaction amount      |
-| `balanceAfter`  | number |                                           | Balance after           |
-| `timestamp`     | number |                                           | Transaction time        |
-| `hash`          | string |                                           | Chain hash (hex)        |
-| `syncStatus`    | string | compound: `[tenantId+syncStatus]`         | `synced` or `pending`   |
-| `syncedAt`      | number |                                           | When synced to server   |
+| Field          | Type   | Index                                 | Description              |
+| -------------- | ------ | ------------------------------------- | ------------------------ |
+| `id`           | number | auto                                  | Local auto-ID            |
+| `tenantId`     | string | compound: `[tenantId+cardId+counter]` | Tenant scope             |
+| `cardId`       | string |                                       | Card identifier          |
+| `counter`      | number |                                       | Transaction counter      |
+| `type`         | string |                                       | debit/credit/checkin/etc |
+| `amount`       | number |                                       | Transaction amount       |
+| `balanceAfter` | number |                                       | Balance after            |
+| `timestamp`    | number |                                       | Transaction time         |
+| `hash`         | string |                                       | Chain hash (hex)         |
+| `syncStatus`   | string | compound: `[tenantId+syncStatus]`     | `synced` or `pending`    |
+| `syncedAt`     | number |                                       | When synced to server    |
 
 ### `syncCursors`
 
-| Field        | Type   | Index                              | Description            |
-| ------------ | ------ | ---------------------------------- | ---------------------- |
-| `tenantId`   | string | compound: `[tenantId+entityType]`  | Tenant scope           |
-| `entityType` | string |                                    | `members`, `cards`, `transactions` |
-| `lastCursor` | string |                                    | Last known cursor      |
-| `updatedAt`  | number |                                    | Last sync time         |
+| Field        | Type   | Index                             | Description                        |
+| ------------ | ------ | --------------------------------- | ---------------------------------- |
+| `tenantId`   | string | compound: `[tenantId+entityType]` | Tenant scope                       |
+| `entityType` | string |                                   | `members`, `cards`, `transactions` |
+| `lastCursor` | string |                                   | Last known cursor                  |
+| `updatedAt`  | number |                                   | Last sync time                     |
 
 ## Outbox pattern
 

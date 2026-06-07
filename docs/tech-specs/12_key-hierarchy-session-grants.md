@@ -33,15 +33,15 @@ Backend Master Key (SESSION_MASTER_KEY, Cloudflare Workers secret, UTF-8 truncat
 
 A session grant is a signed JSON object issued by `GET /api/session-grant`. It provides a terminal with everything needed to perform card operations offline.
 
-| Field        | Type     | Description                                                    |
-| ------------ | -------- | -------------------------------------------------------------- |
-| `keyVersion` | number   | Identifies the key set for deriving card keys (default: 1)     |
-| `sessionKey` | string   | Base64-encoded 32-byte session key                             |
-| `expiresAt`  | number   | Unix timestamp; grant is invalid after this time (24h from issuance) |
-| `allowedOps` | string[] | Operations the terminal may perform (e.g., `["read", "debit", "checkout"]`) |
-| `tenantId`   | string   | Tenant this grant is scoped to                                 |
-| `accountId`  | string   | Authenticated operator's account ID (or "scout-anonymous")     |
-| `deviceId`   | string   | Device fingerprint hash (or query param)                       |
+| Field        | Type     | Description                                                                                     |
+| ------------ | -------- | ----------------------------------------------------------------------------------------------- |
+| `keyVersion` | number   | Identifies the key set for deriving card keys (default: 1)                                      |
+| `sessionKey` | string   | Base64-encoded 32-byte session key                                                              |
+| `expiresAt`  | number   | Unix timestamp; grant is invalid after this time (24h from issuance)                            |
+| `allowedOps` | string[] | Operations the terminal may perform (e.g., `["read", "debit", "checkout"]`)                     |
+| `tenantId`   | string   | Tenant this grant is scoped to                                                                  |
+| `accountId`  | string   | Authenticated operator's account ID (or "scout-anonymous")                                      |
+| `deviceId`   | string   | Device fingerprint hash (or query param)                                                        |
 | `signature`  | string   | Base64url HMAC-SHA256 signature over `{keyVersion, expiresAt, allowedOps, accountId, deviceId}` |
 
 ### Issuance rules
@@ -57,7 +57,7 @@ On the client, the session grant is stored in memory and converted to a `Session
 ```typescript
 interface SessionGrant {
   keyVersion: number;
-  sessionKey: Uint8Array;    // 32 bytes, decoded from base64
+  sessionKey: Uint8Array; // 32 bytes, decoded from base64
   expiresAt: number;
   allowedOps: string[];
   signature: Uint8Array;
@@ -90,9 +90,9 @@ nonce         = HKDF-SHA256(ikm=sessionKey, salt=cardId||counter, info="nonce", 
 
 ## Compromise response
 
-| Scenario               | Response                                                                                     |
-| ---------------------- | -------------------------------------------------------------------------------------------- |
+| Scenario               | Response                                                                                                                                                                                            |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Session key exposed    | Rotate `keyVersion` for the affected tenant. All existing grants become stale. All devices must re-authenticate and obtain new grants. Cards remain readable but must be re-encrypted at a station. |
-| Master key compromised | Emergency rotation of all key material. All tenants affected. All cards require re-keying at a station. |
-| Device compromised     | Block the device via superadmin API. All sessions revoked. Device cannot sync or obtain new grants. |
-| JWT token stolen       | Token expires in 1 hour. Refresh token is device-bound and rotated on each use.              |
+| Master key compromised | Emergency rotation of all key material. All tenants affected. All cards require re-keying at a station.                                                                                             |
+| Device compromised     | Block the device via superadmin API. All sessions revoked. Device cannot sync or obtain new grants.                                                                                                 |
+| JWT token stolen       | Token expires in 1 hour. Refresh token is device-bound and rotated on each use.                                                                                                                     |

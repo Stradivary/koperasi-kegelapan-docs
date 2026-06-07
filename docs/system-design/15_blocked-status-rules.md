@@ -20,12 +20,12 @@ A soft warning may escalate to a hard block if:
 
 ## Behaviour summary
 
-| Status          | Writes | Reads | Recovery                                                     |
-| --------------- | ------ | ----- | ------------------------------------------------------------ |
-| ACTIVE          | ✅     | ✅    | N/A                                                          |
+| Status          | Writes | Reads | Recovery                                                                   |
+| --------------- | ------ | ----- | -------------------------------------------------------------------------- |
+| ACTIVE          | ✅     | ✅    | N/A                                                                        |
 | BLOCKED_TAMPER  | ❌     | ✅    | Station `applyResetState` (sets status=ACTIVE, state=IDLE, zeroes session) |
-| BLOCKED_FRAUD   | ❌     | ✅    | Station reissue + backend auth                               |
-| BLOCKED_EXPIRED | ❌     | ✅    | Station renewal via `applyResetState`                        |
-| BLOCKED_ADMIN   | ❌     | ✅    | Station reissue or `applyResetState` + operator confirmation |
+| BLOCKED_FRAUD   | ❌     | ✅    | Station reissue + backend auth                                             |
+| BLOCKED_EXPIRED | ❌     | ✅    | Station renewal via `applyResetState`                                      |
+| BLOCKED_ADMIN   | ❌     | ✅    | Station reissue or `applyResetState` + operator confirmation               |
 
 > Note: The implementation provides `applyBlockStatus(payload, blockedStatus, nowSeconds)` to write a blocked status to the physical card when the local DB indicates the card is blocked but on-card status is still ACTIVE. This ensures offline block enforcement — once the block is written to the card, all terminals (even fully offline ones) will respect it.

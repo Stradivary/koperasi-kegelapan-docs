@@ -4,14 +4,14 @@ This section describes the deployment pattern and runtime for the application.
 
 ## Platform architecture
 
-| Component        | Technology                              | Role                                              |
-| ---------------- | --------------------------------------- | ------------------------------------------------- |
-| Frontend         | React SPA (Vite build), Cloudflare Pages| Static SPA with client-side routing               |
-| Backend API      | Cloudflare Workers (Hono framework)     | Edge-deployed API for auth, sync, grants, admin   |
-| Database         | Cloudflare D1 (SQLite)                  | Primary server-side persistence                   |
-| Analytics        | Cloudflare Analytics Engine             | Sync event tracking, client error monitoring      |
-| Local storage    | IndexedDB via Dexie.js                  | Client-side offline data replica and outbox       |
-| Secret storage   | Cloudflare Workers Secrets              | Master key (`SESSION_MASTER_KEY`)                 |
+| Component      | Technology                               | Role                                            |
+| -------------- | ---------------------------------------- | ----------------------------------------------- |
+| Frontend       | React SPA (Vite build), Cloudflare Pages | Static SPA with client-side routing             |
+| Backend API    | Cloudflare Workers (Hono framework)      | Edge-deployed API for auth, sync, grants, admin |
+| Database       | Cloudflare D1 (SQLite)                   | Primary server-side persistence                 |
+| Analytics      | Cloudflare Analytics Engine              | Sync event tracking, client error monitoring    |
+| Local storage  | IndexedDB via Dexie.js                   | Client-side offline data replica and outbox     |
+| Secret storage | Cloudflare Workers Secrets               | Master key (`SESSION_MASTER_KEY`)               |
 
 ## Deployment pattern
 
@@ -80,16 +80,16 @@ This section describes the deployment pattern and runtime for the application.
 
 ## Data model (D1 tables)
 
-| Table            | Primary Key                      | Rows per tenant (est.) |
-| ---------------- | -------------------------------- | ---------------------- |
-| `tenants`        | `tenant_id`                      | 1 per koperasi         |
-| `accounts`       | `account_id`                     | 5-20 operators         |
-| `users`          | `(tenant_id, user_id)`           | 100-10,000 members     |
-| `cards`          | `(tenant_id, card_id)`           | 100-10,000 cards       |
-| `devices`        | `device_id`                      | 3-10 devices           |
-| `auth_sessions`  | `session_id`                     | active sessions only   |
-| `session_grants` | `grant_id`                       | historical grants      |
-| `transaction_log`| `id` (auto)                      | grows unbounded        |
-| `audit_log`      | `id` (auto)                      | reconciliation events  |
-| `sync_cursors`   | `(tenant_id, device_id, entity)` | 3 per device           |
-| `card_events`    | `id` (auto)                      | SSE event log          |
+| Table             | Primary Key                      | Rows per tenant (est.) |
+| ----------------- | -------------------------------- | ---------------------- |
+| `tenants`         | `tenant_id`                      | 1 per koperasi         |
+| `accounts`        | `account_id`                     | 5-20 operators         |
+| `users`           | `(tenant_id, user_id)`           | 100-10,000 members     |
+| `cards`           | `(tenant_id, card_id)`           | 100-10,000 cards       |
+| `devices`         | `device_id`                      | 3-10 devices           |
+| `auth_sessions`   | `session_id`                     | active sessions only   |
+| `session_grants`  | `grant_id`                       | historical grants      |
+| `transaction_log` | `id` (auto)                      | grows unbounded        |
+| `audit_log`       | `id` (auto)                      | reconciliation events  |
+| `sync_cursors`    | `(tenant_id, device_id, entity)` | 3 per device           |
+| `card_events`     | `id` (auto)                      | SSE event log          |

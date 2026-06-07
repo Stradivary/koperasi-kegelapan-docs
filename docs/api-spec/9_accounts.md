@@ -26,6 +26,7 @@ Create a new account within the authenticated tenant.
 Valid roles: `admin`, `station`, `gate`, `terminal`, `scout`, `kiosk`
 
 **Notes**:
+
 - Password is hashed with PBKDF2-SHA256 (100,000 iterations) before storage.
 - Account is created with `status: "active"` by default.
 - Username must be unique across the system.

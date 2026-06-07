@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koperasi Kegelapan — High-Level Design</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background: #001A41;
+            color: #FCFDFD;
+            min-height: 100vh;
+            padding: 3rem 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FF0025;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.02em;
+        }
+
+        .page-header .subtitle {
+            color: #5A749A;
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        }
+
+        /* Section titles */
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #E8EDF5;
+            margin-bottom: 1.25rem;
+            padding-left: 1rem;
+            border-left: 3px solid #FF0025;
+            letter-spacing: 0.01em;
+        }
+
+        .section-desc {
+            color: #8FA0BD;
+            font-size: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            line-height: 1.7;
+        }
+
+        /* ===== SYSTEM OVERVIEW ===== */
+        .system-overview {
+            margin-bottom: 3.5rem;
+        }
+
+        .system-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* Zone container */
+        .zone {
+            border-radius: 16px;
+            padding: 1.75rem 1.25rem 1.5rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .zone-title {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 2px 12px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .zone--terminal {
+            background: linear-gradient(180deg, rgba(0, 80, 174, 0.08) 0%, rgba(0, 26, 65, 0.4) 100%);
+            border: 1.5px solid rgba(203, 235, 250, 0.2);
+        }
+
+        .zone--terminal .zone-title {
+            background: rgba(0, 80, 174, 0.15);
+            border: 1px solid rgba(203, 235, 250, 0.3);
+            color: #CBEBFA;
+        }
+
+        .zone--cloud {
+            background: linear-gradient(180deg, rgba(255, 0, 37, 0.04) 0%, rgba(0, 26, 65, 0.5) 100%);
+            border: 1.5px solid rgba(255, 0, 37, 0.3);
+            box-shadow: 0 0 60px rgba(255, 0, 37, 0.04);
+        }
+
+        .zone--cloud .zone-title {
+            background: rgba(255, 0, 37, 0.12);
+            border: 1px solid rgba(255, 51, 86, 0.3);
+            color: #FF3356;
+        }
+
+        .zone--card {
+            background: linear-gradient(180deg, rgba(0, 142, 83, 0.08) 0%, rgba(0, 26, 65, 0.4) 100%);
+            border: 1.5px solid rgba(199, 249, 198, 0.2);
+        }
+
+        .zone--card .zone-title {
+            background: rgba(0, 142, 83, 0.12);
+            border: 1px solid rgba(199, 249, 198, 0.3);
+            color: #C7F9C6;
+        }
+
+        /* Component cards */
+        .comp-card {
+            background: rgba(0, 8, 30, 0.6);
+            border-radius: 12px;
+            padding: 0.85rem 1rem;
+            border: 1px solid rgba(90, 116, 154, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .comp-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(90, 116, 154, 0.4);
+        }
+
+        .comp-card .comp-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .comp-card .comp-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .comp-card .comp-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .comp-card .comp-name {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #E8EDF5;
+            margin-bottom: 0.1rem;
+        }
+
+        .comp-card .comp-tech {
+            font-size: 0.58rem;
+            color: #5A749A;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .icon--blue { background: rgba(0, 80, 174, 0.2); color: #CBEBFA; }
+        .icon--red { background: rgba(255, 0, 37, 0.15); color: #FF6680; }
+        .icon--green { background: rgba(0, 142, 83, 0.2); color: #C7F9C6; }
+        .icon--amber { background: rgba(217, 128, 31, 0.2); color: #FEF3D4; }
+        .icon--purple { background: rgba(128, 0, 200, 0.15); color: #E0B8FF; }
+
+        /* Arrows between zones */
+        .zone-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .zone-arrow svg {
+            width: 24px;
+            height: 24px;
+            color: #FF0025;
+            animation: arrowPulse 2s ease-in-out infinite;
+        }
+
+        .zone-arrow .arrow-label {
+            font-size: 0.55rem;
+            color: #5A749A;
+            text-align: center;
+            max-width: 80px;
+        }
+
+        @keyframes arrowPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        /* ===== DATA FLOW ===== */
+        .data-flow {
+            margin-bottom: 3.5rem;
+        }
+
+        .flow-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+        }
+
+        .flow-card {
+            border-radius: 14px;
+            padding: 1.5rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .flow-card--online {
+            background: linear-gradient(160deg, rgba(0, 142, 83, 0.08), rgba(0, 26, 65, 0.4));
+            border: 1.5px solid rgba(199, 249, 198, 0.2);
+        }
+
+        .flow-card--offline {
+            background: linear-gradient(160deg, rgba(217, 128, 31, 0.08), rgba(0, 26, 65, 0.4));
+            border: 1.5px solid rgba(254, 243, 212, 0.2);
+        }
+
+        .flow-card--reconnect {
+            background: linear-gradient(160deg, rgba(0, 80, 174, 0.08), rgba(0, 26, 65, 0.4));
+            border: 1.5px solid rgba(203, 235, 250, 0.2);
+        }
+
+        .flow-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .flow-header .flow-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flow-header .flow-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .flow-header h4 {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .flow-card--online .flow-header h4 { color: #C7F9C6; }
+        .flow-card--offline .flow-header h4 { color: #FEF3D4; }
+        .flow-card--reconnect .flow-header h4 { color: #CBEBFA; }
+
+        .flow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.62rem;
+            color: #8FA0BD;
+            line-height: 1.5;
+        }
+
+        .flow-step .step-num {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.5rem;
+            font-weight: 600;
+            margin-top: 1px;
+        }
+
+        .flow-card--online .step-num { background: rgba(0, 142, 83, 0.2); color: #C7F9C6; }
+        .flow-card--offline .step-num { background: rgba(217, 128, 31, 0.2); color: #FEF3D4; }
+        .flow-card--reconnect .step-num { background: rgba(0, 80, 174, 0.2); color: #CBEBFA; }
+
+        /* ===== CARD STATE MACHINE ===== */
+        .state-machine {
+            margin-bottom: 3.5rem;
+        }
+
+        .state-grid {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            padding: 2rem 1rem;
+            background: rgba(0, 16, 48, 0.5);
+            border: 1px solid rgba(46, 77, 120, 0.3);
+            border-radius: 16px;
+        }
+
+        .state-node {
+            padding: 0.75rem 1.1rem;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 120px;
+            transition: transform 0.2s ease;
+        }
+
+        .state-node:hover {
+            transform: scale(1.05);
+        }
+
+        .state-node .state-icon {
+            margin-bottom: 0.3rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .state-node .state-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .state-node .state-name {
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        .state-node .state-desc {
+            font-size: 0.55rem;
+            font-weight: 400;
+            margin-top: 0.15rem;
+            opacity: 0.8;
+        }
+
+        .state--idle {
+            background: linear-gradient(160deg, #1A3360, #2E4D78);
+            border: 1px solid rgba(203, 235, 250, 0.3);
+        }
+        .state--idle .state-name { color: #CBEBFA; }
+        .state--idle .state-desc { color: #5A749A; }
+        .state--idle .state-icon { color: #CBEBFA; }
+
+        .state--checkedin {
+            background: linear-gradient(160deg, #005C3F, #008E53);
+            border: 1px solid rgba(199, 249, 198, 0.3);
+        }
+        .state--checkedin .state-name { color: #C7F9C6; }
+        .state--checkedin .state-desc { color: rgba(199, 249, 198, 0.7); }
+        .state--checkedin .state-icon { color: #C7F9C6; }
+
+        .state--terminal {
+            background: linear-gradient(160deg, #7A4800, #D9801F);
+            border: 1px solid rgba(254, 243, 212, 0.3);
+        }
+        .state--terminal .state-name { color: #FEF3D4; }
+        .state--terminal .state-desc { color: rgba(254, 243, 212, 0.7); }
+        .state--terminal .state-icon { color: #FEF3D4; }
+
+        .state--checkedout {
+            background: linear-gradient(160deg, #003070, #0050AE);
+            border: 1px solid rgba(203, 235, 250, 0.4);
+        }
+        .state--checkedout .state-name { color: #CBEBFA; }
+        .state--checkedout .state-desc { color: rgba(203, 235, 250, 0.7); }
+        .state--checkedout .state-icon { color: #CBEBFA; }
+
+        .state--blocked {
+            background: linear-gradient(160deg, #6B0014, #990016);
+            border: 1px solid rgba(255, 102, 128, 0.3);
+        }
+        .state--blocked .state-name { color: #FFCCD5; }
+        .state--blocked .state-desc { color: rgba(255, 204, 213, 0.7); }
+        .state--blocked .state-icon { color: #FFCCD5; }
+
+        .state-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.15rem;
+        }
+
+        .state-arrow svg {
+            width: 18px;
+            height: 18px;
+            color: #5A749A;
+        }
+
+        .state-arrow .transition-label {
+            font-size: 0.5rem;
+            color: #5A749A;
+            white-space: nowrap;
+        }
+
+        /* ===== TECH STACK ===== */
+        .tech-stack {
+            margin-bottom: 3.5rem;
+        }
+
+        .stack-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .stack-card {
+            border-radius: 14px;
+            padding: 1.25rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+
+        .stack-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stack-card--frontend {
+            background: linear-gradient(160deg, rgba(0, 80, 174, 0.1), rgba(0, 26, 65, 0.4));
+            border: 1.5px solid rgba(203, 235, 250, 0.2);
+        }
+
+        .stack-card--api {
+            background: linear-gradient(160deg, rgba(255, 0, 37, 0.06), rgba(0, 26, 65, 0.4));
+            border: 1.5px solid rgba(255, 0, 37, 0.2);
+        }
+
+        .stack-card--data {
+            background: linear-gradient(160deg, rgba(0, 142, 83, 0.08), rgba(0, 26, 65, 0.4));
+            border: 1.5px solid rgba(199, 249, 198, 0.2);
+        }
+
+        .stack-card--infra {
+            background: linear-gradient(160deg, rgba(217, 128, 31, 0.08), rgba(0, 26, 65, 0.4));
+            border: 1.5px solid rgba(254, 243, 212, 0.2);
+        }
+
+        .stack-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stack-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .stack-card--frontend .stack-icon { background: rgba(0, 80, 174, 0.2); color: #CBEBFA; }
+        .stack-card--api .stack-icon { background: rgba(255, 0, 37, 0.15); color: #FF6680; }
+        .stack-card--data .stack-icon { background: rgba(0, 142, 83, 0.2); color: #C7F9C6; }
+        .stack-card--infra .stack-icon { background: rgba(217, 128, 31, 0.2); color: #FEF3D4; }
+
+        .stack-card h4 {
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .stack-card--frontend h4 { color: #CBEBFA; }
+        .stack-card--api h4 { color: #FF6680; }
+        .stack-card--data h4 { color: #C7F9C6; }
+        .stack-card--infra h4 { color: #FEF3D4; }
+
+        .stack-techs {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            width: 100%;
+        }
+
+        .stack-tech {
+            font-size: 0.6rem;
+            color: #8FA0BD;
+            background: rgba(0, 8, 30, 0.5);
+            border-radius: 6px;
+            padding: 0.25rem 0.6rem;
+            border: 1px solid rgba(90, 116, 154, 0.15);
+        }
+
+        /* ===== UI LAYERS ===== */
+        .ui-layers {
+            margin-bottom: 3.5rem;
+        }
+
+        .layers-flow {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            padding: 1.5rem;
+            background: rgba(0, 16, 48, 0.5);
+            border: 1px solid rgba(46, 77, 120, 0.3);
+            border-radius: 16px;
+        }
+
+        .layer-card {
+            flex: 1;
+            padding: 1.25rem 0.75rem;
+            border-radius: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .layer-card .layer-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .layer-card .layer-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .layer-card h4 {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .layer-card .layer-desc {
+            font-size: 0.58rem;
+            color: #8FA0BD;
+            line-height: 1.5;
+        }
+
+        .layer--route {
+            background: rgba(128, 0, 200, 0.08);
+            border: 1px solid rgba(224, 184, 255, 0.15);
+        }
+        .layer--route .layer-icon { background: rgba(128, 0, 200, 0.2); color: #E0B8FF; }
+        .layer--route h4 { color: #E0B8FF; }
+
+        .layer--section {
+            background: rgba(255, 0, 37, 0.05);
+            border: 1px solid rgba(255, 102, 128, 0.15);
+        }
+        .layer--section .layer-icon { background: rgba(255, 0, 37, 0.15); color: #FF6680; }
+        .layer--section h4 { color: #FF6680; }
+
+        .layer--block {
+            background: rgba(0, 80, 174, 0.06);
+            border: 1px solid rgba(203, 235, 250, 0.15);
+        }
+        .layer--block .layer-icon { background: rgba(0, 80, 174, 0.2); color: #CBEBFA; }
+        .layer--block h4 { color: #CBEBFA; }
+
+        .layer--layout {
+            background: rgba(0, 142, 83, 0.06);
+            border: 1px solid rgba(199, 249, 198, 0.12);
+        }
+        .layer--layout .layer-icon { background: rgba(0, 142, 83, 0.2); color: #C7F9C6; }
+        .layer--layout h4 { color: #C7F9C6; }
+
+        .layer--ui {
+            background: rgba(217, 128, 31, 0.06);
+            border: 1px solid rgba(254, 243, 212, 0.12);
+        }
+        .layer--ui .layer-icon { background: rgba(217, 128, 31, 0.2); color: #FEF3D4; }
+        .layer--ui h4 { color: #FEF3D4; }
+
+        .layer-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 32px;
+            padding: 0 0.15rem;
+        }
+
+        .layer-arrow svg {
+            width: 16px;
+            height: 16px;
+            color: #5A749A;
+        }
+
+        /* ===== DEPLOYMENT ===== */
+        .deployment {
+            margin-bottom: 3.5rem;
+        }
+
+        .deploy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .deploy-env {
+            border-radius: 14px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .deploy-env--prod {
+            background: linear-gradient(160deg, rgba(255, 0, 37, 0.06), rgba(0, 26, 65, 0.4));
+            border: 1.5px solid rgba(255, 0, 37, 0.25);
+        }
+
+        .deploy-env--staging {
+            background: linear-gradient(160deg, rgba(217, 128, 31, 0.06), rgba(0, 26, 65, 0.4));
+            border: 1.5px solid rgba(254, 243, 212, 0.2);
+        }
+
+        .deploy-env-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .deploy-env-header .env-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .deploy-env-header .env-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .deploy-env--prod .env-icon { background: rgba(255, 0, 37, 0.15); color: #FF6680; }
+        .deploy-env--staging .env-icon { background: rgba(217, 128, 31, 0.2); color: #FEF3D4; }
+
+        .deploy-env-header h4 {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .deploy-env--prod .deploy-env-header h4 { color: #FF6680; }
+        .deploy-env--staging .deploy-env-header h4 { color: #FEF3D4; }
+
+        .deploy-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .deploy-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 8, 30, 0.5);
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid rgba(90, 116, 154, 0.1);
+        }
+
+        .deploy-item svg {
+            width: 14px;
+            height: 14px;
+            color: #5A749A;
+            flex-shrink: 0;
+        }
+
+        .deploy-item .deploy-label {
+            font-size: 0.62rem;
+            color: #8FA0BD;
+            flex: 1;
+        }
+
+        .deploy-item .deploy-value {
+            font-size: 0.58rem;
+            color: #5A749A;
+            font-weight: 400;
+        }
+
+        /* ===== SECURITY ===== */
+        .security {
+            margin-bottom: 3.5rem;
+        }
+
+        .security-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .security-card {
+            border-radius: 14px;
+            padding: 1.25rem 1rem;
+            background: rgba(0, 16, 48, 0.5);
+            border: 1px solid rgba(46, 77, 120, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .security-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .security-card .sec-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 0, 37, 0.1);
+            color: #FF6680;
+        }
+
+        .security-card .sec-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .security-card h4 {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #E8EDF5;
+        }
+
+        .security-card .sec-desc {
+            font-size: 0.58rem;
+            color: #8FA0BD;
+            line-height: 1.5;
+        }
+
+        /* ===== LEGEND ===== */
+        .legend {
+            margin-top: 2.5rem;
+            display: flex;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 16, 48, 0.5);
+            border: 1px solid rgba(46, 77, 120, 0.3);
+            border-radius: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.68rem;
+            color: #8FA0BD;
+            font-weight: 400;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .legend-color--blue { background: #0050AE; }
+        .legend-color--red { background: #CC001E; }
+        .legend-color--green { background: #008E53; }
+        .legend-color--amber { background: #D9801F; }
+        .legend-color--purple { background: #7B00C8; }
+
+        /* Footer */
+        .footer {
+            margin-top: 2.5rem;
+            text-align: center;
+        }
+
+        .footer .byline {
+            font-size: 0.65rem;
+            color: #4E5784;
+            font-weight: 400;
+        }
+
+        .footer .brand {
+            font-size: 0.6rem;
+            color: #2E4D78;
+            margin-top: 0.2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .system-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .zone-arrow { display: none; }
+            .stack-grid { grid-template-columns: repeat(2, 1fr); }
+            .flow-container { grid-template-columns: 1fr; }
+            .layers-flow { flex-direction: column; }
+            .layer-arrow { min-width: unset; min-height: 24px; transform: rotate(90deg); }
+            .security-grid { grid-template-columns: 1fr; }
+            .deploy-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <header class="page-header">
+            <h1>Koperasi Kegelapan</h1>
+            <p class="subtitle">High-Level Design — System Architecture Overview</p>
+        </header>
+
+        <!-- ===== SYSTEM OVERVIEW ===== -->
+        <section class="system-overview">
+            <h2 class="section-title">System Overview</h2>
+            <p class="section-desc">
+                Offline-first NFC cooperative wallet system. Terminals authorize transactions locally using cryptographic proofs stored on NTAG215 cards, syncing with the cloud when connectivity is available.
+            </p>
+
+            <div class="system-grid">
+                <!-- NFC Card Zone -->
+                <div class="zone zone--card">
+                    <span class="zone-title">NFC Card (NTAG215)</span>
+                    <div class="comp-card">
+                        <div class="comp-icon icon--green"><i data-lucide="credit-card"></i></div>
+                        <div class="comp-info">
+                            <div class="comp-name">496-Byte Encrypted Payload</div>
+                            <div class="comp-tech">Identity · Wallet · Session · Transaction Log</div>
+                        </div>
+                    </div>
+                    <div class="comp-card">
+                        <div class="comp-icon icon--green"><i data-lucide="layers"></i></div>
+                        <div class="comp-info">
+                            <div class="comp-name">A/B Buffer Strategy</div>
+                            <div class="comp-tech">Safe write with rollback support</div>
+                        </div>
+                    </div>
+                    <div class="comp-card">
+                        <div class="comp-icon icon--green"><i data-lucide="link"></i></div>
+                        <div class="comp-info">
+                            <div class="comp-name">Tamper-Evident Log Chain</div>
+                            <div class="comp-tech">SHA-256 hash chain per transaction</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arrow: Card → Terminal -->
+                <div class="zone-arrow">
+                    <i data-lucide="arrow-right"></i>
+                    <span class="arrow-label">Web NFC API</span>
+                </div>
+
+                <!-- Terminal Zone -->
+                <div class="zone zone--terminal">
+                    <span class="zone-title">NFC Terminal (Android PWA)</span>
+                    <div class="comp-card">
+                        <div class="comp-icon icon--blue"><i data-lucide="hard-drive"></i></div>
+                        <div class="comp-info">
+                            <div class="comp-name">Service Worker (Workbox)</div>
+                            <div class="comp-tech">Offline cache · Background sync</div>
+                        </div>
+                    </div>
+                    <div class="comp-card">
+                        <div class="comp-icon icon--blue"><i data-lucide="database"></i></div>
+                        <div class="comp-info">
+                            <div class="comp-name">IndexedDB (Dexie)</div>
+                            <div class="comp-tech">Policy cache · Card snapshots · Outbox</div>
+                        </div>
+                    </div>
+                    <div class="comp-card">
+                        <div class="comp-icon icon--blue"><i data-lucide="shield-check"></i></div>
+                        <div class="comp-info">
+                            <div class="comp-name">Crypto Engine</div>
+                            <div class="comp-tech">AES-GCM · HKDF · HMAC · PBKDF2</div>
+                        </div>
+                    </div>
+                    <div class="comp-card">
+                        <div class="comp-icon icon--blue"><i data-lucide="workflow"></i></div>
+                        <div class="comp-info">
+                            <div class="comp-name">NFC Pipeline Engine</div>
+                            <div class="comp-tech">Read → Validate → Process → Write</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arrow: Terminal → Cloud -->
+                <div class="zone-arrow">
+                    <i data-lucide="arrow-right"></i>
+                    <span class="arrow-label">Online Sync</span>
+                </div>
+
+                <!-- Cloudflare Zone -->
+                <div class="zone zone--cloud">
+                    <span class="zone-title">Cloudflare Edge Network</span>
+                    <div class="comp-card">
+                        <div class="comp-icon icon--red"><i data-lucide="globe"></i></div>
+                        <div class="comp-info">
+                            <div class="comp-name">Cloudflare Pages</div>
+                            <div class="comp-tech">React 19 SPA (PWA) · TanStack Router · Vite 8</div>
+                        </div>
+                    </div>
+                    <div class="comp-card">
+                        <div class="comp-icon icon--red"><i data-lucide="server"></i></div>
+                        <div class="comp-info">
+                            <div class="comp-name">Cloudflare Workers</div>
+                            <div class="comp-tech">Hono API Framework · 11 route modules</div>
+                        </div>
+                    </div>
+                    <div class="comp-card">
+                        <div class="comp-icon icon--red"><i data-lucide="database"></i></div>
+                        <div class="comp-info">
+                            <div class="comp-name">Cloudflare D1</div>
+                            <div class="comp-tech">SQLite · Drizzle ORM · 11 tables</div>
+                        </div>
+                    </div>
+                    <div class="comp-card">
+                        <div class="comp-icon icon--red"><i data-lucide="bar-chart-3"></i></div>
+                        <div class="comp-info">
+                            <div class="comp-name">Analytics Engine</div>
+                            <div class="comp-tech">Client errors · Sync analytics · Metrics</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== DATA FLOW ===== -->
+        <section class="data-flow">
+            <h2 class="section-title">Data Flow — Online / Offline / Reconnect</h2>
+            <p class="section-desc">
+                The system operates in three modes: online (full server connectivity), offline (local crypto validation + outbox queuing), and reconnect (batch reconciliation upload).
+            </p>
+
+            <div class="flow-container">
+                <!-- Online -->
+                <div class="flow-card flow-card--online">
+                    <div class="flow-header">
+                        <div class="flow-icon icon--green"><i data-lucide="wifi"></i></div>
+                        <h4>Online Mode</h4>
+                    </div>
+                    <div class="flow-steps">
+                        <div class="flow-step">
+                            <span class="step-num">1</span>
+                            <span>POST /api/auth → Login & token issuance</span>
+                        </div>
+                        <div class="flow-step">
+                            <span class="step-num">2</span>
+                            <span>GET /api/session-grant → Signed 24h grant</span>
+                        </div>
+                        <div class="flow-step">
+                            <span class="step-num">3</span>
+                            <span>GET /api/policy → Tenant policy download</span>
+                        </div>
+                        <div class="flow-step">
+                            <span class="step-num">4</span>
+                            <span>Store grant + policy in IndexedDB locally</span>
+                        </div>
+                        <div class="flow-step">
+                            <span class="step-num">5</span>
+                            <span>Bidirectional sync via SSE + entity push</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Offline -->
+                <div class="flow-card flow-card--offline">
+                    <div class="flow-header">
+                        <div class="flow-icon icon--amber"><i data-lucide="wifi-off"></i></div>
+                        <h4>Offline Mode</h4>
+                    </div>
+                    <div class="flow-steps">
+                        <div class="flow-step">
+                            <span class="step-num">1</span>
+                            <span>Load session grant from IndexedDB</span>
+                        </div>
+                        <div class="flow-step">
+                            <span class="step-num">2</span>
+                            <span>Validate grant (expiry, ops, device scope)</span>
+                        </div>
+                        <div class="flow-step">
+                            <span class="step-num">3</span>
+                            <span>NFC Read → Decode → Validate → Process</span>
+                        </div>
+                        <div class="flow-step">
+                            <span class="step-num">4</span>
+                            <span>Write updated payload back to NFC card</span>
+                        </div>
+                        <div class="flow-step">
+                            <span class="step-num">5</span>
+                            <span>Queue transaction to reconciliation outbox</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reconnect -->
+                <div class="flow-card flow-card--reconnect">
+                    <div class="flow-header">
+                        <div class="flow-icon icon--blue"><i data-lucide="refresh-cw"></i></div>
+                        <h4>Reconnect Sync</h4>
+                    </div>
+                    <div class="flow-steps">
+                        <div class="flow-step">
+                            <span class="step-num">1</span>
+                            <span>Detect connectivity restored</span>
+                        </div>
+                        <div class="flow-step">
+                            <span class="step-num">2</span>
+                            <span>POST /api/reconcile → Batch outbox upload</span>
+                        </div>
+                        <div class="flow-step">
+                            <span class="step-num">3</span>
+                            <span>Server validates & persists transactions</span>
+                        </div>
+                        <div class="flow-step">
+                            <span class="step-num">4</span>
+                            <span>Receive reconciliation result + new cursor</span>
+                        </div>
+                        <div class="flow-step">
+                            <span class="step-num">5</span>
+                            <span>Clear outbox · Refresh policy & grants</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CARD STATE MACHINE ===== -->
+        <section class="state-machine">
+            <h2 class="section-title">Card State Machine</h2>
+            <p class="section-desc">
+                Each NFC card maintains a state field controlling allowed operations. State transitions are enforced on-card before any write occurs.
+            </p>
+
+            <div class="state-grid">
+                <div class="state-node state--idle">
+                    <div class="state-icon"><i data-lucide="circle"></i></div>
+                    <div class="state-name">IDLE</div>
+                    <div class="state-desc">Issued / session cleared</div>
+                </div>
+
+                <div class="state-arrow">
+                    <i data-lucide="chevron-right"></i>
+                    <span class="transition-label">Gate check-in</span>
+                </div>
+
+                <div class="state-node state--checkedin">
+                    <div class="state-icon"><i data-lucide="log-in"></i></div>
+                    <div class="state-name">CHECKED_IN</div>
+                    <div class="state-desc">Active session</div>
+                </div>
+
+                <div class="state-arrow">
+                    <i data-lucide="chevron-right"></i>
+                    <span class="transition-label">Debit / Credit</span>
+                </div>
+
+                <div class="state-node state--terminal">
+                    <div class="state-icon"><i data-lucide="zap"></i></div>
+                    <div class="state-name">TERMINAL_OP</div>
+                    <div class="state-desc">Transaction active</div>
+                </div>
+
+                <div class="state-arrow">
+                    <i data-lucide="chevron-right"></i>
+                    <span class="transition-label">Gate check-out</span>
+                </div>
+
+                <div class="state-node state--checkedout">
+                    <div class="state-icon"><i data-lucide="log-out"></i></div>
+                    <div class="state-name">CHECKED_OUT</div>
+                    <div class="state-desc">Session ended</div>
+                </div>
+
+                <div class="state-arrow">
+                    <i data-lucide="chevron-right"></i>
+                    <span class="transition-label">Tamper / Fraud</span>
+                </div>
+
+                <div class="state-node state--blocked">
+                    <div class="state-icon"><i data-lucide="shield-off"></i></div>
+                    <div class="state-name">BLOCKED</div>
+                    <div class="state-desc">Tamper · Fraud · Expired</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TECH STACK ===== -->
+        <section class="tech-stack">
+            <h2 class="section-title">Technology Stack</h2>
+            <p class="section-desc">
+                Full-stack TypeScript running on Cloudflare's edge network. Frontend is a PWA; API is serverless; database is distributed SQLite.
+            </p>
+
+            <div class="stack-grid">
+                <!-- Frontend -->
+                <div class="stack-card stack-card--frontend">
+                    <div class="stack-icon"><i data-lucide="monitor"></i></div>
+                    <h4>Frontend</h4>
+                    <div class="stack-techs">
+                        <span class="stack-tech">React 19</span>
+                        <span class="stack-tech">TanStack Router</span>
+                        <span class="stack-tech">Vite 8</span>
+                        <span class="stack-tech">Tailwind CSS v4</span>
+                        <span class="stack-tech">Workbox PWA</span>
+                        <span class="stack-tech">Lucide Icons</span>
+                    </div>
+                </div>
+
+                <!-- API -->
+                <div class="stack-card stack-card--api">
+                    <div class="stack-icon"><i data-lucide="server"></i></div>
+                    <h4>API Layer</h4>
+                    <div class="stack-techs">
+                        <span class="stack-tech">Hono Framework</span>
+                        <span class="stack-tech">Cloudflare Workers</span>
+                        <span class="stack-tech">JWT Auth</span>
+                        <span class="stack-tech">Rate Limiting</span>
+                        <span class="stack-tech">SSE (Real-time)</span>
+                    </div>
+                </div>
+
+                <!-- Data -->
+                <div class="stack-card stack-card--data">
+                    <div class="stack-icon"><i data-lucide="database"></i></div>
+                    <h4>Data Layer</h4>
+                    <div class="stack-techs">
+                        <span class="stack-tech">Cloudflare D1 (SQLite)</span>
+                        <span class="stack-tech">Drizzle ORM</span>
+                        <span class="stack-tech">IndexedDB (Dexie)</span>
+                        <span class="stack-tech">11 DB Tables</span>
+                        <span class="stack-tech">Outbox Pattern</span>
+                    </div>
+                </div>
+
+                <!-- Infrastructure -->
+                <div class="stack-card stack-card--infra">
+                    <div class="stack-icon"><i data-lucide="cloud"></i></div>
+                    <h4>Infrastructure</h4>
+                    <div class="stack-techs">
+                        <span class="stack-tech">Cloudflare Pages</span>
+                        <span class="stack-tech">Cloudflare Workers</span>
+                        <span class="stack-tech">Analytics Engine</span>
+                        <span class="stack-tech">GitHub Actions CI</span>
+                        <span class="stack-tech">Wrangler CLI</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== UI ARCHITECTURE LAYERS ===== -->
+        <section class="ui-layers">
+            <h2 class="section-title">UI Architecture — Atomic Component Layers</h2>
+            <p class="section-desc">
+                Unidirectional data flow from Route extraction through Section orchestration to Block rendering. Each layer has a single responsibility.
+            </p>
+
+            <div class="layers-flow">
+                <div class="layer-card layer--route">
+                    <div class="layer-icon"><i data-lucide="navigation"></i></div>
+                    <h4>Route</h4>
+                    <div class="layer-desc">Extract params<br>File-based routing</div>
+                </div>
+
+                <div class="layer-arrow"><i data-lucide="chevron-right"></i></div>
+
+                <div class="layer-card layer--section">
+                    <div class="layer-icon"><i data-lucide="layout"></i></div>
+                    <h4>Section</h4>
+                    <div class="layer-desc">Hooks · State<br>Orchestration</div>
+                </div>
+
+                <div class="layer-arrow"><i data-lucide="chevron-right"></i></div>
+
+                <div class="layer-card layer--block">
+                    <div class="layer-icon"><i data-lucide="component"></i></div>
+                    <h4>Block</h4>
+                    <div class="layer-desc">Pure render<br>Props & callbacks</div>
+                </div>
+
+                <div class="layer-arrow"><i data-lucide="chevron-right"></i></div>
+
+                <div class="layer-card layer--layout">
+                    <div class="layer-icon"><i data-lucide="columns"></i></div>
+                    <h4>Layout</h4>
+                    <div class="layer-desc">Slot structure<br>Named children</div>
+                </div>
+
+                <div class="layer-arrow"><i data-lucide="chevron-right"></i></div>
+
+                <div class="layer-card layer--ui">
+                    <div class="layer-icon"><i data-lucide="square"></i></div>
+                    <h4>UI Primitives</h4>
+                    <div class="layer-desc">Button · Input<br>Badge · Dialog</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECURITY ===== -->
+        <section class="security">
+            <h2 class="section-title">Security Architecture</h2>
+            <p class="section-desc">
+                Multi-layered defense: card-level crypto, session grants for offline trust, device binding, and server-side fraud detection.
+            </p>
+
+            <div class="security-grid">
+                <div class="security-card">
+                    <div class="sec-icon"><i data-lucide="lock"></i></div>
+                    <h4>Card Encryption</h4>
+                    <div class="sec-desc">AES-256-GCM payload encryption with HMAC signing. Tamper detection via hash chain integrity.</div>
+                </div>
+                <div class="security-card">
+                    <div class="sec-icon"><i data-lucide="key-round"></i></div>
+                    <h4>Session Grants</h4>
+                    <div class="sec-desc">Signed 24h grants scoped by tenant, account, device, and permitted operations for offline trust.</div>
+                </div>
+                <div class="security-card">
+                    <div class="sec-icon"><i data-lucide="shield-alert"></i></div>
+                    <h4>Tamper Detection</h4>
+                    <div class="sec-desc">Counter mismatch detection, replay protection, and automatic card blocking on integrity failure.</div>
+                </div>
+                <div class="security-card">
+                    <div class="sec-icon"><i data-lucide="smartphone"></i></div>
+                    <h4>Device Binding</h4>
+                    <div class="sec-desc">Device fingerprinting with block-list enforcement. Unknown devices rejected at middleware level.</div>
+                </div>
+                <div class="security-card">
+                    <div class="sec-icon"><i data-lucide="gauge"></i></div>
+                    <h4>Rate Limiting</h4>
+                    <div class="sec-desc">60 req/min per device on sync routes. Auth-specific rate limiting to prevent brute force.</div>
+                </div>
+                <div class="security-card">
+                    <div class="sec-icon"><i data-lucide="scroll-text"></i></div>
+                    <h4>Audit Trail</h4>
+                    <div class="sec-desc">Full audit log with card ID, counter, amount, timestamp, and hash for every state-changing operation.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== DEPLOYMENT ===== -->
+        <section class="deployment">
+            <h2 class="section-title">Deployment Topology</h2>
+            <p class="section-desc">
+                Two environments: production (tagged releases) and staging (develop branch). CI pipeline runs lint, typecheck, and tests before deploy.
+            </p>
+
+            <div class="deploy-grid">
+                <!-- Production -->
+                <div class="deploy-env deploy-env--prod">
+                    <div class="deploy-env-header">
+                        <div class="env-icon"><i data-lucide="rocket"></i></div>
+                        <h4>Production</h4>
+                    </div>
+                    <div class="deploy-items">
+                        <div class="deploy-item">
+                            <i data-lucide="globe"></i>
+                            <span class="deploy-label">Cloudflare Pages</span>
+                            <span class="deploy-value">ahmadmuzaki.my.id</span>
+                        </div>
+                        <div class="deploy-item">
+                            <i data-lucide="server"></i>
+                            <span class="deploy-label">Cloudflare Workers</span>
+                            <span class="deploy-value">wrangler.api.jsonc</span>
+                        </div>
+                        <div class="deploy-item">
+                            <i data-lucide="database"></i>
+                            <span class="deploy-label">D1 Database</span>
+                            <span class="deploy-value">Production</span>
+                        </div>
+                        <div class="deploy-item">
+                            <i data-lucide="git-branch"></i>
+                            <span class="deploy-label">Trigger</span>
+                            <span class="deploy-value">v* tags</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Staging -->
+                <div class="deploy-env deploy-env--staging">
+                    <div class="deploy-env-header">
+                        <div class="env-icon"><i data-lucide="flask-conical"></i></div>
+                        <h4>Staging</h4>
+                    </div>
+                    <div class="deploy-items">
+                        <div class="deploy-item">
+                            <i data-lucide="globe"></i>
+                            <span class="deploy-label">Cloudflare Pages</span>
+                            <span class="deploy-value">develop.*.pages.dev</span>
+                        </div>
+                        <div class="deploy-item">
+                            <i data-lucide="server"></i>
+                            <span class="deploy-label">Cloudflare Workers</span>
+                            <span class="deploy-value">wrangler.api.staging.jsonc</span>
+                        </div>
+                        <div class="deploy-item">
+                            <i data-lucide="database"></i>
+                            <span class="deploy-label">D1 Database</span>
+                            <span class="deploy-value">Staging</span>
+                        </div>
+                        <div class="deploy-item">
+                            <i data-lucide="git-branch"></i>
+                            <span class="deploy-label">Trigger</span>
+                            <span class="deploy-value">develop branch</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Legend -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color legend-color--blue"></div>
+                <span>Terminal / Frontend</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-color--red"></div>
+                <span>Cloudflare Edge / API</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-color--green"></div>
+                <span>NFC Card / Crypto</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-color--amber"></div>
+                <span>Data / Infrastructure</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color legend-color--purple"></div>
+                <span>Routing / Navigation</span>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p class="byline">By Ahmad Muzaki</p>
+            <p class="brand">Koperasi Kegelapan — Offline NFC Cooperative Wallet</p>
+        </footer>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -26,6 +26,7 @@ Trailer rootHash = entry[last].hash (4 bytes, zero-padded to 6 bytes in trailer)
 ```
 
 **Hash input (16 bytes):**
+
 - bytes 0-3: `timestamp` (uint32, little-endian)
 - bytes 4-6: `amount` (uint24, little-endian)
 - bytes 7-10: `balanceAfter` (uint32, little-endian)

@@ -1,0 +1,243 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="feGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#E8F0FE"/><stop offset="100%" stop-color="#D2E3FC"/></linearGradient>
+    <linearGradient id="apiGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FCE8E6"/><stop offset="100%" stop-color="#F8CFCB"/></linearGradient>
+    <linearGradient id="dataGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#E6F4EA"/><stop offset="100%" stop-color="#CEEAD6"/></linearGradient>
+    <linearGradient id="infraGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FEF7E0"/><stop offset="100%" stop-color="#FDE293"/></linearGradient>
+    <linearGradient id="secGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#F3E8FD"/><stop offset="100%" stop-color="#E8D5F5"/></linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="540" fill="#FFFFFF" rx="4"/>
+
+  <!-- Title -->
+  <text x="480" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#CC001E">Koperasi Kegelapan — Technology Stack</text>
+  <text x="480" y="44" text-anchor="middle" font-size="9" fill="#5F6368">Full-stack TypeScript · Cloudflare Edge · Offline-First PWA · End-to-End Encryption</text>
+
+  <!-- ===== FRONTEND COLUMN ===== -->
+  <rect x="20" y="58" width="180" height="310" rx="8" fill="url(#feGrad)" stroke="#4285F4" stroke-width="1.2"/>
+  <text x="110" y="78" text-anchor="middle" font-size="10" font-weight="700" fill="#1A73E8">🖥️ FRONTEND</text>
+  <text x="110" y="91" text-anchor="middle" font-size="7" fill="#5F6368">React 19 SPA (PWA)</text>
+
+  <rect x="30" y="100" width="160" height="20" rx="4" fill="#FFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="110" y="114" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">React 19</text>
+
+  <rect x="30" y="124" width="160" height="20" rx="4" fill="#FFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="110" y="138" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">TanStack Router</text>
+
+  <rect x="30" y="148" width="160" height="20" rx="4" fill="#FFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="110" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">TanStack Query</text>
+
+  <rect x="30" y="172" width="160" height="20" rx="4" fill="#FFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="110" y="186" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">Vite 8</text>
+
+  <rect x="30" y="196" width="160" height="20" rx="4" fill="#FFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="110" y="210" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">Tailwind CSS v4</text>
+
+  <rect x="30" y="220" width="160" height="20" rx="4" fill="#FFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="110" y="234" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">Workbox PWA</text>
+
+  <rect x="30" y="244" width="160" height="20" rx="4" fill="#FFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="110" y="258" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">Radix UI / shadcn</text>
+
+  <rect x="30" y="268" width="160" height="20" rx="4" fill="#FFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="110" y="282" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">Lucide Icons</text>
+
+  <rect x="30" y="292" width="160" height="20" rx="4" fill="#FFF" stroke="#4285F4" stroke-width="0.5"/>
+  <text x="110" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">React Hook Form</text>
+
+  <text x="110" y="340" text-anchor="middle" font-size="6.5" fill="#5F6368">Deploy: Cloudflare Pages</text>
+  <text x="110" y="352" text-anchor="middle" font-size="6.5" fill="#5F6368">Target: Chrome Android PWA</text>
+
+  <!-- ===== API COLUMN ===== -->
+  <rect x="210" y="58" width="180" height="310" rx="8" fill="url(#apiGrad)" stroke="#EA4335" stroke-width="1.2"/>
+  <text x="300" y="78" text-anchor="middle" font-size="10" font-weight="700" fill="#C5221F">⚡ API LAYER</text>
+  <text x="300" y="91" text-anchor="middle" font-size="7" fill="#5F6368">Hono on CF Workers</text>
+
+  <rect x="220" y="100" width="160" height="20" rx="4" fill="#FFF" stroke="#EA4335" stroke-width="0.5"/>
+  <text x="300" y="114" text-anchor="middle" font-size="7" font-weight="600" fill="#C5221F">Hono Framework</text>
+
+  <rect x="220" y="124" width="160" height="20" rx="4" fill="#FFF" stroke="#EA4335" stroke-width="0.5"/>
+  <text x="300" y="138" text-anchor="middle" font-size="7" font-weight="600" fill="#C5221F">Cloudflare Workers</text>
+
+  <rect x="220" y="148" width="160" height="20" rx="4" fill="#FFF" stroke="#EA4335" stroke-width="0.5"/>
+  <text x="300" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#C5221F">JWT Auth (HS256)</text>
+
+  <rect x="220" y="172" width="160" height="20" rx="4" fill="#FFF" stroke="#EA4335" stroke-width="0.5"/>
+  <text x="300" y="186" text-anchor="middle" font-size="7" font-weight="600" fill="#C5221F">Rate Limiting</text>
+
+  <rect x="220" y="196" width="160" height="20" rx="4" fill="#FFF" stroke="#EA4335" stroke-width="0.5"/>
+  <text x="300" y="210" text-anchor="middle" font-size="7" font-weight="600" fill="#C5221F">SSE (Server-Sent Events)</text>
+
+  <rect x="220" y="220" width="160" height="20" rx="4" fill="#FFF" stroke="#EA4335" stroke-width="0.5"/>
+  <text x="300" y="234" text-anchor="middle" font-size="7" font-weight="600" fill="#C5221F">CORS Middleware</text>
+
+  <rect x="220" y="244" width="160" height="20" rx="4" fill="#FFF" stroke="#EA4335" stroke-width="0.5"/>
+  <text x="300" y="258" text-anchor="middle" font-size="7" font-weight="600" fill="#C5221F">Device Block Check</text>
+
+  <rect x="220" y="268" width="160" height="20" rx="4" fill="#FFF" stroke="#EA4335" stroke-width="0.5"/>
+  <text x="300" y="282" text-anchor="middle" font-size="7" font-weight="600" fill="#C5221F">Sync Analytics</text>
+
+  <text x="300" y="310" text-anchor="middle" font-size="6.5" fill="#5F6368">11 Route Modules:</text>
+  <text x="300" y="322" text-anchor="middle" font-size="6" fill="#5F6368">auth · accounts · cards · sync</text>
+  <text x="300" y="333" text-anchor="middle" font-size="6" fill="#5F6368">session-grant · policy · reconcile</text>
+  <text x="300" y="344" text-anchor="middle" font-size="6" fill="#5F6368">tenants · superadmin · push · errors</text>
+  <text x="300" y="358" text-anchor="middle" font-size="6.5" fill="#5F6368">Deploy: CF Workers (edge)</text>
+
+  <!-- ===== DATA COLUMN ===== -->
+  <rect x="400" y="58" width="180" height="310" rx="8" fill="url(#dataGrad)" stroke="#34A853" stroke-width="1.2"/>
+  <text x="490" y="78" text-anchor="middle" font-size="10" font-weight="700" fill="#137333">🗄️ DATA LAYER</text>
+  <text x="490" y="91" text-anchor="middle" font-size="7" fill="#5F6368">Server + Client storage</text>
+
+  <rect x="410" y="100" width="160" height="20" rx="4" fill="#FFF" stroke="#34A853" stroke-width="0.5"/>
+  <text x="490" y="114" text-anchor="middle" font-size="7" font-weight="600" fill="#137333">Cloudflare D1 (SQLite)</text>
+
+  <rect x="410" y="124" width="160" height="20" rx="4" fill="#FFF" stroke="#34A853" stroke-width="0.5"/>
+  <text x="490" y="138" text-anchor="middle" font-size="7" font-weight="600" fill="#137333">Drizzle ORM</text>
+
+  <rect x="410" y="148" width="160" height="20" rx="4" fill="#FFF" stroke="#34A853" stroke-width="0.5"/>
+  <text x="490" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#137333">IndexedDB (Dexie v4)</text>
+
+  <rect x="410" y="172" width="160" height="20" rx="4" fill="#FFF" stroke="#34A853" stroke-width="0.5"/>
+  <text x="490" y="186" text-anchor="middle" font-size="7" font-weight="600" fill="#137333">Outbox Pattern</text>
+
+  <rect x="410" y="196" width="160" height="20" rx="4" fill="#FFF" stroke="#34A853" stroke-width="0.5"/>
+  <text x="490" y="210" text-anchor="middle" font-size="7" font-weight="600" fill="#137333">Sync Cursors</text>
+
+  <text x="490" y="236" text-anchor="middle" font-size="6.5" fill="#5F6368">Server DB (11 tables):</text>
+  <text x="490" y="248" text-anchor="middle" font-size="6" fill="#5F6368">tenants · accounts · users · cards</text>
+  <text x="490" y="259" text-anchor="middle" font-size="6" fill="#5F6368">sessionGrants · auditLog · devices</text>
+  <text x="490" y="270" text-anchor="middle" font-size="6" fill="#5F6368">authSessions · transactionLog</text>
+  <text x="490" y="281" text-anchor="middle" font-size="6" fill="#5F6368">syncCursors · cardEvents</text>
+
+  <rect x="410" y="292" width="160" height="0.5" fill="#34A853" opacity="0.3"/>
+  <text x="490" y="308" text-anchor="middle" font-size="6.5" fill="#5F6368">Client DB (IndexedDB):</text>
+  <text x="490" y="320" text-anchor="middle" font-size="6" fill="#5F6368">tenantContext · cardSnapshot</text>
+  <text x="490" y="331" text-anchor="middle" font-size="6" fill="#5F6368">policyCache · reconcileOutbox</text>
+  <text x="490" y="342" text-anchor="middle" font-size="6" fill="#5F6368">sessionGrant · writeJournal</text>
+  <text x="490" y="358" text-anchor="middle" font-size="6.5" fill="#5F6368">Deploy: D1 (edge-distributed)</text>
+
+  <!-- ===== INFRA COLUMN ===== -->
+  <rect x="590" y="58" width="180" height="310" rx="8" fill="url(#infraGrad)" stroke="#F9AB00" stroke-width="1.2"/>
+  <text x="680" y="78" text-anchor="middle" font-size="10" font-weight="700" fill="#E37400">☁️ INFRASTRUCTURE</text>
+  <text x="680" y="91" text-anchor="middle" font-size="7" fill="#5F6368">Cloudflare platform</text>
+
+  <rect x="600" y="100" width="160" height="20" rx="4" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="680" y="114" text-anchor="middle" font-size="7" font-weight="600" fill="#E37400">Cloudflare Pages</text>
+
+  <rect x="600" y="124" width="160" height="20" rx="4" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="680" y="138" text-anchor="middle" font-size="7" font-weight="600" fill="#E37400">Cloudflare Workers</text>
+
+  <rect x="600" y="148" width="160" height="20" rx="4" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="680" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#E37400">Cloudflare D1</text>
+
+  <rect x="600" y="172" width="160" height="20" rx="4" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="680" y="186" text-anchor="middle" font-size="7" font-weight="600" fill="#E37400">Analytics Engine</text>
+
+  <rect x="600" y="196" width="160" height="20" rx="4" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="680" y="210" text-anchor="middle" font-size="7" font-weight="600" fill="#E37400">Wrangler CLI</text>
+
+  <rect x="600" y="220" width="160" height="20" rx="4" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="680" y="234" text-anchor="middle" font-size="7" font-weight="600" fill="#E37400">GitHub Actions CI/CD</text>
+
+  <rect x="600" y="244" width="160" height="20" rx="4" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="680" y="258" text-anchor="middle" font-size="7" font-weight="600" fill="#E37400">SonarCloud (SAST)</text>
+
+  <rect x="600" y="268" width="160" height="20" rx="4" fill="#FFF" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="680" y="282" text-anchor="middle" font-size="7" font-weight="600" fill="#E37400">OWASP Scanner</text>
+
+  <text x="680" y="310" text-anchor="middle" font-size="6.5" fill="#5F6368">Environments:</text>
+  <text x="680" y="322" text-anchor="middle" font-size="6" fill="#5F6368">Production → v* tags</text>
+  <text x="680" y="333" text-anchor="middle" font-size="6" fill="#5F6368">Staging → develop branch</text>
+  <text x="680" y="348" text-anchor="middle" font-size="6.5" fill="#5F6368">Zero cold starts · Auto-scaling</text>
+  <text x="680" y="360" text-anchor="middle" font-size="6.5" fill="#5F6368">Global edge distribution</text>
+
+  <!-- ===== SECURITY COLUMN ===== -->
+  <rect x="780" y="58" width="162" height="310" rx="8" fill="url(#secGrad)" stroke="#9C27B0" stroke-width="1.2"/>
+  <text x="861" y="78" text-anchor="middle" font-size="10" font-weight="700" fill="#7B1FA2">🔐 SECURITY</text>
+  <text x="861" y="91" text-anchor="middle" font-size="7" fill="#5F6368">Crypto + Auth</text>
+
+  <rect x="790" y="100" width="142" height="20" rx="4" fill="#FFF" stroke="#9C27B0" stroke-width="0.5"/>
+  <text x="861" y="114" text-anchor="middle" font-size="7" font-weight="600" fill="#7B1FA2">AES-256-GCM</text>
+
+  <rect x="790" y="124" width="142" height="20" rx="4" fill="#FFF" stroke="#9C27B0" stroke-width="0.5"/>
+  <text x="861" y="138" text-anchor="middle" font-size="7" font-weight="600" fill="#7B1FA2">HMAC-SHA256</text>
+
+  <rect x="790" y="148" width="142" height="20" rx="4" fill="#FFF" stroke="#9C27B0" stroke-width="0.5"/>
+  <text x="861" y="162" text-anchor="middle" font-size="7" font-weight="600" fill="#7B1FA2">HKDF Key Derivation</text>
+
+  <rect x="790" y="172" width="142" height="20" rx="4" fill="#FFF" stroke="#9C27B0" stroke-width="0.5"/>
+  <text x="861" y="186" text-anchor="middle" font-size="7" font-weight="600" fill="#7B1FA2">PBKDF2 (310K iter)</text>
+
+  <rect x="790" y="196" width="142" height="20" rx="4" fill="#FFF" stroke="#9C27B0" stroke-width="0.5"/>
+  <text x="861" y="210" text-anchor="middle" font-size="7" font-weight="600" fill="#7B1FA2">SHA-256 Hash Chain</text>
+
+  <rect x="790" y="220" width="142" height="20" rx="4" fill="#FFF" stroke="#9C27B0" stroke-width="0.5"/>
+  <text x="861" y="234" text-anchor="middle" font-size="7" font-weight="600" fill="#7B1FA2">Session Grants (24h)</text>
+
+  <rect x="790" y="244" width="142" height="20" rx="4" fill="#FFF" stroke="#9C27B0" stroke-width="0.5"/>
+  <text x="861" y="258" text-anchor="middle" font-size="7" font-weight="600" fill="#7B1FA2">Device Fingerprint</text>
+
+  <rect x="790" y="268" width="142" height="20" rx="4" fill="#FFF" stroke="#9C27B0" stroke-width="0.5"/>
+  <text x="861" y="282" text-anchor="middle" font-size="7" font-weight="600" fill="#7B1FA2">Monotonic Counter</text>
+
+  <rect x="790" y="292" width="142" height="20" rx="4" fill="#FFF" stroke="#9C27B0" stroke-width="0.5"/>
+  <text x="861" y="306" text-anchor="middle" font-size="7" font-weight="600" fill="#7B1FA2">Dual-Buffer Atomics</text>
+
+  <text x="861" y="335" text-anchor="middle" font-size="6.5" fill="#5F6368">Replay protection</text>
+  <text x="861" y="347" text-anchor="middle" font-size="6.5" fill="#5F6368">Tamper detection</text>
+  <text x="861" y="359" text-anchor="middle" font-size="6.5" fill="#5F6368">Auto-block on breach</text>
+
+  <!-- ===== BOTTOM: Dev Tools ===== -->
+  <rect x="20" y="380" width="922" height="145" rx="6" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1"/>
+  <text x="30" y="397" font-size="9" font-weight="700" fill="#202124">Development &amp; Quality Tools</text>
+  <rect x="30" y="403" width="902" height="0.5" fill="#DADCE0"/>
+
+  <!-- Tool grid -->
+  <text x="35" y="420" font-size="7" font-weight="600" fill="#1A73E8">Language:</text>
+  <text x="90" y="420" font-size="7" fill="#202124">TypeScript 6 (strict mode, end-to-end)</text>
+
+  <text x="350" y="420" font-size="7" font-weight="600" fill="#1A73E8">Package Mgr:</text>
+  <text x="425" y="420" font-size="7" fill="#202124">pnpm 11+</text>
+
+  <text x="550" y="420" font-size="7" font-weight="600" fill="#1A73E8">Node:</text>
+  <text x="580" y="420" font-size="7" fill="#202124">22+</text>
+
+  <text x="650" y="420" font-size="7" font-weight="600" fill="#1A73E8">Format:</text>
+  <text x="695" y="420" font-size="7" fill="#202124">oxfmt</text>
+
+  <text x="760" y="420" font-size="7" font-weight="600" fill="#1A73E8">Lint:</text>
+  <text x="785" y="420" font-size="7" fill="#202124">oxlint</text>
+
+  <rect x="30" y="430" width="902" height="0.3" fill="#DADCE0"/>
+
+  <text x="35" y="446" font-size="7" font-weight="600" fill="#137333">Unit Tests:</text>
+  <text x="95" y="446" font-size="7" fill="#202124">Vitest + fast-check (property-based)</text>
+
+  <text x="350" y="446" font-size="7" font-weight="600" fill="#137333">E2E Tests:</text>
+  <text x="405" y="446" font-size="7" fill="#202124">Playwright (11 spec files)</text>
+
+  <text x="600" y="446" font-size="7" font-weight="600" fill="#137333">Coverage:</text>
+  <text x="650" y="446" font-size="7" fill="#202124">@vitest/coverage-v8</text>
+
+  <text x="35" y="462" font-size="7" font-weight="600" fill="#E37400">Git Hooks:</text>
+  <text x="95" y="462" font-size="7" fill="#202124">Husky (pre-commit: lint+format, commit-msg: commitlint)</text>
+
+  <text x="450" y="462" font-size="7" font-weight="600" fill="#E37400">Staged:</text>
+  <text x="490" y="462" font-size="7" fill="#202124">lint-staged (oxlint --fix + oxfmt)</text>
+
+  <rect x="30" y="472" width="902" height="0.3" fill="#DADCE0"/>
+
+  <text x="35" y="488" font-size="7" font-weight="600" fill="#7B1FA2">CI Pipeline:</text>
+  <text x="100" y="488" font-size="7" fill="#202124">GitHub Actions → lint → typecheck → test → build → deploy</text>
+
+  <text x="35" y="502" font-size="7" font-weight="600" fill="#7B1FA2">Static Analysis:</text>
+  <text x="120" y="502" font-size="7" fill="#202124">SonarCloud (Quality Gate) + OWASP Dependency Scanner</text>
+
+  <text x="35" y="516" font-size="7" font-weight="600" fill="#C5221F">Deploy:</text>
+  <text x="72" y="516" font-size="7" fill="#202124">pnpm deploy:pages (Cloudflare Pages) + pnpm deploy:api (Cloudflare Workers) — separate pipelines</text>
+
+  <!-- Footer -->
+  <line x1="20" y1="533" x2="942" y2="533" stroke="#DADCE0" stroke-width="0.5"/>
+  <text x="480" y="538" text-anchor="middle" font-size="6" fill="#80868B">Koperasi Kegelapan · KK Wallet · Technology Stack · By Ahmad Muzaki</text>
+</svg>

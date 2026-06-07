@@ -32,6 +32,7 @@ Upload offline transactions to the server. Idempotent via `idempotencyKey`.
 ```
 
 **Validation rules** (per transaction):
+
 - Required fields: `cardId`, `counter`, `type`, `amount`, `balanceAfter`, `timestamp`, `hash`, `idempotencyKey`
 - Valid types: `debit`, `credit`, `checkin`, `checkout`, `topup`, `admin`
 - `amount`: 0 ≤ amount ≤ 16,000,000
@@ -55,6 +56,7 @@ Upload offline transactions to the server. Idempotent via `idempotencyKey`.
 ```
 
 **Rejection reasons**:
+
 - `malformed_event` — missing required fields or invalid type
 - `invalid_amount` — amount out of range
 - `invalid_balance` — balanceAfter out of range
@@ -65,6 +67,7 @@ Upload offline transactions to the server. Idempotent via `idempotencyKey`.
 - `internal_error` — unexpected server error
 
 **Notes**:
+
 - Maximum batch size: 500 transactions per request. Returns 400 if exceeded.
 - Duplicate `idempotencyKey` entries are silently accepted (idempotent).
 - Token's `tenantId` is authoritative (payload's `tenantId` is logged but ignored).

@@ -58,18 +58,18 @@ This section defines the application contract between the browser UI, terminal f
 
 Full endpoint definitions - payloads, error codes, and constraints - are in the [API Spec](../api-spec/index.md):
 
-| Endpoint                          | Section                                                           |
-| --------------------------------- | ----------------------------------------------------------------- |
-| `POST /api/auth/token`            | [API Spec §2 Authentication](../api-spec/2_auth.md)               |
-| `GET /api/session-grant`          | [API Spec §3 Session Grants](../api-spec/3_session-grants.md)     |
-| `GET /api/policy`                 | [API Spec §4 Policy](../api-spec/4_policy.md)                     |
-| `POST /api/cards`                 | [API Spec §5 Cards](../api-spec/5_cards.md)                       |
-| `GET /api/cards/:cardId`          | [API Spec §5 Cards](../api-spec/5_cards.md)                       |
-| `POST /api/cards/:cardId/topup`   | [API Spec §5 Cards](../api-spec/5_cards.md)                       |
-| `POST /api/cards/:cardId/block`   | [API Spec §5 Cards](../api-spec/5_cards.md)                       |
-| `POST /api/cards/:cardId/reissue` | [API Spec §5 Cards](../api-spec/5_cards.md)                       |
-| `POST /api/reconcile`             | [API Spec §8 Reconciliation](../api-spec/8_reconciliation.md)     |
-| `POST /api/sync/push`             | [API Spec §6 Sync](../api-spec/6_sync.md)                         |
+| Endpoint                          | Section                                                       |
+| --------------------------------- | ------------------------------------------------------------- |
+| `POST /api/auth/token`            | [API Spec §2 Authentication](../api-spec/2_auth.md)           |
+| `GET /api/session-grant`          | [API Spec §3 Session Grants](../api-spec/3_session-grants.md) |
+| `GET /api/policy`                 | [API Spec §4 Policy](../api-spec/4_policy.md)                 |
+| `POST /api/cards`                 | [API Spec §5 Cards](../api-spec/5_cards.md)                   |
+| `GET /api/cards/:cardId`          | [API Spec §5 Cards](../api-spec/5_cards.md)                   |
+| `POST /api/cards/:cardId/topup`   | [API Spec §5 Cards](../api-spec/5_cards.md)                   |
+| `POST /api/cards/:cardId/block`   | [API Spec §5 Cards](../api-spec/5_cards.md)                   |
+| `POST /api/cards/:cardId/reissue` | [API Spec §5 Cards](../api-spec/5_cards.md)                   |
+| `POST /api/reconcile`             | [API Spec §8 Reconciliation](../api-spec/8_reconciliation.md) |
+| `POST /api/sync/push`             | [API Spec §6 Sync](../api-spec/6_sync.md)                     |
 
 ## Terminal behavior
 

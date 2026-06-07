@@ -92,6 +92,7 @@ hash[n] = SHA-256(timestamp_n || amount_n || balanceAfter_n || flags_n || hash[n
 ```
 
 The hash input is a 16-byte buffer:
+
 - bytes 0-3: `timestamp` (uint32, little-endian)
 - bytes 4-6: `amount` (uint24, little-endian)
 - bytes 7-10: `balanceAfter` (uint32, little-endian)

@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="idleG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#E8F0FE"/><stop offset="100%" stop-color="#D2E3FC"/></linearGradient>
+    <linearGradient id="checkinG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#E6F4EA"/><stop offset="100%" stop-color="#CEEAD6"/></linearGradient>
+    <linearGradient id="termOpG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FEF7E0"/><stop offset="100%" stop-color="#FDE293"/></linearGradient>
+    <linearGradient id="checkoutG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#F3E8FD"/><stop offset="100%" stop-color="#E8D5F5"/></linearGradient>
+    <linearGradient id="blockedG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FCE8E6"/><stop offset="100%" stop-color="#F8CFCB"/></linearGradient>
+    <marker id="aFlow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#5F6368"/></marker>
+    <marker id="aBlock" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#CC001E"/></marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="540" fill="#FFFFFF" rx="4"/>
+
+  <!-- Title -->
+  <text x="480" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#CC001E">Koperasi Kegelapan — Card State Machine</text>
+  <text x="480" y="44" text-anchor="middle" font-size="9" fill="#5F6368">On-card state enforcement · Offline-validated transitions · Tamper detection at any state</text>
+
+  <!-- ===== MAIN FLOW (Horizontal) ===== -->
+
+  <!-- IDLE -->
+  <rect x="50" y="100" width="150" height="90" rx="10" fill="url(#idleG)" stroke="#4285F4" stroke-width="1.5"/>
+  <text x="125" y="124" text-anchor="middle" font-size="16">⏸️</text>
+  <text x="125" y="143" text-anchor="middle" font-size="10" font-weight="700" fill="#1A73E8">IDLE</text>
+  <text x="125" y="157" text-anchor="middle" font-size="7" fill="#5F6368">Card issued or</text>
+  <text x="125" y="168" text-anchor="middle" font-size="7" fill="#5F6368">session cleared</text>
+  <rect x="60" y="173" width="130" height="12" rx="3" fill="#4285F4" opacity="0.1"/>
+  <text x="125" y="182" text-anchor="middle" font-size="6" font-weight="600" fill="#1A73E8">state = 0x00</text>
+
+  <!-- Arrow: IDLE → CHECKED_IN -->
+  <path d="M 200 145 L 275 145" stroke="#5F6368" stroke-width="1.5" marker-end="url(#aFlow)"/>
+  <rect x="213" y="128" width="52" height="14" rx="3" fill="#E6F4EA" stroke="#34A853" stroke-width="0.5"/>
+  <text x="239" y="138" text-anchor="middle" font-size="6" font-weight="600" fill="#137333">Gate In</text>
+
+  <!-- CHECKED_IN -->
+  <rect x="280" y="100" width="150" height="90" rx="10" fill="url(#checkinG)" stroke="#34A853" stroke-width="1.5"/>
+  <text x="355" y="124" text-anchor="middle" font-size="16">✅</text>
+  <text x="355" y="143" text-anchor="middle" font-size="10" font-weight="700" fill="#137333">CHECKED_IN</text>
+  <text x="355" y="157" text-anchor="middle" font-size="7" fill="#5F6368">Active session</text>
+  <text x="355" y="168" text-anchor="middle" font-size="7" fill="#5F6368">inside building</text>
+  <rect x="290" y="173" width="130" height="12" rx="3" fill="#34A853" opacity="0.1"/>
+  <text x="355" y="182" text-anchor="middle" font-size="6" font-weight="600" fill="#137333">state = 0x01</text>
+
+  <!-- Arrow: CHECKED_IN → TERMINAL_OP -->
+  <path d="M 430 145 L 505 145" stroke="#5F6368" stroke-width="1.5" marker-end="url(#aFlow)"/>
+  <rect x="440" y="128" width="58" height="14" rx="3" fill="#FEF7E0" stroke="#F9AB00" stroke-width="0.5"/>
+  <text x="469" y="138" text-anchor="middle" font-size="6" font-weight="600" fill="#E37400">Debit/Credit</text>
+
+  <!-- TERMINAL_OP -->
+  <rect x="510" y="100" width="150" height="90" rx="10" fill="url(#termOpG)" stroke="#F9AB00" stroke-width="1.5"/>
+  <text x="585" y="124" text-anchor="middle" font-size="16">⚡</text>
+  <text x="585" y="143" text-anchor="middle" font-size="10" font-weight="700" fill="#E37400">TERMINAL_OP</text>
+  <text x="585" y="157" text-anchor="middle" font-size="7" fill="#5F6368">Transaction</text>
+  <text x="585" y="168" text-anchor="middle" font-size="7" fill="#5F6368">in progress</text>
+  <rect x="520" y="173" width="130" height="12" rx="3" fill="#F9AB00" opacity="0.1"/>
+  <text x="585" y="182" text-anchor="middle" font-size="6" font-weight="600" fill="#E37400">state = 0x02</text>
+
+  <!-- Arrow: TERMINAL_OP → CHECKED_IN (loop back) -->
+  <path d="M 560 100 L 560 78 L 380 78 L 380 100" stroke="#5F6368" stroke-width="1" stroke-dasharray="4,2" marker-end="url(#aFlow)"/>
+  <text x="470" y="73" text-anchor="middle" font-size="6" fill="#5F6368">TX complete → back to CHECKED_IN</text>
+
+  <!-- Arrow: CHECKED_IN → CHECKED_OUT -->
+  <path d="M 660 145 L 735 145" stroke="#5F6368" stroke-width="1.5" marker-end="url(#aFlow)"/>
+  <rect x="670" y="128" width="55" height="14" rx="3" fill="#F3E8FD" stroke="#9C27B0" stroke-width="0.5"/>
+  <text x="697" y="138" text-anchor="middle" font-size="6" font-weight="600" fill="#7B1FA2">Gate Out</text>
+
+  <!-- CHECKED_OUT -->
+  <rect x="740" y="100" width="170" height="90" rx="10" fill="url(#checkoutG)" stroke="#9C27B0" stroke-width="1.5"/>
+  <text x="825" y="124" text-anchor="middle" font-size="16">🚪</text>
+  <text x="825" y="143" text-anchor="middle" font-size="10" font-weight="700" fill="#7B1FA2">CHECKED_OUT</text>
+  <text x="825" y="157" text-anchor="middle" font-size="7" fill="#5F6368">Session ended</text>
+  <text x="825" y="168" text-anchor="middle" font-size="7" fill="#5F6368">fee deducted</text>
+  <rect x="755" y="173" width="140" height="12" rx="3" fill="#9C27B0" opacity="0.1"/>
+  <text x="825" y="182" text-anchor="middle" font-size="6" font-weight="600" fill="#7B1FA2">state = 0x03</text>
+
+  <!-- Arrow: CHECKED_OUT → IDLE (loop) -->
+  <path d="M 825 190 L 825 215 L 125 215 L 125 190" stroke="#5F6368" stroke-width="1" stroke-dasharray="4,2" marker-end="url(#aFlow)"/>
+  <text x="480" y="224" text-anchor="middle" font-size="6" fill="#5F6368">Session cleared → reset to IDLE</text>
+
+  <!-- ===== BLOCKED STATES ===== -->
+  <rect x="250" y="260" width="460" height="120" rx="10" fill="url(#blockedG)" stroke="#EA4335" stroke-width="1.5"/>
+  <text x="480" y="280" text-anchor="middle" font-size="10" font-weight="700" fill="#C5221F">🚫 BLOCKED STATES (Terminal / Irrecoverable)</text>
+
+  <!-- Blocked sub-states -->
+  <rect x="270" y="290" width="130" height="55" rx="6" fill="#FFFFFF" stroke="#EA4335" stroke-width="0.8"/>
+  <text x="335" y="308" text-anchor="middle" font-size="14">🔒</text>
+  <text x="335" y="322" text-anchor="middle" font-size="7.5" font-weight="700" fill="#C5221F">BLOCKED_TAMPER</text>
+  <text x="335" y="335" text-anchor="middle" font-size="6.5" fill="#5F6368">HMAC/hash mismatch</text>
+
+  <rect x="415" y="290" width="130" height="55" rx="6" fill="#FFFFFF" stroke="#EA4335" stroke-width="0.8"/>
+  <text x="480" y="308" text-anchor="middle" font-size="14">⚠️</text>
+  <text x="480" y="322" text-anchor="middle" font-size="7.5" font-weight="700" fill="#C5221F">BLOCKED_FRAUD</text>
+  <text x="480" y="335" text-anchor="middle" font-size="6.5" fill="#5F6368">Counter replay detected</text>
+
+  <rect x="560" y="290" width="130" height="55" rx="6" fill="#FFFFFF" stroke="#EA4335" stroke-width="0.8"/>
+  <text x="625" y="308" text-anchor="middle" font-size="14">⏰</text>
+  <text x="625" y="322" text-anchor="middle" font-size="7.5" font-weight="700" fill="#C5221F">EXPIRED</text>
+  <text x="625" y="335" text-anchor="middle" font-size="6.5" fill="#5F6368">expiresAt exceeded</text>
+
+  <text x="480" y="368" text-anchor="middle" font-size="6.5" fill="#C5221F" font-weight="600">Any state can transition to BLOCKED — detected on every NFC read validation</text>
+
+  <!-- Arrows from main states to BLOCKED -->
+  <path d="M 125 190 L 125 240 L 300 260" stroke="#CC001E" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#aBlock)"/>
+  <path d="M 355 190 L 355 240 L 420 260" stroke="#CC001E" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#aBlock)"/>
+  <path d="M 585 190 L 585 240 L 540 260" stroke="#CC001E" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#aBlock)"/>
+
+  <!-- ===== BOTTOM: Transition Rules Table ===== -->
+  <rect x="20" y="395" width="920" height="132" rx="6" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1"/>
+  <text x="30" y="412" font-size="9" font-weight="700" fill="#202124">State Transition Rules</text>
+  <rect x="30" y="418" width="900" height="0.5" fill="#DADCE0"/>
+
+  <!-- Table header -->
+  <text x="35" y="432" font-size="7" font-weight="600" fill="#5F6368">From</text>
+  <text x="140" y="432" font-size="7" font-weight="600" fill="#5F6368">To</text>
+  <text x="260" y="432" font-size="7" font-weight="600" fill="#5F6368">Trigger</text>
+  <text x="420" y="432" font-size="7" font-weight="600" fill="#5F6368">Operator</text>
+  <text x="520" y="432" font-size="7" font-weight="600" fill="#5F6368">Validation</text>
+  <text x="720" y="432" font-size="7" font-weight="600" fill="#5F6368">Written Fields</text>
+
+  <rect x="30" y="436" width="900" height="0.3" fill="#DADCE0"/>
+
+  <!-- Row 1 -->
+  <text x="35" y="448" font-size="7" fill="#1A73E8" font-weight="600">IDLE</text>
+  <text x="140" y="448" font-size="7" fill="#137333" font-weight="600">CHECKED_IN</text>
+  <text x="260" y="448" font-size="7" fill="#202124">NFC tap at Gate</text>
+  <text x="420" y="448" font-size="7" fill="#202124">Auto (gate kiosk)</text>
+  <text x="520" y="448" font-size="7" fill="#202124">balance ≥ Rp10K · status=ACTIVE · not expired</text>
+  <text x="720" y="448" font-size="7" fill="#5F6368">state, session.startTime, session.terminalId</text>
+
+  <!-- Row 2 -->
+  <text x="35" y="461" font-size="7" fill="#137333" font-weight="600">CHECKED_IN</text>
+  <text x="140" y="461" font-size="7" fill="#E37400" font-weight="600">TERMINAL_OP</text>
+  <text x="260" y="461" font-size="7" fill="#202124">NFC tap at Terminal</text>
+  <text x="420" y="461" font-size="7" fill="#202124">Staff (session grant)</text>
+  <text x="520" y="461" font-size="7" fill="#202124">grant valid · balance sufficient · counter fresh</text>
+  <text x="720" y="461" font-size="7" fill="#5F6368">state, balance, counter, log entry, HMAC</text>
+
+  <!-- Row 3 -->
+  <text x="35" y="474" font-size="7" fill="#E37400" font-weight="600">TERMINAL_OP</text>
+  <text x="140" y="474" font-size="7" fill="#137333" font-weight="600">CHECKED_IN</text>
+  <text x="260" y="474" font-size="7" fill="#202124">Transaction complete</text>
+  <text x="420" y="474" font-size="7" fill="#202124">Staff (auto)</text>
+  <text x="520" y="474" font-size="7" fill="#202124">write verified · hash chain valid</text>
+  <text x="720" y="474" font-size="7" fill="#5F6368">state (back to 0x01)</text>
+
+  <!-- Row 4 -->
+  <text x="35" y="487" font-size="7" fill="#137333" font-weight="600">CHECKED_IN</text>
+  <text x="140" y="487" font-size="7" fill="#7B1FA2" font-weight="600">CHECKED_OUT</text>
+  <text x="260" y="487" font-size="7" fill="#202124">NFC tap at Exit Gate</text>
+  <text x="420" y="487" font-size="7" fill="#202124">Auto (terminal kiosk)</text>
+  <text x="520" y="487" font-size="7" fill="#202124">balance ≥ fee · session.startTime set</text>
+  <text x="720" y="487" font-size="7" fill="#5F6368">state, balance, session.endTime, counter, log</text>
+
+  <!-- Row 5 -->
+  <text x="35" y="500" font-size="7" fill="#7B1FA2" font-weight="600">CHECKED_OUT</text>
+  <text x="140" y="500" font-size="7" fill="#1A73E8" font-weight="600">IDLE</text>
+  <text x="260" y="500" font-size="7" fill="#202124">Session clear</text>
+  <text x="420" y="500" font-size="7" fill="#202124">Auto (immediate)</text>
+  <text x="520" y="500" font-size="7" fill="#202124">—</text>
+  <text x="720" y="500" font-size="7" fill="#5F6368">state, session fields zeroed</text>
+
+  <!-- Row 6 -->
+  <text x="35" y="513" font-size="7" fill="#5F6368" font-weight="600">Any</text>
+  <text x="140" y="513" font-size="7" fill="#C5221F" font-weight="600">BLOCKED_*</text>
+  <text x="260" y="513" font-size="7" fill="#202124">Validation failure on read</text>
+  <text x="420" y="513" font-size="7" fill="#202124">System (auto)</text>
+  <text x="520" y="513" font-size="7" fill="#CC001E" font-weight="600">HMAC fail · counter mismatch · expired · fraud flag</text>
+  <text x="720" y="513" font-size="7" fill="#5F6368">status → BLOCKED (irreversible on-card)</text>
+
+  <!-- Footer -->
+  <line x1="20" y1="533" x2="942" y2="533" stroke="#DADCE0" stroke-width="0.5"/>
+  <text x="480" y="538" text-anchor="middle" font-size="6" fill="#80868B">Koperasi Kegelapan · KK Wallet · Card State Machine · By Ahmad Muzaki</text>
+</svg>

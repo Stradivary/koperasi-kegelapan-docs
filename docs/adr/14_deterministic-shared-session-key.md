@@ -48,12 +48,12 @@ Per-card keys are still unique (derived via HKDF from sessionKey + cardId), but 
 
 ## Alternatives Considered
 
-| Option                              | Reason Rejected                                                                                         |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **Per-device unique session key**   | Cards from device A unreadable by device B offline. Requires online key exchange for cross-device use. |
-| **Card-specific key sealed to device** | Same problem — other devices can't read the card without the sealing device's cooperation.           |
-| **Ephemeral DH key agreement**      | Requires online rendezvous between devices. Incompatible with offline-first architecture.              |
-| **Pre-distributed key table**       | Scales poorly with number of devices. Key distribution itself requires online operation.               |
+| Option                                 | Reason Rejected                                                                                        |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **Per-device unique session key**      | Cards from device A unreadable by device B offline. Requires online key exchange for cross-device use. |
+| **Card-specific key sealed to device** | Same problem — other devices can't read the card without the sealing device's cooperation.             |
+| **Ephemeral DH key agreement**         | Requires online rendezvous between devices. Incompatible with offline-first architecture.              |
+| **Pre-distributed key table**          | Scales poorly with number of devices. Key distribution itself requires online operation.               |
 
 ## References
 

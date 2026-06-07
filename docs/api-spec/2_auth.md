@@ -19,12 +19,12 @@ Exchange operator credentials for an authenticated session. Rate-limited.
 }
 ```
 
-| Field              | Required | Notes                                                       |
-| ------------------ | -------- | ----------------------------------------------------------- |
-| `username`         | Yes      | Operator username                                           |
-| `password`         | Yes      | Operator password (verified via PBKDF2-SHA256)              |
-| `tenantSlug`       | No*      | Required for non-superadmin accounts. Superadmin can omit.  |
-| `deviceFingerprint`| No       | If provided, registers/upserts device and creates auth session |
+| Field               | Required | Notes                                                          |
+| ------------------- | -------- | -------------------------------------------------------------- |
+| `username`          | Yes      | Operator username                                              |
+| `password`          | Yes      | Operator password (verified via PBKDF2-SHA256)                 |
+| `tenantSlug`        | No\*     | Required for non-superadmin accounts. Superadmin can omit.     |
+| `deviceFingerprint` | No       | If provided, registers/upserts device and creates auth session |
 
 **Success response** (`200`):
 
@@ -47,14 +47,15 @@ Fields `deviceId`, `sessionId`, `refreshToken`, `expiresAt` are only present whe
 
 **Error responses**:
 
-| Code  | Error                    | Cause                                    |
-| ----- | ------------------------ | ---------------------------------------- |
-| `400` | username and password required | Missing required fields            |
-| `401` | Invalid credentials      | Wrong username or password               |
-| `401` | Tenant inactive          | Tenant status is not "active" (non-superadmin) |
-| `404` | Tenant not found         | tenantSlug doesn't match any tenant      |
+| Code  | Error                          | Cause                                          |
+| ----- | ------------------------------ | ---------------------------------------------- |
+| `400` | username and password required | Missing required fields                        |
+| `401` | Invalid credentials            | Wrong username or password                     |
+| `401` | Tenant inactive                | Tenant status is not "active" (non-superadmin) |
+| `404` | Tenant not found               | tenantSlug doesn't match any tenant            |
 
 **Notes**:
+
 - Without `tenantSlug`, only `superadmin` accounts can authenticate.
 - Superadmin bypasses tenant active status check.
 - Password verification uses PBKDF2-SHA256 (100,000 iterations) with constant-time comparison.
@@ -88,14 +89,15 @@ Rotate refresh token and issue a new access token.
 
 **Error responses**:
 
-| Code  | Error                 | Cause                                      |
-| ----- | --------------------- | ------------------------------------------ |
-| `400` | sessionId and refreshToken required | Missing required fields     |
-| `401` | Token expired or revoked | Refresh token has expired, been revoked, or already rotated |
-| `401` | Account inactive      | Account status is no longer "active"       |
-| `404` | Session not found      | sessionId doesn't exist                    |
+| Code  | Error                               | Cause                                                       |
+| ----- | ----------------------------------- | ----------------------------------------------------------- |
+| `400` | sessionId and refreshToken required | Missing required fields                                     |
+| `401` | Token expired or revoked            | Refresh token has expired, been revoked, or already rotated |
+| `401` | Account inactive                    | Account status is no longer "active"                        |
+| `404` | Session not found                   | sessionId doesn't exist                                     |
 
 **Notes**:
+
 - Refresh tokens are single-use. Each refresh rotates to a new token.
 - Reusing an old refresh token (replay) results in session revocation.
 - The new access token includes updated `accountId`, `tenantId`, `role`, `deviceId`.

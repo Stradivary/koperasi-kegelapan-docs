@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="routeG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#F3E8FD"/><stop offset="100%" stop-color="#E8D5F5"/></linearGradient>
+    <linearGradient id="sectionG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FCE8E6"/><stop offset="100%" stop-color="#F8CFCB"/></linearGradient>
+    <linearGradient id="blockG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#E8F0FE"/><stop offset="100%" stop-color="#D2E3FC"/></linearGradient>
+    <linearGradient id="layoutG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#E6F4EA"/><stop offset="100%" stop-color="#CEEAD6"/></linearGradient>
+    <linearGradient id="uiG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#FEF7E0"/><stop offset="100%" stop-color="#FDE293"/></linearGradient>
+    <marker id="flowArr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#5F6368"/></marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="540" fill="#FFFFFF" rx="4"/>
+
+  <!-- Title -->
+  <text x="480" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#CC001E">Koperasi Kegelapan — UI Architecture</text>
+  <text x="480" y="44" text-anchor="middle" font-size="9" fill="#5F6368">Atomic Component Layers · Unidirectional Data Flow · Clean Separation of Concerns</text>
+
+  <!-- ===== LAYER FLOW (Top Section) ===== -->
+  <text x="30" y="68" font-size="9" font-weight="700" fill="#202124">Component Layer Flow</text>
+
+  <!-- Route Layer -->
+  <rect x="30" y="78" width="160" height="80" rx="8" fill="url(#routeG)" stroke="#9C27B0" stroke-width="1.2"/>
+  <text x="110" y="97" text-anchor="middle" font-size="14">🧭</text>
+  <text x="110" y="115" text-anchor="middle" font-size="9" font-weight="700" fill="#7B1FA2">Route</text>
+  <text x="110" y="128" text-anchor="middle" font-size="6.5" fill="#5F6368">src/routes/</text>
+  <text x="110" y="140" text-anchor="middle" font-size="6.5" fill="#5F6368">Extract params</text>
+  <text x="110" y="151" text-anchor="middle" font-size="6.5" fill="#5F6368">File-based routing</text>
+
+  <!-- Arrow -->
+  <path d="M 190 118 L 218 118" stroke="#5F6368" stroke-width="1.5" marker-end="url(#flowArr)"/>
+
+  <!-- Section Layer -->
+  <rect x="222" y="78" width="160" height="80" rx="8" fill="url(#sectionG)" stroke="#EA4335" stroke-width="1.2"/>
+  <text x="302" y="97" text-anchor="middle" font-size="14">🎛️</text>
+  <text x="302" y="115" text-anchor="middle" font-size="9" font-weight="700" fill="#C5221F">Section</text>
+  <text x="302" y="128" text-anchor="middle" font-size="6.5" fill="#5F6368">src/components/section/</text>
+  <text x="302" y="140" text-anchor="middle" font-size="6.5" fill="#5F6368">Hooks · State · Logic</text>
+  <text x="302" y="151" text-anchor="middle" font-size="6.5" fill="#5F6368">Orchestrate Blocks</text>
+
+  <!-- Arrow -->
+  <path d="M 382 118 L 410 118" stroke="#5F6368" stroke-width="1.5" marker-end="url(#flowArr)"/>
+
+  <!-- Block Layer -->
+  <rect x="414" y="78" width="160" height="80" rx="8" fill="url(#blockG)" stroke="#4285F4" stroke-width="1.2"/>
+  <text x="494" y="97" text-anchor="middle" font-size="14">🧱</text>
+  <text x="494" y="115" text-anchor="middle" font-size="9" font-weight="700" fill="#1A73E8">Block</text>
+  <text x="494" y="128" text-anchor="middle" font-size="6.5" fill="#5F6368">src/components/block/</text>
+  <text x="494" y="140" text-anchor="middle" font-size="6.5" fill="#5F6368">Pure render</text>
+  <text x="494" y="151" text-anchor="middle" font-size="6.5" fill="#5F6368">Props + Callbacks</text>
+
+  <!-- Arrow -->
+  <path d="M 574 118 L 602 118" stroke="#5F6368" stroke-width="1.5" marker-end="url(#flowArr)"/>
+
+  <!-- Layout Layer -->
+  <rect x="606" y="78" width="160" height="80" rx="8" fill="url(#layoutG)" stroke="#34A853" stroke-width="1.2"/>
+  <text x="686" y="97" text-anchor="middle" font-size="14">📐</text>
+  <text x="686" y="115" text-anchor="middle" font-size="9" font-weight="700" fill="#137333">Layout</text>
+  <text x="686" y="128" text-anchor="middle" font-size="6.5" fill="#5F6368">src/components/layout/</text>
+  <text x="686" y="140" text-anchor="middle" font-size="6.5" fill="#5F6368">Slot structure</text>
+  <text x="686" y="151" text-anchor="middle" font-size="6.5" fill="#5F6368">Named children</text>
+
+  <!-- Arrow -->
+  <path d="M 766 118 L 794 118" stroke="#5F6368" stroke-width="1.5" marker-end="url(#flowArr)"/>
+
+  <!-- UI Layer -->
+  <rect x="798" y="78" width="142" height="80" rx="8" fill="url(#uiG)" stroke="#F9AB00" stroke-width="1.2"/>
+  <text x="869" y="97" text-anchor="middle" font-size="14">⬜</text>
+  <text x="869" y="115" text-anchor="middle" font-size="9" font-weight="700" fill="#E37400">UI Primitives</text>
+  <text x="869" y="128" text-anchor="middle" font-size="6.5" fill="#5F6368">src/components/ui/</text>
+  <text x="869" y="140" text-anchor="middle" font-size="6.5" fill="#5F6368">Button · Input · Badge</text>
+  <text x="869" y="151" text-anchor="middle" font-size="6.5" fill="#5F6368">Dialog · Sheet</text>
+
+  <!-- ===== ROUTE STRUCTURE (Left) ===== -->
+  <rect x="20" y="175" width="450" height="200" rx="6" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1"/>
+  <text x="30" y="193" font-size="9" font-weight="700" fill="#202124">Route Structure (TanStack Router — File-Based)</text>
+  <rect x="30" y="199" width="430" height="0.5" fill="#DADCE0"/>
+
+  <!-- Admin routes -->
+  <text x="35" y="215" font-size="7" font-weight="600" fill="#7B1FA2">Admin Routes (Desktop-First):</text>
+  <text x="35" y="229" font-size="7" font-family="monospace" fill="#5F6368">/tenant/:tenantId/_adminLayout/cards</text>
+  <text x="300" y="229" font-size="6.5" fill="#202124">→ Card management (CRUD)</text>
+  <text x="35" y="241" font-size="7" font-family="monospace" fill="#5F6368">/tenant/:tenantId/_adminLayout/members</text>
+  <text x="300" y="241" font-size="6.5" fill="#202124">→ Member management</text>
+  <text x="35" y="253" font-size="7" font-family="monospace" fill="#5F6368">/tenant/:tenantId/_adminLayout/transactions</text>
+  <text x="300" y="253" font-size="6.5" fill="#202124">→ Transaction log</text>
+  <text x="35" y="265" font-size="7" font-family="monospace" fill="#5F6368">/tenant/:tenantId/_adminLayout/settings</text>
+  <text x="300" y="265" font-size="6.5" fill="#202124">→ Tenant settings</text>
+
+  <!-- Kiosk routes -->
+  <text x="35" y="285" font-size="7" font-weight="600" fill="#C5221F">Kiosk Routes (Mobile-First):</text>
+  <text x="35" y="299" font-size="7" font-family="monospace" fill="#5F6368">/tenant/:tenantId/_kioskLayout/gate</text>
+  <text x="300" y="299" font-size="6.5" fill="#202124">→ Gate check-in/out (auto-scan)</text>
+  <text x="35" y="311" font-size="7" font-family="monospace" fill="#5F6368">/tenant/:tenantId/_kioskLayout/terminal</text>
+  <text x="300" y="311" font-size="6.5" fill="#202124">→ Terminal debit/checkout</text>
+  <text x="35" y="323" font-size="7" font-family="monospace" fill="#5F6368">/tenant/:tenantId/_kioskLayout/kiosk</text>
+  <text x="300" y="323" font-size="6.5" fill="#202124">→ Kiosk top-up (staff)</text>
+  <text x="35" y="335" font-size="7" font-family="monospace" fill="#5F6368">/tenant/:tenantId/_kioskLayout/scout</text>
+  <text x="300" y="335" font-size="6.5" fill="#202124">→ Scout read-only balance</text>
+
+  <!-- Other routes -->
+  <text x="35" y="355" font-size="7" font-weight="600" fill="#137333">Other:</text>
+  <text x="70" y="355" font-size="7" font-family="monospace" fill="#5F6368">/</text>
+  <text x="85" y="355" font-size="6.5" fill="#202124">(Login)</text>
+  <text x="130" y="355" font-size="7" font-family="monospace" fill="#5F6368">/superadmin</text>
+  <text x="205" y="355" font-size="6.5" fill="#202124">(Cross-tenant)</text>
+  <text x="285" y="355" font-size="7" font-family="monospace" fill="#5F6368">/devices</text>
+  <text x="345" y="355" font-size="6.5" fill="#202124">(Device mgmt)</text>
+
+  <!-- ===== COMPONENT EXAMPLES (Right) ===== -->
+  <rect x="485" y="175" width="455" height="200" rx="6" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1"/>
+  <text x="495" y="193" font-size="9" font-weight="700" fill="#202124">Component Examples by Layer</text>
+  <rect x="495" y="199" width="435" height="0.5" fill="#DADCE0"/>
+
+  <!-- Section examples -->
+  <text x="500" y="215" font-size="7" font-weight="600" fill="#C5221F">Sections (orchestrators):</text>
+  <text x="500" y="229" font-size="6.5" fill="#5F6368">• AdminSection — sidebar + content routing</text>
+  <text x="500" y="241" font-size="6.5" fill="#5F6368">• GateSection — NFC auto-scan, check-in logic</text>
+  <text x="500" y="253" font-size="6.5" fill="#5F6368">• TerminalSection — debit flow orchestration</text>
+  <text x="500" y="265" font-size="6.5" fill="#5F6368">• KioskSection — top-up flow + balance display</text>
+
+  <!-- Block examples -->
+  <text x="500" y="285" font-size="7" font-weight="600" fill="#1A73E8">Blocks (render units):</text>
+  <text x="500" y="299" font-size="6.5" fill="#5F6368">• NfcTapArea — animated tap circle</text>
+  <text x="500" y="311" font-size="6.5" fill="#5F6368">• AmountDisplay — large currency + delta</text>
+  <text x="500" y="323" font-size="6.5" fill="#5F6368">• TransactionList — scrollable tx history</text>
+  <text x="500" y="335" font-size="6.5" fill="#5F6368">• CardInfoCard — member + balance display</text>
+
+  <!-- Layout + UI examples -->
+  <text x="720" y="215" font-size="7" font-weight="600" fill="#137333">Layouts:</text>
+  <text x="720" y="229" font-size="6.5" fill="#5F6368">• AdminLayout (sidebar)</text>
+  <text x="720" y="241" font-size="6.5" fill="#5F6368">• KioskLayout (full-screen)</text>
+  <text x="720" y="253" font-size="6.5" fill="#5F6368">• AuthLayout (centered)</text>
+
+  <text x="720" y="273" font-size="7" font-weight="600" fill="#E37400">UI Primitives (shadcn):</text>
+  <text x="720" y="287" font-size="6.5" fill="#5F6368">• Button, Input, Badge</text>
+  <text x="720" y="299" font-size="6.5" fill="#5F6368">• Dialog, Sheet, Drawer</text>
+  <text x="720" y="311" font-size="6.5" fill="#5F6368">• Table, Tabs, Toast</text>
+  <text x="720" y="323" font-size="6.5" fill="#5F6368">• Card, Avatar, Skeleton</text>
+
+  <!-- Hooks section -->
+  <text x="720" y="345" font-size="7" font-weight="600" fill="#7B1FA2">Hooks (state + logic):</text>
+  <text x="720" y="359" font-size="6.5" fill="#5F6368">• useNfcCard, useAuth</text>
+  <text x="720" y="371" font-size="6.5" fill="#5F6368">• useSync, useOffline</text>
+
+  <!-- ===== BOTTOM: Layer Responsibilities ===== -->
+  <rect x="20" y="390" width="922" height="135" rx="6" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1"/>
+  <text x="30" y="407" font-size="9" font-weight="700" fill="#202124">Layer Responsibilities &amp; Rules</text>
+  <rect x="30" y="413" width="902" height="0.5" fill="#DADCE0"/>
+
+  <!-- Table header -->
+  <text x="35" y="428" font-size="7" font-weight="600" fill="#5F6368">Layer</text>
+  <text x="110" y="428" font-size="7" font-weight="600" fill="#5F6368">Folder</text>
+  <text x="280" y="428" font-size="7" font-weight="600" fill="#5F6368">Can Import</text>
+  <text x="440" y="428" font-size="7" font-weight="600" fill="#5F6368">Cannot Import</text>
+  <text x="600" y="428" font-size="7" font-weight="600" fill="#5F6368">Responsibility</text>
+  <rect x="30" y="432" width="902" height="0.3" fill="#DADCE0"/>
+
+  <text x="35" y="445" font-size="7" font-weight="600" fill="#7B1FA2">Route</text>
+  <text x="110" y="445" font-size="7" fill="#202124">src/routes/</text>
+  <text x="280" y="445" font-size="7" fill="#202124">Section</text>
+  <text x="440" y="445" font-size="7" fill="#202124">Block, Layout, UI, Hooks</text>
+  <text x="600" y="445" font-size="7" fill="#5F6368">Extract route params, pass to Section</text>
+
+  <text x="35" y="459" font-size="7" font-weight="600" fill="#C5221F">Section</text>
+  <text x="110" y="459" font-size="7" fill="#202124">src/components/section/</text>
+  <text x="280" y="459" font-size="7" fill="#202124">Block, Layout, Hooks, Lib</text>
+  <text x="440" y="459" font-size="7" fill="#202124">Route, other Sections</text>
+  <text x="600" y="459" font-size="7" fill="#5F6368">Call hooks, manage state, orchestrate Blocks</text>
+
+  <text x="35" y="473" font-size="7" font-weight="600" fill="#1A73E8">Block</text>
+  <text x="110" y="473" font-size="7" fill="#202124">src/components/block/</text>
+  <text x="280" y="473" font-size="7" fill="#202124">UI, Layout</text>
+  <text x="440" y="473" font-size="7" fill="#202124">Section, Hooks, Lib</text>
+  <text x="600" y="473" font-size="7" fill="#5F6368">Render data, emit events via callbacks</text>
+
+  <text x="35" y="487" font-size="7" font-weight="600" fill="#137333">Layout</text>
+  <text x="110" y="487" font-size="7" fill="#202124">src/components/layout/</text>
+  <text x="280" y="487" font-size="7" fill="#202124">UI</text>
+  <text x="440" y="487" font-size="7" fill="#202124">Block, Section, Hooks</text>
+  <text x="600" y="487" font-size="7" fill="#5F6368">Define slot structure (children, named slots)</text>
+
+  <text x="35" y="501" font-size="7" font-weight="600" fill="#E37400">UI</text>
+  <text x="110" y="501" font-size="7" fill="#202124">src/components/ui/</text>
+  <text x="280" y="501" font-size="7" fill="#202124">Nothing (leaf)</text>
+  <text x="440" y="501" font-size="7" fill="#202124">Everything above</text>
+  <text x="600" y="501" font-size="7" fill="#5F6368">Primitive atoms: Button, Input, Badge, etc.</text>
+
+  <rect x="30" y="508" width="902" height="0.3" fill="#DADCE0"/>
+  <text x="35" y="520" font-size="6.5" font-weight="600" fill="#CC001E">Rule:</text>
+  <text x="62" y="520" font-size="6.5" fill="#202124">Imports flow downward only (Route → Section → Block → Layout → UI). No upward imports. Hooks live alongside Sections.</text>
+
+  <!-- Footer -->
+  <line x1="20" y1="535" x2="942" y2="535" stroke="#DADCE0" stroke-width="0.5"/>
+  <text x="480" y="538" text-anchor="middle" font-size="6" fill="#80868B">Koperasi Kegelapan · KK Wallet · UI Architecture · By Ahmad Muzaki</text>
+</svg>

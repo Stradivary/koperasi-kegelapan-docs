@@ -11,8 +11,8 @@
 
 ## Capacity
 
-| Card    | Usable bytes | Total card layout             | Buffer capacity      | Log entries |
-| ------- | ------------ | ----------------------------- | -------------------- | ----------- |
+| Card    | Usable bytes | Total card layout                   | Buffer capacity      | Log entries |
+| ------- | ------------ | ----------------------------------- | -------------------- | ----------- |
 | NTAG215 | ~504 bytes   | 2×216B buffers + 64B trailer = 496B | 216 bytes per buffer | 5 entries   |
 | NTAG216 | ~1024 bytes  | Same layout (extra space unused)    | 216 bytes per buffer | 5 entries   |
 

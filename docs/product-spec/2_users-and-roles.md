@@ -2,15 +2,15 @@
 
 ## Role table
 
-| Role                 | Description                                                                                                                                        | Trust Level                                                                              | App              |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------- |
-| **Member**           | Cardholder. Uses an NFC card as a prepaid wallet. May check their own balance and history via Scout. Cannot modify card state directly.            | Untrusted - card contents are unverified until cryptographically validated               | Scout (read-only)|
-| **Koperasi admin**   | Tenant administrator for a single koperasi. Manages operator accounts, devices, policies, members, cards, and audit access for that koperasi.     | Trusted within tenant scope only                                                         | Admin UI         |
-| **Terminal operator** | Staff at a point-of-sale. Executes debits and checkouts. Operates primarily offline within a session grant.                                       | Conditionally trusted - terminal acts within the scope of a backend-issued session grant | Terminal app     |
-| **Gate operator**    | Staff managing entry points. Validates card status and performs check-in operations.                                                               | Conditionally trusted - same session grant model as terminal                             | Gate app         |
-| **Station operator** | Administrative staff. Registers new cards, tops up balances, issues and blocks cards, performs check-in/checkout. Always requires backend connectivity. | Trusted - all station operations are online and backend-validated                    | Station app      |
-| **Superadmin**       | Platform-level administrator. Manages tenants (create, suspend, archive), manages all accounts cross-tenant, blocks/unblocks devices.             | Authoritative - full cross-tenant access, bypasses tenant status checks                  | Superadmin UI    |
-| **System (backend)** | Issues session grants, validates sync batches, enforces financial limits, maintains the audit log, derives key material.                          | Authoritative - the root of trust for all policy and key material                        | Cloudflare Workers API |
+| Role                  | Description                                                                                                                                             | Trust Level                                                                              | App                    |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------- |
+| **Member**            | Cardholder. Uses an NFC card as a prepaid wallet. May check their own balance and history via Scout. Cannot modify card state directly.                 | Untrusted - card contents are unverified until cryptographically validated               | Scout (read-only)      |
+| **Koperasi admin**    | Tenant administrator for a single koperasi. Manages operator accounts, devices, policies, members, cards, and audit access for that koperasi.           | Trusted within tenant scope only                                                         | Admin UI               |
+| **Terminal operator** | Staff at a point-of-sale. Executes debits and checkouts. Operates primarily offline within a session grant.                                             | Conditionally trusted - terminal acts within the scope of a backend-issued session grant | Terminal app           |
+| **Gate operator**     | Staff managing entry points. Validates card status and performs check-in operations.                                                                    | Conditionally trusted - same session grant model as terminal                             | Gate app               |
+| **Station operator**  | Administrative staff. Registers new cards, tops up balances, issues and blocks cards, performs check-in/checkout. Always requires backend connectivity. | Trusted - all station operations are online and backend-validated                        | Station app            |
+| **Superadmin**        | Platform-level administrator. Manages tenants (create, suspend, archive), manages all accounts cross-tenant, blocks/unblocks devices.                   | Authoritative - full cross-tenant access, bypasses tenant status checks                  | Superadmin UI          |
+| **System (backend)**  | Issues session grants, validates sync batches, enforces financial limits, maintains the audit log, derives key material.                                | Authoritative - the root of trust for all policy and key material                        | Cloudflare Workers API |
 
 ## Role constraints
 
@@ -25,14 +25,14 @@
 
 ## Role → Allowed Operations mapping
 
-| Role      | Allowed Ops                                      |
-| --------- | ------------------------------------------------ |
-| terminal  | read, debit, checkout                            |
-| gate      | read, checkin                                    |
-| scout     | read                                             |
-| station   | read, credit, checkin, checkout, admin           |
-| admin     | read, debit, credit, checkin, checkout, admin, station |
-| superadmin| (API-level access, not card operations)          |
+| Role       | Allowed Ops                                            |
+| ---------- | ------------------------------------------------------ |
+| terminal   | read, debit, checkout                                  |
+| gate       | read, checkin                                          |
+| scout      | read                                                   |
+| station    | read, credit, checkin, checkout, admin                 |
+| admin      | read, debit, credit, checkin, checkout, admin, station |
+| superadmin | (API-level access, not card operations)                |
 
 ## Role interactions
 

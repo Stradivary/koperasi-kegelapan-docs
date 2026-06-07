@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#E6F4EA"/><stop offset="100%" stop-color="#CEEAD6"/></linearGradient>
+    <linearGradient id="termGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#E8F0FE"/><stop offset="100%" stop-color="#D2E3FC"/></linearGradient>
+    <linearGradient id="cloudGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FCE8E6"/><stop offset="100%" stop-color="#F8CFCB"/></linearGradient>
+    <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FF0025"/><stop offset="100%" stop-color="#FF6B4A"/></linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="540" fill="#FFFFFF" rx="4"/>
+
+  <!-- Title -->
+  <text x="480" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#CC001E">Koperasi Kegelapan — High-Level Design</text>
+  <text x="480" y="46" text-anchor="middle" font-size="9" fill="#5F6368">System Overview · Offline-First NFC Cooperative Wallet · Cloudflare Edge Deployment</text>
+
+  <!-- ===== NFC CARD ZONE ===== -->
+  <rect x="20" y="65" width="255" height="300" rx="8" fill="url(#cardGrad)" stroke="#34A853" stroke-width="1.2"/>
+  <text x="147" y="82" text-anchor="middle" font-size="9" font-weight="700" fill="#137333">NFC CARD (NTAG215)</text>
+  <text x="147" y="93" text-anchor="middle" font-size="7" fill="#5F6368">Physical tap-based wallet</text>
+
+  <!-- Card components -->
+  <rect x="32" y="102" width="231" height="38" rx="5" fill="#FFFFFF" stroke="#34A853" stroke-width="0.6"/>
+  <rect x="38" y="108" width="24" height="24" rx="5" fill="#E6F4EA"/>
+  <text x="50" y="124" text-anchor="middle" font-size="12">💳</text>
+  <text x="72" y="118" font-size="7.5" font-weight="600" fill="#202124">496-Byte Encrypted Payload</text>
+  <text x="72" y="130" font-size="6.5" fill="#5F6368">Identity · Wallet · Session · TX Log · Trailer</text>
+
+  <rect x="32" y="146" width="231" height="38" rx="5" fill="#FFFFFF" stroke="#34A853" stroke-width="0.6"/>
+  <rect x="38" y="152" width="24" height="24" rx="5" fill="#E6F4EA"/>
+  <text x="50" y="168" text-anchor="middle" font-size="12">🔄</text>
+  <text x="72" y="162" font-size="7.5" font-weight="600" fill="#202124">A/B Dual Buffer</text>
+  <text x="72" y="174" font-size="6.5" fill="#5F6368">Atomic writes · Power-loss safe · Rollback</text>
+
+  <rect x="32" y="190" width="231" height="38" rx="5" fill="#FFFFFF" stroke="#34A853" stroke-width="0.6"/>
+  <rect x="38" y="196" width="24" height="24" rx="5" fill="#E6F4EA"/>
+  <text x="50" y="212" text-anchor="middle" font-size="12">🔗</text>
+  <text x="72" y="206" font-size="7.5" font-weight="600" fill="#202124">Hash Chain Log</text>
+  <text x="72" y="218" font-size="6.5" fill="#5F6368">SHA-256 chain · Tamper-evident · 5 entries</text>
+
+  <rect x="32" y="234" width="231" height="38" rx="5" fill="#FFFFFF" stroke="#34A853" stroke-width="0.6"/>
+  <rect x="38" y="240" width="24" height="24" rx="5" fill="#E6F4EA"/>
+  <text x="50" y="256" text-anchor="middle" font-size="12">🔐</text>
+  <text x="72" y="250" font-size="7.5" font-weight="600" fill="#202124">AES-256-GCM + HMAC</text>
+  <text x="72" y="262" font-size="6.5" fill="#5F6368">Encryption · Signing · Tamper detection</text>
+
+  <!-- Card specs -->
+  <text x="32" y="290" font-size="6.5" fill="#5F6368">• NTAG215 · 504B usable · 13.56 MHz</text>
+  <text x="32" y="301" font-size="6.5" fill="#5F6368">• 100K write cycles · 10yr retention</text>
+  <text x="32" y="312" font-size="6.5" fill="#5F6368">• Read range: 3–5 cm (Web NFC API)</text>
+  <text x="32" y="323" font-size="6.5" fill="#5F6368">• Little-endian · UTF-8 null-padded</text>
+  <text x="32" y="345" font-size="6" fill="#80868B" font-style="italic">Card holds all state — no server needed for transactions</text>
+
+  <!-- ===== ARROW: Card → Terminal ===== -->
+  <path d="M 280 215 L 330 215" stroke="url(#arrowGrad)" stroke-width="2.5" fill="none" marker-end="url(#arrowHead)"/>
+  <defs><marker id="arrowHead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#FF0025"/></marker></defs>
+  <text x="305" y="205" text-anchor="middle" font-size="6.5" font-weight="600" fill="#FF0025">Web NFC</text>
+  <text x="305" y="228" text-anchor="middle" font-size="6" fill="#5F6368">Tap to Read/Write</text>
+
+  <!-- ===== TERMINAL ZONE ===== -->
+  <rect x="337" y="65" width="268" height="300" rx="8" fill="url(#termGrad)" stroke="#4285F4" stroke-width="1.2"/>
+  <text x="471" y="82" text-anchor="middle" font-size="9" font-weight="700" fill="#1A73E8">NFC TERMINAL (Android PWA)</text>
+  <text x="471" y="93" text-anchor="middle" font-size="7" fill="#5F6368">Offline-capable operator device</text>
+
+  <!-- Terminal components -->
+  <rect x="349" y="102" width="244" height="38" rx="5" fill="#FFFFFF" stroke="#4285F4" stroke-width="0.6"/>
+  <rect x="355" y="108" width="24" height="24" rx="5" fill="#E8F0FE"/>
+  <text x="367" y="124" text-anchor="middle" font-size="12">⚙️</text>
+  <text x="389" y="118" font-size="7.5" font-weight="600" fill="#202124">Service Worker (Workbox)</text>
+  <text x="389" y="130" font-size="6.5" fill="#5F6368">Cache-first strategy · Background sync · PWA</text>
+
+  <rect x="349" y="146" width="244" height="38" rx="5" fill="#FFFFFF" stroke="#4285F4" stroke-width="0.6"/>
+  <rect x="355" y="152" width="24" height="24" rx="5" fill="#E8F0FE"/>
+  <text x="367" y="168" text-anchor="middle" font-size="12">💾</text>
+  <text x="389" y="162" font-size="7.5" font-weight="600" fill="#202124">IndexedDB (Dexie)</text>
+  <text x="389" y="174" font-size="6.5" fill="#5F6368">Policy cache · Card snapshots · Reconcile outbox</text>
+
+  <rect x="349" y="190" width="244" height="38" rx="5" fill="#FFFFFF" stroke="#4285F4" stroke-width="0.6"/>
+  <rect x="355" y="196" width="24" height="24" rx="5" fill="#E8F0FE"/>
+  <text x="367" y="212" text-anchor="middle" font-size="12">🛡️</text>
+  <text x="389" y="206" font-size="7.5" font-weight="600" fill="#202124">Crypto Engine</text>
+  <text x="389" y="218" font-size="6.5" fill="#5F6368">AES-GCM · HKDF · HMAC · PBKDF2</text>
+
+  <rect x="349" y="234" width="244" height="38" rx="5" fill="#FFFFFF" stroke="#4285F4" stroke-width="0.6"/>
+  <rect x="355" y="240" width="24" height="24" rx="5" fill="#E8F0FE"/>
+  <text x="367" y="256" text-anchor="middle" font-size="12">🔁</text>
+  <text x="389" y="250" font-size="7.5" font-weight="600" fill="#202124">NFC Pipeline Engine</text>
+  <text x="389" y="262" font-size="6.5" fill="#5F6368">Read → Validate → Process → Encode → Write</text>
+
+  <rect x="349" y="278" width="244" height="38" rx="5" fill="#FFFFFF" stroke="#4285F4" stroke-width="0.6"/>
+  <rect x="355" y="284" width="24" height="24" rx="5" fill="#E8F0FE"/>
+  <text x="367" y="300" text-anchor="middle" font-size="12">🔑</text>
+  <text x="389" y="294" font-size="7.5" font-weight="600" fill="#202124">Session Grant (24h TTL)</text>
+  <text x="389" y="306" font-size="6.5" fill="#5F6368">Scoped: tenant · account · device · operations</text>
+
+  <text x="349" y="345" font-size="6" fill="#80868B" font-style="italic">Chrome Android PWA · React 19 · TanStack Router · Tailwind v4</text>
+
+  <!-- ===== ARROW: Terminal → Cloud ===== -->
+  <path d="M 610 215 L 660 215" stroke="url(#arrowGrad)" stroke-width="2.5" fill="none" marker-end="url(#arrowHead)"/>
+  <text x="635" y="205" text-anchor="middle" font-size="6.5" font-weight="600" fill="#FF0025">HTTPS</text>
+  <text x="635" y="228" text-anchor="middle" font-size="6" fill="#5F6368">Sync / Reconcile</text>
+
+  <!-- ===== CLOUDFLARE ZONE ===== -->
+  <rect x="667" y="65" width="275" height="300" rx="8" fill="url(#cloudGrad)" stroke="#EA4335" stroke-width="1.2"/>
+  <text x="804" y="82" text-anchor="middle" font-size="9" font-weight="700" fill="#C5221F">CLOUDFLARE EDGE NETWORK</text>
+  <text x="804" y="93" text-anchor="middle" font-size="7" fill="#5F6368">Globally distributed backend</text>
+
+  <!-- Cloud components -->
+  <rect x="679" y="102" width="251" height="38" rx="5" fill="#FFFFFF" stroke="#EA4335" stroke-width="0.6"/>
+  <rect x="685" y="108" width="24" height="24" rx="5" fill="#FCE8E6"/>
+  <text x="697" y="124" text-anchor="middle" font-size="12">🌐</text>
+  <text x="719" y="118" font-size="7.5" font-weight="600" fill="#202124">Cloudflare Pages</text>
+  <text x="719" y="130" font-size="6.5" fill="#5F6368">React 19 SPA · Vite 8 · PWA static hosting</text>
+
+  <rect x="679" y="146" width="251" height="38" rx="5" fill="#FFFFFF" stroke="#EA4335" stroke-width="0.6"/>
+  <rect x="685" y="152" width="24" height="24" rx="5" fill="#FCE8E6"/>
+  <text x="697" y="168" text-anchor="middle" font-size="12">⚡</text>
+  <text x="719" y="162" font-size="7.5" font-weight="600" fill="#202124">Cloudflare Workers (Hono API)</text>
+  <text x="719" y="174" font-size="6.5" fill="#5F6368">11 route modules · JWT · Rate limiting · SSE</text>
+
+  <rect x="679" y="190" width="251" height="38" rx="5" fill="#FFFFFF" stroke="#EA4335" stroke-width="0.6"/>
+  <rect x="685" y="196" width="24" height="24" rx="5" fill="#FCE8E6"/>
+  <text x="697" y="212" text-anchor="middle" font-size="12">🗄️</text>
+  <text x="719" y="206" font-size="7.5" font-weight="600" fill="#202124">Cloudflare D1 (SQLite)</text>
+  <text x="719" y="218" font-size="6.5" fill="#5F6368">Drizzle ORM · 11 tables · Distributed edge</text>
+
+  <rect x="679" y="234" width="251" height="38" rx="5" fill="#FFFFFF" stroke="#EA4335" stroke-width="0.6"/>
+  <rect x="685" y="240" width="24" height="24" rx="5" fill="#FCE8E6"/>
+  <text x="697" y="256" text-anchor="middle" font-size="12">📊</text>
+  <text x="719" y="250" font-size="7.5" font-weight="600" fill="#202124">Analytics Engine</text>
+  <text x="719" y="262" font-size="6.5" fill="#5F6368">Client errors · Sync metrics · Usage tracking</text>
+
+  <rect x="679" y="278" width="251" height="38" rx="5" fill="#FFFFFF" stroke="#EA4335" stroke-width="0.6"/>
+  <rect x="685" y="284" width="24" height="24" rx="5" fill="#FCE8E6"/>
+  <text x="697" y="300" text-anchor="middle" font-size="12">🔄</text>
+  <text x="719" y="294" font-size="7.5" font-weight="600" fill="#202124">Reconciliation Engine</text>
+  <text x="719" y="306" font-size="6.5" fill="#5F6368">Offline tx validation · Backend projection · Audit</text>
+
+  <text x="679" y="345" font-size="6" fill="#80868B" font-style="italic">TypeScript end-to-end · Edge-deployed · Auto-scaling · Zero cold starts</text>
+
+  <!-- ===== BOTTOM: Key Architecture Decisions ===== -->
+  <rect x="20" y="380" width="922" height="145" rx="6" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1"/>
+  <text x="30" y="396" font-size="9" font-weight="700" fill="#202124">Key Architecture Decisions</text>
+  <rect x="30" y="402" width="902" height="0.5" fill="#DADCE0"/>
+
+  <!-- Row 1 -->
+  <text x="30" y="418" font-size="7" font-weight="600" fill="#1A73E8">Offline-First:</text>
+  <text x="100" y="418" font-size="7" fill="#202124">All card transactions work without internet. Server is only needed for initial grant, policy sync, and reconciliation.</text>
+
+  <text x="30" y="432" font-size="7" font-weight="600" fill="#34A853">Card-Authoritative:</text>
+  <text x="120" y="432" font-size="7" fill="#202124">Balance and state live on the physical card. Backend holds a projection that's updated during reconciliation.</text>
+
+  <text x="30" y="446" font-size="7" font-weight="600" fill="#E37400">Dual-Buffer Writes:</text>
+  <text x="120" y="446" font-size="7" fill="#202124">Write to inactive buffer → verify → flip activePtr. Power-loss mid-write preserves the old valid state.</text>
+
+  <text x="30" y="460" font-size="7" font-weight="600" fill="#C5221F">Session Grants:</text>
+  <text x="110" y="460" font-size="7" fill="#202124">Signed 24h tokens scoped by tenant/device/operations. Terminals cache grants for offline operation authorization.</text>
+
+  <text x="30" y="474" font-size="7" font-weight="600" fill="#7B1FA2">Outbox Pattern:</text>
+  <text x="105" y="474" font-size="7" fill="#202124">Offline transactions queued in IndexedDB. Batch uploaded to /api/reconcile on connectivity restore. Idempotent processing.</text>
+
+  <text x="30" y="488" font-size="7" font-weight="600" fill="#00796B">Tamper Detection:</text>
+  <text x="115" y="488" font-size="7" fill="#202124">HMAC binds counter+trailer. Hash chain validates log integrity. Mismatch → auto-block card (BLOCKED_TAMPER).</text>
+
+  <!-- Tech stack summary -->
+  <rect x="30" y="500" width="902" height="0.5" fill="#DADCE0"/>
+  <text x="30" y="514" font-size="7" font-weight="600" fill="#CC001E">Stack:</text>
+  <text x="60" y="514" font-size="7" fill="#202124">React 19 · TanStack Router · Vite 8 · Tailwind v4 · Hono · Cloudflare Workers/Pages/D1 · Drizzle ORM · Dexie · Web NFC · Workbox PWA</text>
+
+  <!-- Footer -->
+  <line x1="20" y1="533" x2="942" y2="533" stroke="#DADCE0" stroke-width="0.5"/>
+  <text x="480" y="538" text-anchor="middle" font-size="6" fill="#80868B">Koperasi Kegelapan · KK Wallet · Offline NFC Cooperative Payment System · By Ahmad Muzaki</text>
+</svg>

@@ -21,6 +21,7 @@ The system needs device tracking for audit and blocking purposes, but hardware-g
 Use a **browser fingerprint hash** as a soft device identifier instead of a cryptographic key pair.
 
 **Implementation:**
+
 - At login time, the client computes a fingerprint from: a hash combining `userAgent`, `platform`, and other browser characteristics.
 - The fingerprint is sent as `deviceFingerprint: { hash, userAgent, platform }` in the auth request.
 - The server registers/upserts a `devices` row: `deviceId` (generated UUID), `fingerprintHash`, `tenantId`, `accountId`.
@@ -28,12 +29,14 @@ Use a **browser fingerprint hash** as a soft device identifier instead of a cryp
 - Device blocking uses the `devices.blocked_until` field — a blocked device gets 403 from the `deviceBlockCheck` middleware.
 
 **What this provides:**
+
 - Device tracking for audit trail (which device performed which operations)
 - Device blocking capability (superadmin can disable a specific device)
 - Session binding (refresh tokens are per-device)
 - Fingerprint stability across page reloads (deterministic from browser properties)
 
 **What this does NOT provide:**
+
 - Hardware-grade device binding (fingerprint can be spoofed)
 - Prevention of credential reuse on a different device (same username/password works elsewhere)
 - Attestation that the device is genuine or unmodified
@@ -62,19 +65,20 @@ Use a **browser fingerprint hash** as a soft device identifier instead of a cryp
 - Fingerprint collision could cause two different devices to share a device record (unlikely with hash diversity)
 
 **Future enhancement path:**
+
 - Add WebAuthn as optional device attestation when supported hardware is available
 - Use PRF extension (WebAuthn Level 3) for hardware-bound encryption keys
 - Consider mandatory device enrollment workflow for admin/station roles
 
 ## Alternatives Considered
 
-| Option                                | Reason Rejected                                                                                   |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| **ECDSA P-256 device key pair**       | Not hardware-bound in browsers. CryptoKey persistence is fragile. Adds protocol complexity.      |
-| **WebAuthn as device identity**       | Not reliably available on budget Android devices. Requires biometric or PIN setup.               |
-| **No device tracking at all**         | Loses audit capability and device blocking. Too risky for a financial system.                    |
-| **Cookie-based device ID**            | Clearable, not cross-origin persistent, inconsistent in incognito. Less reliable than fingerprint.|
-| **Hardware serial number**            | Not accessible from browser environment.                                                         |
+| Option                          | Reason Rejected                                                                                    |
+| ------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **ECDSA P-256 device key pair** | Not hardware-bound in browsers. CryptoKey persistence is fragile. Adds protocol complexity.        |
+| **WebAuthn as device identity** | Not reliably available on budget Android devices. Requires biometric or PIN setup.                 |
+| **No device tracking at all**   | Loses audit capability and device blocking. Too risky for a financial system.                      |
+| **Cookie-based device ID**      | Clearable, not cross-origin persistent, inconsistent in incognito. Less reliable than fingerprint. |
+| **Hardware serial number**      | Not accessible from browser environment.                                                           |
 
 ## References
 

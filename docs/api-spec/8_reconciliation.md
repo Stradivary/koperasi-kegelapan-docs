@@ -43,12 +43,14 @@ Upload offline events for reconciliation. Requires authentication.
 ```
 
 **Rejection reasons**:
+
 - `malformed_event` — missing required fields
 - `missing_tenant_id` — cannot determine tenant from event or idempotencyKey
 - `duplicate_counter` — event with this card_id + counter already exists in audit_log
 - `internal_error` — unexpected server error
 
 **Notes**:
+
 - Events are persisted to the `audit_log` table (separate from `transaction_log`).
 - Card balance is updated if the event has a newer counter.
 - Tenant ID is extracted from either the event's `tenantId` field or parsed from the `idempotencyKey` (format: `tenantId:cardIdHex:counter`).

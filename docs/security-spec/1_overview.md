@@ -18,41 +18,41 @@ The system must protect the financial value stored on NFC cards and the tenant d
 
 ### Auth and session threats
 
-| Threat               | Description                                                                 |
-| -------------------- | --------------------------------------------------------------------------- |
-| Credential stuffing  | Automated operator password guessing from leaked credential lists           |
-| Token theft          | Access token or refresh token extracted from client memory/storage           |
-| Session fixation     | Attacker reuses a valid session after operator logout                       |
-| Tenant cross-access  | Operator authenticated to tenant A reads or writes tenant B data            |
-| Privilege escalation | A `scout`-role token is used to perform station operations                  |
-| Device compromise    | A blocked device continues to operate with cached session grant             |
-| Refresh token replay | An already-rotated refresh token is reused                                  |
+| Threat               | Description                                                        |
+| -------------------- | ------------------------------------------------------------------ |
+| Credential stuffing  | Automated operator password guessing from leaked credential lists  |
+| Token theft          | Access token or refresh token extracted from client memory/storage |
+| Session fixation     | Attacker reuses a valid session after operator logout              |
+| Tenant cross-access  | Operator authenticated to tenant A reads or writes tenant B data   |
+| Privilege escalation | A `scout`-role token is used to perform station operations         |
+| Device compromise    | A blocked device continues to operate with cached session grant    |
+| Refresh token replay | An already-rotated refresh token is reused                         |
 
 ### Infrastructure threats
 
-| Threat               | Description                                                                   |
-| -------------------- | ----------------------------------------------------------------------------- |
-| Secrets leakage      | Master key committed to version control or logged in plaintext                |
-| Database breach      | Unauthorised read of D1 tables exposes member PII or card state               |
-| Replay of sync push  | A captured sync push batch is submitted a second time                         |
-| Sync push fraud      | A terminal submits crafted events to credit a card without a valid card write |
+| Threat              | Description                                                                   |
+| ------------------- | ----------------------------------------------------------------------------- |
+| Secrets leakage     | Master key committed to version control or logged in plaintext                |
+| Database breach     | Unauthorised read of D1 tables exposes member PII or card state               |
+| Replay of sync push | A captured sync push batch is submitted a second time                         |
+| Sync push fraud     | A terminal submits crafted events to credit a card without a valid card write |
 
 ---
 
 ## OWASP Top 10 coverage
 
-| OWASP Category                  | Mitigation in this system                                                                                                             |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| A01 Broken Access Control       | Tenant-scoped RBAC; every request validated against `tenantId` + role scope; no direct object references without ownership check      |
-| A02 Cryptographic Failures      | AES-256-GCM + HMAC-SHA256 on card payload; PBKDF2-SHA256 for passwords; no plaintext secrets in storage or logs                    |
-| A03 Injection                   | All database queries use parameterised statements; no dynamic SQL from user input                                                     |
-| A04 Insecure Design             | Offline-first model reviewed in [ADR §4](../adr/4_offline-trust-model.md); session grant TTL bounds offline fraud exposure            |
-| A05 Security Misconfiguration   | Per-tenant data scoping; secrets via Cloudflare Workers Secrets; tenant isolation enforced in all queries                              |
-| A06 Vulnerable Components       | Dependency audits in CI; pinned lockfiles; automated SCA in pipeline                                                                  |
-| A07 Identity & Auth Failures    | Password auth + device fingerprinting; short-lived access tokens (1h); refresh token rotation; device block enforcement              |
-| A08 Software & Data Integrity   | Session grant signed by backend; card payload authenticated via HMAC; log chain provides append-only tamper evidence                  |
-| A09 Logging & Monitoring        | Immutable `audit_log`; tamper events trigger immediate operator notification; monitoring on anomalous reconciliation rates            |
-| A10 Server-Side Request Forgery | No server-initiated external HTTP calls driven by user input                                                                          |
+| OWASP Category                  | Mitigation in this system                                                                                                        |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| A01 Broken Access Control       | Tenant-scoped RBAC; every request validated against `tenantId` + role scope; no direct object references without ownership check |
+| A02 Cryptographic Failures      | AES-256-GCM + HMAC-SHA256 on card payload; PBKDF2-SHA256 for passwords; no plaintext secrets in storage or logs                  |
+| A03 Injection                   | All database queries use parameterised statements; no dynamic SQL from user input                                                |
+| A04 Insecure Design             | Offline-first model reviewed in [ADR §4](../adr/4_offline-trust-model.md); session grant TTL bounds offline fraud exposure       |
+| A05 Security Misconfiguration   | Per-tenant data scoping; secrets via Cloudflare Workers Secrets; tenant isolation enforced in all queries                        |
+| A06 Vulnerable Components       | Dependency audits in CI; pinned lockfiles; automated SCA in pipeline                                                             |
+| A07 Identity & Auth Failures    | Password auth + device fingerprinting; short-lived access tokens (1h); refresh token rotation; device block enforcement          |
+| A08 Software & Data Integrity   | Session grant signed by backend; card payload authenticated via HMAC; log chain provides append-only tamper evidence             |
+| A09 Logging & Monitoring        | Immutable `audit_log`; tamper events trigger immediate operator notification; monitoring on anomalous reconciliation rates       |
+| A10 Server-Side Request Forgery | No server-initiated external HTTP calls driven by user input                                                                     |
 
 ---
 

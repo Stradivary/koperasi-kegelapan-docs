@@ -11,17 +11,17 @@
 
 ## Financial constraints
 
-| Constraint                      | Value            | Rationale                                                     |
-| ------------------------------- | ---------------- | ------------------------------------------------------------- |
-| Maximum storable balance        | Rp 16,000,000    | Hard ceiling imposed by `uint24` log amount field (max 16,777,215); `MAX_BALANCE` constant |
-| Maximum single transaction      | Rp 16,000,000    | Hardware limit; constrained by uint24 log entry field         |
-| Policy: single transaction cap  | Rp 1,000,000     | Per-tenant configurable backend policy default (`maxTransactionAmount`) |
-| Policy: daily cumulative limit  | Rp 5,000,000     | Per-tenant configurable backend policy default (`maxDailyTotal`) |
-| Maximum top-up amount           | Rp 2,000,000     | Enforced client-side and server-side (`MAX_TOPUP_AMOUNT`)     |
-| Minimum top-up amount           | Rp 2,000         | Enforced client-side and server-side (`MIN_TOPUP_AMOUNT`)     |
-| Minimum issuance balance        | Rp 2,000         | Minimum balance when issuing a new card (`MIN_ISSUANCE_BALANCE`) |
-| Minimum balance before check-in | Rp 10,000        | Card must have at least this balance to check in (`MIN_BALANCE_BEFORE_CHECKIN`) |
-| Parking rate                    | Rp 2,000/hour    | Calculated at checkout: hours (rounded up) × rate (`PARKING_RATE_PER_HOUR`) |
+| Constraint                      | Value         | Rationale                                                                                  |
+| ------------------------------- | ------------- | ------------------------------------------------------------------------------------------ |
+| Maximum storable balance        | Rp 16,000,000 | Hard ceiling imposed by `uint24` log amount field (max 16,777,215); `MAX_BALANCE` constant |
+| Maximum single transaction      | Rp 16,000,000 | Hardware limit; constrained by uint24 log entry field                                      |
+| Policy: single transaction cap  | Rp 1,000,000  | Per-tenant configurable backend policy default (`maxTransactionAmount`)                    |
+| Policy: daily cumulative limit  | Rp 5,000,000  | Per-tenant configurable backend policy default (`maxDailyTotal`)                           |
+| Maximum top-up amount           | Rp 2,000,000  | Enforced client-side and server-side (`MAX_TOPUP_AMOUNT`)                                  |
+| Minimum top-up amount           | Rp 2,000      | Enforced client-side and server-side (`MIN_TOPUP_AMOUNT`)                                  |
+| Minimum issuance balance        | Rp 2,000      | Minimum balance when issuing a new card (`MIN_ISSUANCE_BALANCE`)                           |
+| Minimum balance before check-in | Rp 10,000     | Card must have at least this balance to check in (`MIN_BALANCE_BEFORE_CHECKIN`)            |
+| Parking rate                    | Rp 2,000/hour | Calculated at checkout: hours (rounded up) × rate (`PARKING_RATE_PER_HOUR`)                |
 
 > Financial limits are enforced at two levels: hardware limits are checked at write time on the client, and policy limits are configurable per tenant and enforced at reconciliation/sync push. See [Tech Specs §9 Risk & Financial Limits](../tech-specs/9_risk-financial-limits.md) for enforcement mechanisms.
 
@@ -49,14 +49,15 @@
 
 The card state machine has 4 states with defined transitions:
 
-| State              | Allowed Transitions                                    |
-| ------------------ | ------------------------------------------------------ |
-| IDLE               | → CHECKED_IN (gate_checkin), → CHECKED_OUT (force_checkout) |
-| CHECKED_IN         | → STATION_OPERATION (terminal_start), → CHECKED_OUT (gate_checkout, force_checkout) |
-| STATION_OPERATION  | → CHECKED_IN (terminal_end), → CHECKED_OUT (force_checkout) |
-| CHECKED_OUT        | → IDLE (admin_reset, gate_checkin)                     |
+| State             | Allowed Transitions                                                                 |
+| ----------------- | ----------------------------------------------------------------------------------- |
+| IDLE              | → CHECKED_IN (gate_checkin), → CHECKED_OUT (force_checkout)                         |
+| CHECKED_IN        | → STATION_OPERATION (terminal_start), → CHECKED_OUT (gate_checkout, force_checkout) |
+| STATION_OPERATION | → CHECKED_IN (terminal_end), → CHECKED_OUT (force_checkout)                         |
+| CHECKED_OUT       | → IDLE (admin_reset, gate_checkin)                                                  |
 
 **Card statuses** (independent from card state):
+
 - `ACTIVE` (0) - normal operation
 - `BLOCKED_TAMPER` (1) - tamper detected
 - `BLOCKED_FRAUD` (2) - fraud flagged

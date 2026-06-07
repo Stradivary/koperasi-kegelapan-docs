@@ -20,6 +20,7 @@ List active tenants. **No authentication required.**
 ```
 
 **Notes**:
+
 - This is a public endpoint (no JWT required) registered before the `verifyToken` middleware.
 - Used by the login screen to populate tenant selection.
 - Used by the scout app to discover available tenants for anonymous access.

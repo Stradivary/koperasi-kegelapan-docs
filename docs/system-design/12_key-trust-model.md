@@ -31,15 +31,15 @@ Master Key (SESSION_MASTER_KEY, stored in Cloudflare Workers secrets)
 
 The backend issues a session grant containing:
 
-| Field        | Type   | Description                                                          |
-| ------------ | ------ | -------------------------------------------------------------------- |
-| `keyVersion` | number | Identifies which key generation to use for derivation                |
-| `sessionKey` | base64 | The tenant session key (deterministic, derived from master + tenant) |
-| `expiresAt`  | number | Unix timestamp when the grant expires (24h from issuance)            |
-| `allowedOps` | array  | Operations permitted for this role (e.g. `["read", "debit", "checkout"]`) |
-| `tenantId`   | string | Tenant this grant is scoped to                                       |
-| `accountId`  | string | Authenticated operator's account ID                                  |
-| `deviceId`   | string | Device fingerprint hash this grant was issued to                     |
+| Field        | Type   | Description                                                                               |
+| ------------ | ------ | ----------------------------------------------------------------------------------------- |
+| `keyVersion` | number | Identifies which key generation to use for derivation                                     |
+| `sessionKey` | base64 | The tenant session key (deterministic, derived from master + tenant)                      |
+| `expiresAt`  | number | Unix timestamp when the grant expires (24h from issuance)                                 |
+| `allowedOps` | array  | Operations permitted for this role (e.g. `["read", "debit", "checkout"]`)                 |
+| `tenantId`   | string | Tenant this grant is scoped to                                                            |
+| `accountId`  | string | Authenticated operator's account ID                                                       |
+| `deviceId`   | string | Device fingerprint hash this grant was issued to                                          |
 | `signature`  | base64 | HMAC-SHA256 of `{keyVersion, expiresAt, allowedOps, accountId, deviceId}` with tenant key |
 
 **Key insight:** The session key is **deterministic** — it is derived from the tenant key via `HMAC(tenantKey, "session-key")`. All devices in the same tenant at the same `keyVersion` derive the same session key. This is intentional: it allows any terminal in the tenant to read/write cards encrypted by any other terminal, enabling offline operation without per-device key distribution.
@@ -53,7 +53,7 @@ The backend issues a session grant containing:
 | Entity   | Trust Level                  | Basis                                                                |
 | -------- | ---------------------------- | -------------------------------------------------------------------- |
 | Backend  | **Root of trust**            | Only entity with access to master key. Issues all grants and tokens. |
-| Station  | Trusted (online-only)        | All operations require live backend. No offline authority.            |
+| Station  | Trusted (online-only)        | All operations require live backend. No offline authority.           |
 | Terminal | Conditionally trusted        | Trusted within the bounds of a valid, unexpired session grant.       |
 | Gate     | Conditionally trusted        | Same as terminal, scoped to check-in operations only.                |
 | Kiosk    | Conditionally trusted        | Same as terminal, scoped to read + debit operations only.            |

@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="prodG" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FCE8E6"/><stop offset="100%" stop-color="#F8CFCB"/></linearGradient>
+    <linearGradient id="stagG" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FEF7E0"/><stop offset="100%" stop-color="#FDE293"/></linearGradient>
+    <linearGradient id="ciG" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#E8F0FE"/><stop offset="100%" stop-color="#D2E3FC"/></linearGradient>
+    <linearGradient id="secuG" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#F3E8FD"/><stop offset="100%" stop-color="#E8D5F5"/></linearGradient>
+    <marker id="depArr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#5F6368"/></marker>
+    <marker id="depArrGreen" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#34A853"/></marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="540" fill="#FFFFFF" rx="4"/>
+
+  <!-- Title -->
+  <text x="480" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#CC001E">Koperasi Kegelapan — Deployment &amp; Security</text>
+  <text x="480" y="44" text-anchor="middle" font-size="9" fill="#5F6368">Cloudflare Edge Deployment · GitHub Actions CI/CD · Multi-Environment · Security Controls</text>
+
+  <!-- ===== CI/CD PIPELINE ===== -->
+  <rect x="20" y="58" width="920" height="90" rx="8" fill="url(#ciG)" stroke="#4285F4" stroke-width="1.2"/>
+  <text x="40" y="76" font-size="9" font-weight="700" fill="#1A73E8">🔄 CI/CD Pipeline (GitHub Actions)</text>
+
+  <!-- Pipeline stages -->
+  <rect x="40" y="84" width="95" height="50" rx="5" fill="#FFF" stroke="#4285F4" stroke-width="0.8"/>
+  <text x="87" y="100" text-anchor="middle" font-size="11">📝</text>
+  <text x="87" y="115" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">Push / PR</text>
+  <text x="87" y="126" text-anchor="middle" font-size="6" fill="#5F6368">Trigger</text>
+
+  <path d="M 137 109 L 157 109" stroke="#5F6368" stroke-width="1.2" marker-end="url(#depArr)"/>
+
+  <rect x="160" y="84" width="95" height="50" rx="5" fill="#FFF" stroke="#4285F4" stroke-width="0.8"/>
+  <text x="207" y="100" text-anchor="middle" font-size="11">🔍</text>
+  <text x="207" y="115" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">Lint</text>
+  <text x="207" y="126" text-anchor="middle" font-size="6" fill="#5F6368">oxlint</text>
+
+  <path d="M 257 109 L 277 109" stroke="#5F6368" stroke-width="1.2" marker-end="url(#depArr)"/>
+
+  <rect x="280" y="84" width="95" height="50" rx="5" fill="#FFF" stroke="#4285F4" stroke-width="0.8"/>
+  <text x="327" y="100" text-anchor="middle" font-size="11">✅</text>
+  <text x="327" y="115" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">Typecheck</text>
+  <text x="327" y="126" text-anchor="middle" font-size="6" fill="#5F6368">tsc --noEmit</text>
+
+  <path d="M 377 109 L 397 109" stroke="#5F6368" stroke-width="1.2" marker-end="url(#depArr)"/>
+
+  <rect x="400" y="84" width="95" height="50" rx="5" fill="#FFF" stroke="#4285F4" stroke-width="0.8"/>
+  <text x="447" y="100" text-anchor="middle" font-size="11">🧪</text>
+  <text x="447" y="115" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">Test</text>
+  <text x="447" y="126" text-anchor="middle" font-size="6" fill="#5F6368">vitest + e2e</text>
+
+  <path d="M 497 109 L 517 109" stroke="#5F6368" stroke-width="1.2" marker-end="url(#depArr)"/>
+
+  <rect x="520" y="84" width="95" height="50" rx="5" fill="#FFF" stroke="#4285F4" stroke-width="0.8"/>
+  <text x="567" y="100" text-anchor="middle" font-size="11">🏗️</text>
+  <text x="567" y="115" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">Build</text>
+  <text x="567" y="126" text-anchor="middle" font-size="6" fill="#5F6368">vite build</text>
+
+  <path d="M 617 109 L 637 109" stroke="#5F6368" stroke-width="1.2" marker-end="url(#depArr)"/>
+
+  <rect x="640" y="84" width="95" height="50" rx="5" fill="#FFF" stroke="#4285F4" stroke-width="0.8"/>
+  <text x="687" y="100" text-anchor="middle" font-size="11">🔒</text>
+  <text x="687" y="115" text-anchor="middle" font-size="7" font-weight="600" fill="#1A73E8">SAST</text>
+  <text x="687" y="126" text-anchor="middle" font-size="6" fill="#5F6368">SonarCloud+OWASP</text>
+
+  <path d="M 737 109 L 757 109" stroke="#5F6368" stroke-width="1.2" marker-end="url(#depArr)"/>
+
+  <rect x="760" y="84" width="160" height="50" rx="5" fill="#FFF" stroke="#34A853" stroke-width="1.2"/>
+  <text x="840" y="100" text-anchor="middle" font-size="11">🚀</text>
+  <text x="840" y="115" text-anchor="middle" font-size="7" font-weight="700" fill="#137333">Deploy</text>
+  <text x="840" y="126" text-anchor="middle" font-size="6" fill="#5F6368">wrangler pages + workers</text>
+
+  <!-- ===== PRODUCTION ENV ===== -->
+  <rect x="20" y="160" width="450" height="175" rx="8" fill="url(#prodG)" stroke="#EA4335" stroke-width="1.2"/>
+  <text x="40" y="180" font-size="10" font-weight="700" fill="#C5221F">🔴 Production Environment</text>
+  <text x="185" y="180" font-size="7" fill="#5F6368">Trigger: v* tags (semantic versioning)</text>
+
+  <!-- Prod components -->
+  <rect x="35" y="190" width="200" height="38" rx="5" fill="#FFF" stroke="#EA4335" stroke-width="0.6"/>
+  <text x="45" y="207" font-size="11">🌐</text>
+  <text x="65" y="206" font-size="7.5" font-weight="600" fill="#202124">Cloudflare Pages</text>
+  <text x="65" y="218" font-size="6.5" fill="#5F6368">ahmadmuzaki.my.id · React SPA</text>
+
+  <rect x="245" y="190" width="210" height="38" rx="5" fill="#FFF" stroke="#EA4335" stroke-width="0.6"/>
+  <text x="255" y="207" font-size="11">⚡</text>
+  <text x="275" y="206" font-size="7.5" font-weight="600" fill="#202124">Cloudflare Workers</text>
+  <text x="275" y="218" font-size="6.5" fill="#5F6368">Hono API · wrangler.api.jsonc</text>
+
+  <rect x="35" y="234" width="200" height="38" rx="5" fill="#FFF" stroke="#EA4335" stroke-width="0.6"/>
+  <text x="45" y="251" font-size="11">🗄️</text>
+  <text x="65" y="250" font-size="7.5" font-weight="600" fill="#202124">D1 Database (Production)</text>
+  <text x="65" y="262" font-size="6.5" fill="#5F6368">11 tables · Edge-distributed</text>
+
+  <rect x="245" y="234" width="210" height="38" rx="5" fill="#FFF" stroke="#EA4335" stroke-width="0.6"/>
+  <text x="255" y="251" font-size="11">📊</text>
+  <text x="275" y="250" font-size="7.5" font-weight="600" fill="#202124">Analytics Engine</text>
+  <text x="275" y="262" font-size="6.5" fill="#5F6368">Client errors + sync metrics</text>
+
+  <!-- Prod secrets -->
+  <rect x="35" y="280" width="420" height="44" rx="4" fill="#FFF" stroke="#EA4335" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <text x="45" y="296" font-size="7" font-weight="600" fill="#C5221F">Secrets (wrangler secret put):</text>
+  <text x="45" y="311" font-size="6.5" fill="#5F6368">SESSION_MASTER_KEY · TENANT_MASTER_SECRET · SYNC_HMAC_KEY · ANALYTICS_DATASET</text>
+
+  <!-- ===== STAGING ENV ===== -->
+  <rect x="490" y="160" width="450" height="175" rx="8" fill="url(#stagG)" stroke="#F9AB00" stroke-width="1.2"/>
+  <text x="510" y="180" font-size="10" font-weight="700" fill="#E37400">🟡 Staging Environment</text>
+  <text x="645" y="180" font-size="7" fill="#5F6368">Trigger: develop branch pushes</text>
+
+  <!-- Staging components -->
+  <rect x="505" y="190" width="200" height="38" rx="5" fill="#FFF" stroke="#F9AB00" stroke-width="0.6"/>
+  <text x="515" y="207" font-size="11">🌐</text>
+  <text x="535" y="206" font-size="7.5" font-weight="600" fill="#202124">Cloudflare Pages</text>
+  <text x="535" y="218" font-size="6.5" fill="#5F6368">develop.*.pages.dev</text>
+
+  <rect x="715" y="190" width="210" height="38" rx="5" fill="#FFF" stroke="#F9AB00" stroke-width="0.6"/>
+  <text x="725" y="207" font-size="11">⚡</text>
+  <text x="745" y="206" font-size="7.5" font-weight="600" fill="#202124">Cloudflare Workers</text>
+  <text x="745" y="218" font-size="6.5" fill="#5F6368">wrangler.api.staging.jsonc</text>
+
+  <rect x="505" y="234" width="200" height="38" rx="5" fill="#FFF" stroke="#F9AB00" stroke-width="0.6"/>
+  <text x="515" y="251" font-size="11">🗄️</text>
+  <text x="535" y="250" font-size="7.5" font-weight="600" fill="#202124">D1 Database (Staging)</text>
+  <text x="535" y="262" font-size="6.5" fill="#5F6368">Separate instance · Test data</text>
+
+  <rect x="715" y="234" width="210" height="38" rx="5" fill="#FFF" stroke="#F9AB00" stroke-width="0.6"/>
+  <text x="725" y="251" font-size="11">🧪</text>
+  <text x="745" y="250" font-size="7.5" font-weight="600" fill="#202124">Test Seed Data</text>
+  <text x="745" y="262" font-size="6.5" fill="#5F6368">pnpm db:remote-stage:seed</text>
+
+  <!-- Staging note -->
+  <rect x="505" y="280" width="420" height="44" rx="4" fill="#FFF" stroke="#F9AB00" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <text x="515" y="296" font-size="7" font-weight="600" fill="#E37400">Staging Purpose:</text>
+  <text x="515" y="311" font-size="6.5" fill="#5F6368">Integration testing · QA validation · NFC device testing · Pre-release verification</text>
+
+  <!-- ===== SECURITY ARCHITECTURE ===== -->
+  <rect x="20" y="348" width="920" height="178" rx="8" fill="url(#secuG)" stroke="#9C27B0" stroke-width="1.2"/>
+  <text x="40" y="368" font-size="10" font-weight="700" fill="#7B1FA2">🔐 Security Architecture</text>
+
+  <!-- Security grid - Row 1 -->
+  <rect x="35" y="378" width="210" height="55" rx="5" fill="#FFF" stroke="#9C27B0" stroke-width="0.6"/>
+  <text x="45" y="396" font-size="11">🔒</text>
+  <text x="65" y="394" font-size="7.5" font-weight="600" fill="#202124">Card-Level Encryption</text>
+  <text x="65" y="407" font-size="6.5" fill="#5F6368">AES-256-GCM (body encryption)</text>
+  <text x="65" y="418" font-size="6.5" fill="#5F6368">HMAC-SHA256 (trailer signing)</text>
+  <text x="65" y="429" font-size="6.5" fill="#5F6368">HKDF for per-card key derivation</text>
+
+  <rect x="255" y="378" width="210" height="55" rx="5" fill="#FFF" stroke="#9C27B0" stroke-width="0.6"/>
+  <text x="265" y="396" font-size="11">🔑</text>
+  <text x="285" y="394" font-size="7.5" font-weight="600" fill="#202124">Authentication</text>
+  <text x="285" y="407" font-size="6.5" fill="#5F6368">JWT (HS256) session tokens</text>
+  <text x="285" y="418" font-size="6.5" fill="#5F6368">PBKDF2 password hashing (310K iter)</text>
+  <text x="285" y="429" font-size="6.5" fill="#5F6368">Refresh token rotation</text>
+
+  <rect x="475" y="378" width="220" height="55" rx="5" fill="#FFF" stroke="#9C27B0" stroke-width="0.6"/>
+  <text x="485" y="396" font-size="11">🛡️</text>
+  <text x="505" y="394" font-size="7.5" font-weight="600" fill="#202124">Tamper &amp; Replay Protection</text>
+  <text x="505" y="407" font-size="6.5" fill="#5F6368">Monotonic counter (u64, never resets)</text>
+  <text x="505" y="418" font-size="6.5" fill="#5F6368">SHA-256 hash chain (5 log entries)</text>
+  <text x="505" y="429" font-size="6.5" fill="#5F6368">Counter-bind in HMAC input</text>
+
+  <rect x="705" y="378" width="220" height="55" rx="5" fill="#FFF" stroke="#9C27B0" stroke-width="0.6"/>
+  <text x="715" y="396" font-size="11">📱</text>
+  <text x="735" y="394" font-size="7.5" font-weight="600" fill="#202124">Device &amp; Access Control</text>
+  <text x="735" y="407" font-size="6.5" fill="#5F6368">Device fingerprint registration</text>
+  <text x="735" y="418" font-size="6.5" fill="#5F6368">Block-list enforcement (middleware)</text>
+  <text x="735" y="429" font-size="6.5" fill="#5F6368">RBAC: admin · operator · kiosk · gate</text>
+
+  <!-- Security grid - Row 2 -->
+  <rect x="35" y="440" width="210" height="55" rx="5" fill="#FFF" stroke="#9C27B0" stroke-width="0.6"/>
+  <text x="45" y="458" font-size="11">⏱️</text>
+  <text x="65" y="456" font-size="7.5" font-weight="600" fill="#202124">Rate Limiting</text>
+  <text x="65" y="469" font-size="6.5" fill="#5F6368">Sync: 60 req/min per device</text>
+  <text x="65" y="480" font-size="6.5" fill="#5F6368">Auth: brute-force protection</text>
+  <text x="65" y="491" font-size="6.5" fill="#5F6368">Sliding window algorithm</text>
+
+  <rect x="255" y="440" width="210" height="55" rx="5" fill="#FFF" stroke="#9C27B0" stroke-width="0.6"/>
+  <text x="265" y="458" font-size="11">📋</text>
+  <text x="285" y="456" font-size="7.5" font-weight="600" fill="#202124">Audit &amp; Compliance</text>
+  <text x="285" y="469" font-size="6.5" fill="#5F6368">Full audit log (auditLog table)</text>
+  <text x="285" y="480" font-size="6.5" fill="#5F6368">Card events tracking (cardEvents)</text>
+  <text x="285" y="491" font-size="6.5" fill="#5F6368">Client error reporting (Analytics)</text>
+
+  <rect x="475" y="440" width="220" height="55" rx="5" fill="#FFF" stroke="#9C27B0" stroke-width="0.6"/>
+  <text x="485" y="458" font-size="11">🎫</text>
+  <text x="505" y="456" font-size="7.5" font-weight="600" fill="#202124">Session Grants (Offline Trust)</text>
+  <text x="505" y="469" font-size="6.5" fill="#5F6368">Signed 24h TTL tokens</text>
+  <text x="505" y="480" font-size="6.5" fill="#5F6368">Scoped: tenant · account · device · ops</text>
+  <text x="505" y="491" font-size="6.5" fill="#5F6368">Cached in IndexedDB for offline use</text>
+
+  <rect x="705" y="440" width="220" height="55" rx="5" fill="#FFF" stroke="#9C27B0" stroke-width="0.6"/>
+  <text x="715" y="458" font-size="11">💾</text>
+  <text x="735" y="456" font-size="7.5" font-weight="600" fill="#202124">Data Protection</text>
+  <text x="735" y="469" font-size="6.5" fill="#5F6368">Multi-tenant isolation (tenantBind)</text>
+  <text x="735" y="480" font-size="6.5" fill="#5F6368">No secrets stored on NFC cards</text>
+  <text x="735" y="491" font-size="6.5" fill="#5F6368">Key rotation via keyVersion field</text>
+
+  <!-- Threat model note -->
+  <text x="35" y="518" font-size="6.5" font-weight="600" fill="#7B1FA2">Threat Model:</text>
+  <text x="115" y="518" font-size="6.5" fill="#5F6368">Card cloning (→ counter mismatch) · Card tampering (→ HMAC fail) · Replay attack (→ monotonic counter) · Device theft (→ block-list) · Expired grant (→ 24h TTL)</text>
+
+  <!-- Footer -->
+  <line x1="20" y1="533" x2="942" y2="533" stroke="#DADCE0" stroke-width="0.5"/>
+  <text x="480" y="538" text-anchor="middle" font-size="6" fill="#80868B">Koperasi Kegelapan · KK Wallet · Deployment &amp; Security · By Ahmad Muzaki</text>
+</svg>

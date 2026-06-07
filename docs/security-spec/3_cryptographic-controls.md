@@ -4,27 +4,27 @@
 
 ## Implemented algorithms
 
-| Purpose                        | Algorithm        | Key / output size                                    | Implementation       |
-| ------------------------------ | ---------------- | ---------------------------------------------------- | -------------------- |
-| Card payload encryption        | AES-256-GCM      | 256-bit key, 128-bit tag, 96-bit nonce               | Web Crypto API       |
-| Card payload authentication    | HMAC-SHA256      | 256-bit key; output truncated to **8 bytes**         | Web Crypto API       |
-| Log chain hashing              | SHA-256          | 256-bit output; stored as first **4 bytes** per entry| Web Crypto API       |
-| Key derivation (per-card)      | HKDF-SHA256      | Variable output (32 bytes for keys, 12 for nonce)    | Web Crypto API       |
-| Key derivation (tenant/session)| HMAC-SHA256      | 256-bit output                                       | Node.js `crypto`     |
-| Operator password hashing      | PBKDF2-SHA256    | 100,000 iterations, 32-byte output                   | Web Crypto API       |
-| JWT signing                    | HMAC-SHA256      | Uses `SESSION_MASTER_KEY`                            | Custom implementation|
-| Session grant signature        | HMAC-SHA256      | Signs with tenant key (base64url output)             | Node.js `crypto`     |
-| HMAC constant-time comparison  | XOR-based        | Byte-by-byte XOR + accumulator                       | Custom implementation|
+| Purpose                         | Algorithm     | Key / output size                                     | Implementation        |
+| ------------------------------- | ------------- | ----------------------------------------------------- | --------------------- |
+| Card payload encryption         | AES-256-GCM   | 256-bit key, 128-bit tag, 96-bit nonce                | Web Crypto API        |
+| Card payload authentication     | HMAC-SHA256   | 256-bit key; output truncated to **8 bytes**          | Web Crypto API        |
+| Log chain hashing               | SHA-256       | 256-bit output; stored as first **4 bytes** per entry | Web Crypto API        |
+| Key derivation (per-card)       | HKDF-SHA256   | Variable output (32 bytes for keys, 12 for nonce)     | Web Crypto API        |
+| Key derivation (tenant/session) | HMAC-SHA256   | 256-bit output                                        | Node.js `crypto`      |
+| Operator password hashing       | PBKDF2-SHA256 | 100,000 iterations, 32-byte output                    | Web Crypto API        |
+| JWT signing                     | HMAC-SHA256   | Uses `SESSION_MASTER_KEY`                             | Custom implementation |
+| Session grant signature         | HMAC-SHA256   | Signs with tenant key (base64url output)              | Node.js `crypto`      |
+| HMAC constant-time comparison   | XOR-based     | Byte-by-byte XOR + accumulator                        | Custom implementation |
 
 ## Not implemented (from original aspirational spec)
 
-| Feature                        | Status                                                        |
-| ------------------------------ | ------------------------------------------------------------- |
-| Argon2id password hashing      | NOT used. PBKDF2-SHA256 is the implementation.                |
-| ECDSA device challenge signing | NOT used. Devices use fingerprint hash, not key pairs.        |
-| WebAuthn / FIDO2               | NOT implemented.                                              |
-| AES-256-GCM encrypted refresh  | NOT implemented. Refresh tokens stored unencrypted client-side.|
-| OTP seed encryption            | NOT implemented. No MFA exists.                               |
+| Feature                        | Status                                                          |
+| ------------------------------ | --------------------------------------------------------------- |
+| Argon2id password hashing      | NOT used. PBKDF2-SHA256 is the implementation.                  |
+| ECDSA device challenge signing | NOT used. Devices use fingerprint hash, not key pairs.          |
+| WebAuthn / FIDO2               | NOT implemented.                                                |
+| AES-256-GCM encrypted refresh  | NOT implemented. Refresh tokens stored unencrypted client-side. |
+| OTP seed encryption            | NOT implemented. No MFA exists.                                 |
 
 ---
 
@@ -68,14 +68,14 @@ Cloudflare Workers Secret: SESSION_MASTER_KEY (UTF-8, truncated to 32 bytes)
 
 ### Key storage
 
-| Location                        | Stored material                         | Prohibited                               |
-| ------------------------------- | --------------------------------------- | ---------------------------------------- |
-| Cloudflare Workers Secrets      | `SESSION_MASTER_KEY`                    | −                                        |
-| D1 database                     | Password hashes, refresh token hashes   | Plaintext passwords, raw tokens, keys    |
-| Terminal process memory          | Session key, derived per-card keys      | Anything persisted across page reload    |
-| Client IndexedDB                | Sync data, cursors, pending transactions| Session keys, master keys                |
-| `localStorage`                  | Not used for sensitive data             | Any secrets                              |
-| Card NFC payload                | Encrypted wallet state + HMAC           | Plaintext balance (v2+ always encrypted) |
+| Location                   | Stored material                          | Prohibited                               |
+| -------------------------- | ---------------------------------------- | ---------------------------------------- |
+| Cloudflare Workers Secrets | `SESSION_MASTER_KEY`                     | −                                        |
+| D1 database                | Password hashes, refresh token hashes    | Plaintext passwords, raw tokens, keys    |
+| Terminal process memory    | Session key, derived per-card keys       | Anything persisted across page reload    |
+| Client IndexedDB           | Sync data, cursors, pending transactions | Session keys, master keys                |
+| `localStorage`             | Not used for sensitive data              | Any secrets                              |
+| Card NFC payload           | Encrypted wallet state + HMAC            | Plaintext balance (v2+ always encrypted) |
 
 ### Rotation
 
@@ -87,14 +87,14 @@ Cloudflare Workers Secret: SESSION_MASTER_KEY (UTF-8, truncated to 32 bytes)
 
 ## Prohibited algorithms and practices
 
-| Prohibited                  | Reason                                                             |
-| --------------------------- | ------------------------------------------------------------------ |
-| AES-CBC without MAC         | No authenticated encryption; malleable ciphertext                  |
-| AES-ECB                     | Deterministic; identical blocks reveal patterns                    |
-| MD5 / SHA-1 for integrity   | Collision vulnerabilities                                          |
-| Static IVs / nonces         | Nonce reuse with AES-GCM allows plaintext recovery and tag forgery |
-| Hardcoded symmetric keys    | Prevents rotation; trivially extracted                             |
-| Plaintext secrets in logs   | Key material must never appear in log output                       |
+| Prohibited                | Reason                                                             |
+| ------------------------- | ------------------------------------------------------------------ |
+| AES-CBC without MAC       | No authenticated encryption; malleable ciphertext                  |
+| AES-ECB                   | Deterministic; identical blocks reveal patterns                    |
+| MD5 / SHA-1 for integrity | Collision vulnerabilities                                          |
+| Static IVs / nonces       | Nonce reuse with AES-GCM allows plaintext recovery and tag forgery |
+| Hardcoded symmetric keys  | Prevents rotation; trivially extracted                             |
+| Plaintext secrets in logs | Key material must never appear in log output                       |
 
 ---
 

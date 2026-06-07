@@ -20,16 +20,17 @@ Implement **six distinct roles** with password-only authentication. No MFA is en
 
 **Roles and their session grant `allowedOps`:**
 
-| Role       | allowedOps                                       | Auth requirement        |
-| ---------- | ------------------------------------------------ | ----------------------- |
-| admin      | read, debit, credit, checkin, checkout, admin, station | username + password + tenantSlug |
-| station    | read, credit, checkin, checkout, admin           | username + password + tenantSlug |
-| gate       | read, checkin                                    | username + password + tenantSlug |
-| terminal   | read, debit, checkout                            | username + password + tenantSlug |
-| scout      | read                                             | none (anonymous)        |
-| superadmin | (API management, no card ops)                    | username + password (no tenantSlug) |
+| Role       | allowedOps                                             | Auth requirement                    |
+| ---------- | ------------------------------------------------------ | ----------------------------------- |
+| admin      | read, debit, credit, checkin, checkout, admin, station | username + password + tenantSlug    |
+| station    | read, credit, checkin, checkout, admin                 | username + password + tenantSlug    |
+| gate       | read, checkin                                          | username + password + tenantSlug    |
+| terminal   | read, debit, checkout                                  | username + password + tenantSlug    |
+| scout      | read                                                   | none (anonymous)                    |
+| superadmin | (API management, no card ops)                          | username + password (no tenantSlug) |
 
 **Security controls in place of MFA:**
+
 - Device fingerprint registration at login (tracks which devices access which accounts)
 - Device blocking capability (superadmin can block compromised devices)
 - 1-hour JWT expiry (short-lived access tokens)
@@ -67,12 +68,12 @@ Implement **six distinct roles** with password-only authentication. No MFA is en
 
 ## Alternatives Considered
 
-| Option                            | Reason Rejected                                                                              |
-| --------------------------------- | -------------------------------------------------------------------------------------------- |
-| **Mandatory TOTP for all roles**  | Operational overhead too high for target user base. Offline MFA verification is complex.     |
-| **WebAuthn mandatory**            | Hardware compatibility not guaranteed on budget Android devices.                             |
-| **4-role simplified model**       | Insufficient granularity — gate has fundamentally different operations from terminal.           |
-| **Role-per-tenant config**        | Adds complexity without clear benefit at current scale.                                      |
+| Option                           | Reason Rejected                                                                          |
+| -------------------------------- | ---------------------------------------------------------------------------------------- |
+| **Mandatory TOTP for all roles** | Operational overhead too high for target user base. Offline MFA verification is complex. |
+| **WebAuthn mandatory**           | Hardware compatibility not guaranteed on budget Android devices.                         |
+| **4-role simplified model**      | Insufficient granularity — gate has fundamentally different operations from terminal.    |
+| **Role-per-tenant config**       | Adds complexity without clear benefit at current scale.                                  |
 
 ## References
 

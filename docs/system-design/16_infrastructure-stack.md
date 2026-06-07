@@ -2,31 +2,31 @@
 
 ## Runtime and platform
 
-| Component           | Technology                        | Purpose                                              |
-| ------------------- | --------------------------------- | ---------------------------------------------------- |
-| Backend API         | Cloudflare Workers (Hono)         | Edge-deployed API with zero-trust architecture       |
-| Database            | Cloudflare D1 (SQLite)            | Persistent storage for tenants, accounts, cards, transactions, audit log |
-| Frontend hosting    | Cloudflare Pages                  | Static SPA hosting with global CDN                   |
-| Analytics           | Cloudflare Analytics Engine       | Sync event tracking and client error monitoring      |
-| Observability       | Cloudflare Workers Logs           | Invocation logs for debugging and audit              |
-| Local storage       | IndexedDB (Dexie.js)              | Client-side offline data replica and outbox          |
-| Secret management   | Cloudflare Workers Secrets        | SESSION_MASTER_KEY stored as encrypted secret        |
+| Component         | Technology                  | Purpose                                                                  |
+| ----------------- | --------------------------- | ------------------------------------------------------------------------ |
+| Backend API       | Cloudflare Workers (Hono)   | Edge-deployed API with zero-trust architecture                           |
+| Database          | Cloudflare D1 (SQLite)      | Persistent storage for tenants, accounts, cards, transactions, audit log |
+| Frontend hosting  | Cloudflare Pages            | Static SPA hosting with global CDN                                       |
+| Analytics         | Cloudflare Analytics Engine | Sync event tracking and client error monitoring                          |
+| Observability     | Cloudflare Workers Logs     | Invocation logs for debugging and audit                                  |
+| Local storage     | IndexedDB (Dexie.js)        | Client-side offline data replica and outbox                              |
+| Secret management | Cloudflare Workers Secrets  | SESSION_MASTER_KEY stored as encrypted secret                            |
 
 ## App stack
 
-| Layer          | Technology                                              |
-| -------------- | ------------------------------------------------------- |
-| Frontend       | React 18+ / TypeScript / Vite                           |
-| NFC            | Web NFC API (NDEFReader/Writer)                         |
-| Cryptography   | Web Crypto API (AES-GCM, HMAC-SHA256, HKDF, PBKDF2)   |
-| State          | Zustand + React hooks                                   |
-| Local DB       | Dexie.js (IndexedDB wrapper)                            |
-| Routing        | React Router                                            |
-| UI Components  | shadcn/ui + Tailwind CSS                                |
-| Backend        | Hono (TypeScript, edge-first framework)                 |
-| ORM            | Drizzle ORM (D1 adapter)                                |
-| Auth           | Custom JWT (HMAC-SHA256) + PBKDF2 password hashing      |
-| Schema         | Drizzle schema definitions with migration support       |
+| Layer         | Technology                                          |
+| ------------- | --------------------------------------------------- |
+| Frontend      | React 18+ / TypeScript / Vite                       |
+| NFC           | Web NFC API (NDEFReader/Writer)                     |
+| Cryptography  | Web Crypto API (AES-GCM, HMAC-SHA256, HKDF, PBKDF2) |
+| State         | Zustand + React hooks                               |
+| Local DB      | Dexie.js (IndexedDB wrapper)                        |
+| Routing       | React Router                                        |
+| UI Components | shadcn/ui + Tailwind CSS                            |
+| Backend       | Hono (TypeScript, edge-first framework)             |
+| ORM           | Drizzle ORM (D1 adapter)                            |
+| Auth          | Custom JWT (HMAC-SHA256) + PBKDF2 password hashing  |
+| Schema        | Drizzle schema definitions with migration support   |
 
 ## Deployment model
 
@@ -48,19 +48,19 @@
 
 ## Data model (D1 tables)
 
-| Table            | Primary Key                      | Purpose                                     |
-| ---------------- | -------------------------------- | ------------------------------------------- |
-| `tenants`        | `tenant_id`                      | Koperasi tenant registry                    |
-| `accounts`       | `account_id`                     | Operator accounts with role and credentials |
-| `users`          | `(tenant_id, user_id)`           | Card member records (per-tenant)            |
-| `cards`          | `(tenant_id, card_id)`           | Card registry with balance/status tracking  |
-| `devices`        | `device_id`                      | Registered device fingerprints              |
-| `auth_sessions`  | `session_id`                     | Active auth sessions with refresh tokens    |
-| `session_grants` | `grant_id`                       | Issued NFC session grants                   |
-| `transaction_log`| `id` (auto)                      | All synced transactions (per-tenant)        |
-| `audit_log`      | `id` (auto)                      | Reconciliation audit trail                  |
-| `sync_cursors`   | `(tenant_id, device_id, entity)` | Per-device sync pagination state            |
-| `card_events`    | `id` (auto)                      | SSE-broadcast card status change events     |
+| Table             | Primary Key                      | Purpose                                     |
+| ----------------- | -------------------------------- | ------------------------------------------- |
+| `tenants`         | `tenant_id`                      | Koperasi tenant registry                    |
+| `accounts`        | `account_id`                     | Operator accounts with role and credentials |
+| `users`           | `(tenant_id, user_id)`           | Card member records (per-tenant)            |
+| `cards`           | `(tenant_id, card_id)`           | Card registry with balance/status tracking  |
+| `devices`         | `device_id`                      | Registered device fingerprints              |
+| `auth_sessions`   | `session_id`                     | Active auth sessions with refresh tokens    |
+| `session_grants`  | `grant_id`                       | Issued NFC session grants                   |
+| `transaction_log` | `id` (auto)                      | All synced transactions (per-tenant)        |
+| `audit_log`       | `id` (auto)                      | Reconciliation audit trail                  |
+| `sync_cursors`    | `(tenant_id, device_id, entity)` | Per-device sync pagination state            |
+| `card_events`     | `id` (auto)                      | SSE-broadcast card status change events     |
 
 ## Offline architecture
 

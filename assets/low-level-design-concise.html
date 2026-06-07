@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koperasi Kegelapan — LLD Flowcharts (Concise)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0a0e1a;
+            color: #e0e6f0;
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #FF0025, #FF6B4A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle { text-align: center; color: #8892a6; margin-bottom: 48px; font-size: 0.95rem; }
+        .section { margin-bottom: 56px; }
+        .section-title {
+            font-size: 1.4rem;
+            margin: 0 0 16px;
+            padding-left: 16px;
+            border-left: 4px solid #FF0025;
+            color: #ffffff;
+        }
+        .section-desc {
+            color: #9ca3b4;
+            margin-bottom: 20px;
+            padding-left: 20px;
+            font-size: 0.88rem;
+            line-height: 1.7;
+        }
+        .section-desc strong { color: #e0e6f0; }
+        .section-desc code {
+            background: #1e2740;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.82rem;
+            color: #7ee787;
+        }
+        .diagram-box {
+            background: #131829;
+            border: 1px solid #1e2740;
+            border-radius: 16px;
+            padding: 32px;
+            overflow-x: auto;
+        }
+        .diagram-box .mermaid { display: flex; justify-content: center; }
+        .toc {
+            background: #131829;
+            border: 1px solid #1e2740;
+            border-radius: 12px;
+            padding: 20px 32px;
+            margin-bottom: 40px;
+        }
+        .toc ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px 20px; }
+        .toc a {
+            color: #58a6ff; text-decoration: none; font-size: 0.88rem;
+            padding: 4px 12px; border-radius: 6px; background: #0d1117; border: 1px solid #1e2740;
+            transition: all 0.2s;
+        }
+        .toc a:hover { background: #1e2740; border-color: #58a6ff; }
+        @media (max-width: 768px) {
+            body { padding: 20px 10px; }
+            .diagram-box { padding: 16px; }
+            .toc ul { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h1>Koperasi Kegelapan — LLD Flowcharts</h1>
+    <p class="subtitle">Concise operation flows: Register, Topup, Check-in, Checkout, Scout</p>
+
+    <nav class="toc">
+        <ul>
+            <li><a href="#register">1. Register Member</a></li>
+            <li><a href="#topup">2. Topup</a></li>
+            <li><a href="#checkin">3. Check-in</a></li>
+            <li><a href="#checkout">4. Checkout</a></li>
+            <li><a href="#scout">5. Scout</a></li>
+        </ul>
+    </nav>
+
+    <!-- 1. REGISTER -->
+    <div class="section" id="register">
+        <h2 class="section-title">1. Register Member</h2>
+        <p class="section-desc">
+            <strong>Aktor:</strong> Admin (Station)<br>
+            <strong>Tujuan:</strong> Mendaftarkan anggota baru dan menerbitkan kartu NFC.<br>
+            <strong>Alur:</strong> Admin terlebih dahulu membuat data anggota (nama, userId) di sistem → data member disimpan ke IndexedDB + outbox →
+            setelah member terdaftar, admin memilih member tersebut untuk diterbitkan kartunya → mengisi saldo awal dan masa berlaku →
+            sistem generate <code>CardId</code> unik (7 byte random) → membangun <code>CardPayload</code> lengkap (header, identity, wallet, trailer) →
+            payload di-encrypt dengan AES-256-GCM dan ditandatangani HMAC →
+            kartu NFC di-scan → jika kartu kosong langsung tulis, jika sudah terisi muncul dialog konfirmasi overwrite →
+            setelah write berhasil, data kartu disimpan ke IndexedDB (cards table) dan ditambahkan ke reconciliation outbox untuk sync ke server.<br>
+            <strong>Prasyarat:</strong> Data anggota harus sudah ada sebelum kartu bisa diterbitkan.
+        </p>
+        <div class="diagram-box">
+            <pre class="mermaid">
+flowchart LR
+    A[Admin Create Member] --> B[Save Member to DB]
+    B --> C[Select Member for Card Issuance]
+    C --> D[Input: Balance + Expiry]
+    D --> E[Generate CardId]
+    E --> F[Build CardPayload]
+    F --> G[Encrypt + HMAC Sign]
+    G --> H[Scan NFC Card]
+    H --> I{Card Blank?}
+    I -- Yes --> J[Write to Card]
+    I -- No --> K{Confirm Overwrite?}
+    K -- Yes --> J
+    K -- No --> L[Cancel]
+    J --> M{Write OK?}
+    M -- No --> N[Error]
+    M -- Yes --> O[Save Card to IndexedDB]
+    O --> P[Outbox + Sync]
+    P --> Q[Success]
+            </pre>
+        </div>
+    </div>
+
+    <!-- 2. TOPUP -->
+    <div class="section" id="topup">
+        <h2 class="section-title">2. Topup</h2>
+        <p class="section-desc">
+            <strong>Aktor:</strong> Admin (Station)<br>
+            <strong>Tujuan:</strong> Mengisi ulang saldo kartu anggota.<br>
+            <strong>Alur:</strong> Admin memilih kartu dari daftar → scan kartu NFC fisik → sistem memverifikasi kartu yang di-scan sesuai dengan yang dipilih →
+            cek status blokir (kartu + user) → admin memasukkan nominal → validasi: minimal Rp 2.000, maksimal Rp 2.000.000, total saldo tidak boleh melebihi Rp 16.000.000 →
+            <code>applyTopup</code> menambah saldo dan increment counter → payload baru disimpan ke write journal sebagai backup →
+            payload di-encrypt ulang dan ditulis ke kartu →
+            jika verifikasi write berhasil, journal entry dihapus dan transaksi dicatat ke outbox dan transaction log.<br>
+            <strong>Write Journal (Retry Strategy):</strong> Sebelum write ke kartu, payload baru disimpan ke write journal sebagai backup.
+            Jika verifikasi gagal (kartu dicabut terlalu cepat / write corrupt), journal tetap tersimpan.
+            Pada tap berikutnya, sistem mendeteksi journal pending → otomatis retry write tanpa perlu input ulang dari admin.
+            Setelah retry berhasil dan terverifikasi, journal entry dihapus.
+        </p>
+        <div class="diagram-box">
+            <pre class="mermaid">
+flowchart LR
+    A[Select Card] --> B[Scan NFC]
+    B --> C{Card Matches?}
+    C -- No --> D[Error: Wrong Card]
+    C -- Yes --> E{Blocked?}
+    E -- Yes --> F[Error: Blocked]
+    E -- No --> G[Input Amount]
+    G --> H{Valid Amount?}
+    H -- No --> I["Error: Min 2K / Max 2M / Over 16M"]
+    H -- Yes --> J[applyTopup: balance += amount]
+    J --> K[Save Write Journal as Backup]
+    K --> L[Encrypt + Write NFC]
+    L --> M{Verified?}
+    M -- No --> N[Keep Journal → Retry on Next Tap]
+    N --> B
+    M -- Yes --> O[Delete Journal Entry]
+    O --> P[Record Tx + Outbox]
+    P --> Q[Success]
+            </pre>
+        </div>
+    </div>
+
+    <!-- 3. CHECK-IN -->
+    <div class="section" id="checkin">
+        <h2 class="section-title">3. Check-in (Gate)</h2>
+        <p class="section-desc">
+            <strong>Aktor:</strong> Member (self-service kiosk di pintu masuk)<br>
+            <strong>Tujuan:</strong> Mencatat masuknya anggota ke area koperasi dengan mengubah state kartu menjadi <code>CHECKED_IN</code>.<br>
+            <strong>Alur:</strong> Kiosk berjalan dalam mode auto-scan terus-menerus → member tap kartu → sistem decrypt dan validasi (magic, HMAC, tenant bind) →
+            cek tamper detection → cek status blokir (on-card + local DB) → validasi state machine: hanya kartu dengan state <code>IDLE</code> atau <code>CHECKED_OUT</code> yang bisa check-in →
+            validasi saldo minimum Rp 10.000 (jaminan bisa bayar parkir nanti) → <code>applyCheckin</code> mengubah state, set <code>session.startTime</code>, increment counter →
+            payload disimpan ke write journal sebagai backup → tulis ke kartu → jika verifikasi berhasil, journal dihapus, record transaksi dan trigger immediate sync push ke server.
+            Jika verifikasi gagal, journal pending tetap ada dan akan di-retry otomatis pada tap berikutnya.<br>
+            <strong>Write Journal (Retry Strategy):</strong> Sebelum write, payload disimpan ke journal sebagai backup.
+            Jika verifikasi gagal, journal pending tetap ada. Pada tap berikutnya di gate yang sama, sistem mendeteksi journal →
+            langsung retry write tanpa proses ulang. Setelah berhasil, journal dihapus.<br>
+            <strong>Auto-reset:</strong> Setelah sukses/error, kiosk kembali ke mode scan otomatis untuk member berikutnya.
+        </p>
+        <div class="diagram-box">
+            <pre class="mermaid">
+flowchart LR
+    A[Auto-Scan NFC] --> B{Pending Journal?}
+    B -- Yes --> L
+    B -- No --> C[Decrypt + Validate]
+    C --> D{Tamper?}
+    D -- Yes --> E[Reject: Invalid Card]
+    D -- No --> F{Blocked?}
+    F -- Yes --> G[Reject + Write Block]
+    F -- No --> H{State == IDLE?}
+    H -- No --> I["Reject: Already In / At Station"]
+    H -- Yes --> J{Balance >= 10K?}
+    J -- No --> K[Reject: Low Balance]
+    J -- Yes --> K2[applyCheckin: state=CHECKED_IN]
+    K2 --> K3[Save Write Journal as Backup]
+    K3 --> L[Encrypt + Write NFC]
+    L --> M{Verified?}
+    M -- No --> N[Keep Journal → Retry on Next Tap]
+    N --> P[Auto Reset]
+    M -- Yes --> O[Delete Journal Entry]
+    O --> O2[Record + Sync Push]
+    O2 --> P[Success - Auto Reset]
+            </pre>
+        </div>
+    </div>
+
+    <!-- 4. CHECKOUT -->
+    <div class="section" id="checkout">
+        <h2 class="section-title">4. Checkout (Terminal)</h2>
+        <p class="section-desc">
+            <strong>Aktor:</strong> Member (self-service kiosk di pintu keluar / terminal)<br>
+            <strong>Tujuan:</strong> Mencatat keluarnya anggota, menghitung biaya parkir, dan mendebit saldo kartu.<br>
+            <strong>Alur:</strong> Terminal berjalan dalam mode auto-scan → member tap kartu → decrypt dan validasi → cek blokir →
+            validasi state: hanya <code>CHECKED_IN</code> atau <code>STATION_OPERATION</code> yang bisa checkout →
+            hitung biaya: <code>fee = ceil(durasi / 1 jam) × Rp 2.000</code> → validasi saldo cukup (<code>balance - fee >= 0</code>) →
+            <code>applyCheckout</code> mendebit fee, set state <code>CHECKED_OUT</code>, catat <code>session.endTime</code> →
+            payload disimpan ke write journal sebagai backup → tulis ke kartu → jika verifikasi berhasil, journal dihapus, record transaksi + sync → tampilkan durasi dan biaya yang dikenakan.
+            Jika verifikasi gagal, journal pending tetap ada dan akan di-retry pada tap berikutnya.<br>
+            <strong>Write Journal (Retry Strategy):</strong> Sebelum write, payload disimpan ke journal.
+            Jika verifikasi gagal, journal pending tetap ada. Pada tap berikutnya di terminal, sistem mendeteksi journal →
+            langsung retry write. Setelah berhasil terverifikasi, journal dihapus.<br>
+            <strong>Insufficient balance:</strong> Jika saldo tidak cukup, member diminta top-up terlebih dahulu di station.
+        </p>
+        <div class="diagram-box">
+            <pre class="mermaid">
+flowchart LR
+    A[Auto-Scan NFC] --> B{Pending Journal?}
+    B -- Yes --> M
+    B -- No --> C[Decrypt + Validate]
+    C --> D{Tamper?}
+    D -- Yes --> E[Reject: Invalid Card]
+    D -- No --> F{Blocked?}
+    F -- Yes --> G[Reject + Write Block]
+    F -- No --> H{State == CHECKED_IN?}
+    H -- No --> I["Reject: Not Checked In / Already Out"]
+    H -- Yes --> J["Calculate Fee: ceil(hrs) x Rp2K"]
+    J --> K{Balance - Fee >= 0?}
+    K -- No --> L[Reject: Insufficient Balance]
+    K -- Yes --> L2[applyCheckout: debit fee]
+    L2 --> L3[Save Write Journal as Backup]
+    L3 --> M[Encrypt + Write NFC]
+    M --> N{Verified?}
+    N -- No --> O[Keep Journal → Retry on Next Tap]
+    O --> R[Auto Reset]
+    N -- Yes --> P[Delete Journal Entry]
+    P --> Q[Record Tx + Sync]
+    Q --> R2[Success: Show Fee + Duration]
+            </pre>
+        </div>
+    </div>
+
+    <!-- 5. SCOUT -->
+    <div class="section" id="scout">
+        <h2 class="section-title">5. Scout (Read-only)</h2>
+        <p class="section-desc">
+            <strong>Aktor:</strong> Staff / Member (kiosk scout)<br>
+            <strong>Tujuan:</strong> Membaca informasi kartu tanpa mengubah data apapun (read-only inspection).<br>
+            <strong>Alur:</strong> Kiosk auto-scan → member/staff tap kartu → decrypt dan validasi payload →
+            cek status blokir dari local DB → tampilkan informasi lengkap: nama anggota, status kartu, saldo (Rp formatted),
+            Card ID (hex), jumlah transaksi (counter), dan riwayat 5 transaksi terakhir dari on-card log →
+            jika kartu terblokir, tampilkan warning badge dengan alasan blokir →
+            update local IndexedDB agar data terkini (balance, counter, status) tersinkron dari kartu fisik →
+            auto-reset setelah 5 detik dan kembali ke mode scan.<br>
+            <strong>Catatan:</strong> Operasi ini tidak menulis apapun ke kartu — murni pembacaan. Berguna untuk verifikasi dan troubleshooting.
+        </p>
+        <div class="diagram-box">
+            <pre class="mermaid">
+flowchart LR
+    A[Auto-Scan NFC] --> B[Decrypt + Validate]
+    B --> C{Valid?}
+    C -- No --> D[Error: Retry]
+    C -- Yes --> E[Check Blocked Status]
+    E --> F{Blocked?}
+    F -- Yes --> G[Show Warning Badge]
+    F -- No --> H[Display OK]
+    G --> I[Show Card Info]
+    H --> I
+    I --> J[Name / Balance / Status / Tx History]
+    J --> K[Update Local DB]
+    K --> L[Auto Reset 5s]
+    L --> A
+            </pre>
+        </div>
+    </div>
+
+</div>
+
+<script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'dark',
+        flowchart: {
+            useMaxWidth: true,
+            htmlLabels: true,
+            curve: 'basis',
+            padding: 15,
+            nodeSpacing: 25,
+            rankSpacing: 35,
+        },
+        themeVariables: {
+            primaryColor: '#1e2740',
+            primaryTextColor: '#e0e6f0',
+            primaryBorderColor: '#4A90D9',
+            lineColor: '#4A90D9',
+            secondaryColor: '#131829',
+            tertiaryColor: '#0d1117',
+            background: '#131829',
+            mainBkg: '#1e2740',
+            nodeBorder: '#4A90D9',
+        }
+    });
+</script>
+</body>
+</html>

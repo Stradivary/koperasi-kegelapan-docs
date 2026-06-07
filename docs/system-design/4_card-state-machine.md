@@ -5,7 +5,7 @@
 | State               | Code | Meaning                                                                                           |
 | ------------------- | ---- | ------------------------------------------------------------------------------------------------- |
 | `IDLE`              | 0    | Card is issued but no session is open. Waiting for gate check-in.                                 |
-| `CHECKED_IN`        | 1    | Gate has opened a session. Terminal debit operations and station operations are permitted.   |
+| `CHECKED_IN`        | 1    | Gate has opened a session. Terminal debit operations and station operations are permitted.        |
 | `STATION_OPERATION` | 2    | A terminal has started a multi-step operation (e.g. debit). Intermediate state during processing. |
 | `CHECKED_OUT`       | 3    | Session was closed by a gate/force checkout. Card is reconcilable; awaits next check-in or reset. |
 
@@ -26,17 +26,17 @@
 
 Transition table (from `engine.ts`):
 
-| From              | Trigger          | To                |
-| ----------------- | ---------------- | ----------------- |
-| IDLE              | gate_checkin     | CHECKED_IN        |
-| IDLE              | force_checkout   | CHECKED_OUT       |
-| CHECKED_IN        | terminal_start   | STATION_OPERATION |
-| CHECKED_IN        | gate_checkout    | CHECKED_OUT       |
-| CHECKED_IN        | force_checkout   | CHECKED_OUT       |
-| STATION_OPERATION | terminal_end     | CHECKED_IN        |
-| STATION_OPERATION | force_checkout   | CHECKED_OUT       |
-| CHECKED_OUT       | admin_reset      | IDLE              |
-| CHECKED_OUT       | gate_checkin     | IDLE              |
+| From              | Trigger        | To                |
+| ----------------- | -------------- | ----------------- |
+| IDLE              | gate_checkin   | CHECKED_IN        |
+| IDLE              | force_checkout | CHECKED_OUT       |
+| CHECKED_IN        | terminal_start | STATION_OPERATION |
+| CHECKED_IN        | gate_checkout  | CHECKED_OUT       |
+| CHECKED_IN        | force_checkout | CHECKED_OUT       |
+| STATION_OPERATION | terminal_end   | CHECKED_IN        |
+| STATION_OPERATION | force_checkout | CHECKED_OUT       |
+| CHECKED_OUT       | admin_reset    | IDLE              |
+| CHECKED_OUT       | gate_checkin   | IDLE              |
 
 ## Rules
 

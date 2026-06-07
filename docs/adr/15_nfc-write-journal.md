@@ -29,6 +29,7 @@ Use an **IndexedDB write journal** (write-ahead log) that persists the pending o
 3. If found and the card's counter is already incremented (write did land but journal wasn't cleared), clear the journal and add to outbox
 
 **Journal entry schema:**
+
 - Composite key: `[tenantId, cardIdHex]` — one pending write per card at a time
 - Fields: `wireBytes`, `operation`, `amount`, `preWriteCounter`, `timestamp`, `attempts`
 
@@ -54,11 +55,11 @@ Use an **IndexedDB write journal** (write-ahead log) that persists the pending o
 
 ## Alternatives Considered
 
-| Option                        | Reason Rejected                                                                               |
-| ----------------------------- | --------------------------------------------------------------------------------------------- |
-| **No journal (fire-and-forget)** | Transaction loss on NFC interruption or app crash. Unacceptable for financial operations.   |
-| **In-memory only journal**    | Lost on tab close or crash — the primary failure scenarios we're protecting against.          |
-| **Service Worker background retry** | Service Workers cannot access NFC hardware. Write must happen in foreground tab.         |
+| Option                              | Reason Rejected                                                                           |
+| ----------------------------------- | ----------------------------------------------------------------------------------------- |
+| **No journal (fire-and-forget)**    | Transaction loss on NFC interruption or app crash. Unacceptable for financial operations. |
+| **In-memory only journal**          | Lost on tab close or crash — the primary failure scenarios we're protecting against.      |
+| **Service Worker background retry** | Service Workers cannot access NFC hardware. Write must happen in foreground tab.          |
 
 ## References
 

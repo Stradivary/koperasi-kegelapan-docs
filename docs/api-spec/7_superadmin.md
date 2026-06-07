@@ -132,9 +132,9 @@ Remove the block from a device.
 
 ## Common error responses
 
-| Code  | Error                                              | Cause                    |
-| ----- | -------------------------------------------------- | ------------------------ |
-| `401` | Authentication required                            | Missing or invalid token |
-| `403` | Insufficient permissions. Superadmin role required.| Account is not superadmin|
-| `404` | Device/Tenant/Account not found                    | Resource doesn't exist   |
-| `400` | Validation error                                   | Invalid request body     |
+| Code  | Error                                               | Cause                     |
+| ----- | --------------------------------------------------- | ------------------------- |
+| `401` | Authentication required                             | Missing or invalid token  |
+| `403` | Insufficient permissions. Superadmin role required. | Account is not superadmin |
+| `404` | Device/Tenant/Account not found                     | Resource doesn't exist    |
+| `400` | Validation error                                    | Invalid request body      |

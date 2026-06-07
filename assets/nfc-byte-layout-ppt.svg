@@ -1,0 +1,379 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#E8F0FE"/><stop offset="100%" stop-color="#D2E3FC"/></linearGradient>
+    <linearGradient id="ig" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#E6F4EA"/><stop offset="100%" stop-color="#CEEAD6"/></linearGradient>
+    <linearGradient id="wg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FEF7E0"/><stop offset="100%" stop-color="#FDE293"/></linearGradient>
+    <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#FCE8E6"/><stop offset="100%" stop-color="#F8CFCB"/></linearGradient>
+    <linearGradient id="lg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#F3E8FD"/><stop offset="100%" stop-color="#E8D5F5"/></linearGradient>
+    <linearGradient id="tg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#E0F2F1"/><stop offset="100%" stop-color="#B2DFDB"/></linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="540" fill="#FFFFFF" rx="4"/>
+
+  <!-- Title -->
+  <text x="480" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#CC001E">Koperasi Kegelapan — NFC NTAG215 Byte Layout</text>
+  <text x="480" y="43" text-anchor="middle" font-size="9" fill="#5F6368">504B usable · 496B used (98.4%) · AES-256-GCM encrypted · HMAC-SHA256 signed · Dual-buffer atomic writes · Schema v4</text>
+
+  <!-- Memory Map Bar -->
+  <text x="20" y="62" font-size="8" font-weight="600" fill="#5F6368">FULL CARD (496B):</text>
+  <rect x="120" y="53" width="380" height="14" rx="3" fill="#E3F2FD" stroke="#1976D2" stroke-width="0.8"/>
+  <text x="310" y="63" text-anchor="middle" font-size="7" font-weight="600" fill="#1565C0">Buffer A — 216 B (0–215)</text>
+  <rect x="502" y="53" width="380" height="14" rx="3" fill="#F3E5F5" stroke="#7B1FA2" stroke-width="0.8"/>
+  <text x="692" y="63" text-anchor="middle" font-size="7" font-weight="600" fill="#6A1B9A">Buffer B — 216 B (216–431)</text>
+  <rect x="884" y="53" width="56" height="14" rx="3" fill="#E0F2F1" stroke="#00796B" stroke-width="0.8"/>
+  <text x="912" y="63" text-anchor="middle" font-size="6.5" font-weight="600" fill="#004D40">Trailer 64B</text>
+
+  <!-- Wire format note -->
+  <text x="120" y="77" font-size="7" fill="#80868B">Wire (NFC write): Active Buffer (216B) + Trailer (64B) = 280B — fits NTAG215 with headroom. Dual-buffer: write to INACTIVE → flip activePtr → power-loss safe.</text>
+
+  <!-- ===== LEFT COLUMN ===== -->
+
+  <!-- HEADER -->
+  <rect x="14" y="86" width="460" height="100" rx="6" fill="url(#hg)" stroke="#4285F4" stroke-width="1"/>
+  <text x="24" y="100" font-size="10" font-weight="700" fill="#1A73E8">HEADER — 16 B</text>
+  <text x="110" y="100" font-size="7.5" fill="#5F6368">(offset 0–15) Card identification</text>
+
+  <!-- Header table -->
+  <text x="24" y="114" font-size="7" font-weight="600" fill="#1565C0">Off</text>
+  <text x="50" y="114" font-size="7" font-weight="600" fill="#1565C0">Sz</text>
+  <text x="70" y="114" font-size="7" font-weight="600" fill="#1565C0">Field</text>
+  <text x="140" y="114" font-size="7" font-weight="600" fill="#1565C0">Type</text>
+  <text x="190" y="114" font-size="7" font-weight="600" fill="#1565C0">Value</text>
+  <text x="305" y="114" font-size="7" font-weight="600" fill="#1565C0">Reason</text>
+
+  <text x="24" y="126" font-size="7" fill="#202124">0–3</text>
+  <text x="50" y="126" font-size="7" fill="#202124">4</text>
+  <text x="70" y="126" font-size="7" font-weight="600" fill="#202124">magic</text>
+  <text x="140" y="126" font-size="7" fill="#5F6368">u32</text>
+  <text x="190" y="126" font-size="7" font-family="monospace" fill="#1A73E8">0x4B4F5057</text>
+  <text x="305" y="126" font-size="6.5" fill="#5F6368">Fast reject non-system cards</text>
+
+  <text x="24" y="137" font-size="7" fill="#202124">4</text>
+  <text x="50" y="137" font-size="7" fill="#202124">1</text>
+  <text x="70" y="137" font-size="7" font-weight="600" fill="#202124">version</text>
+  <text x="140" y="137" font-size="7" fill="#5F6368">u8</text>
+  <text x="190" y="137" font-size="7" fill="#5F6368">4</text>
+  <text x="305" y="137" font-size="6.5" fill="#5F6368">Schema evolution</text>
+
+  <text x="24" y="148" font-size="7" fill="#202124">5</text>
+  <text x="50" y="148" font-size="7" fill="#202124">1</text>
+  <text x="70" y="148" font-size="7" font-weight="600" fill="#202124">type</text>
+  <text x="140" y="148" font-size="7" fill="#5F6368">u8</text>
+  <text x="190" y="148" font-size="7" fill="#5F6368">0=member</text>
+  <text x="305" y="148" font-size="6.5" fill="#5F6368">Future card types (staff/visitor)</text>
+
+  <text x="24" y="159" font-size="7" fill="#202124">6–11</text>
+  <text x="50" y="159" font-size="7" fill="#202124">6</text>
+  <text x="70" y="159" font-size="7" font-weight="600" fill="#202124">cardId</text>
+  <text x="140" y="159" font-size="7" fill="#5F6368">bytes</text>
+  <text x="190" y="159" font-size="7" fill="#5F6368">random (2⁴⁸)</text>
+  <text x="305" y="159" font-size="6.5" fill="#5F6368">Logical ID, survives card replacement</text>
+
+  <text x="24" y="170" font-size="7" fill="#202124">12–15</text>
+  <text x="50" y="170" font-size="7" fill="#202124">4</text>
+  <text x="70" y="170" font-size="7" font-weight="600" fill="#202124">tenantBind</text>
+  <text x="140" y="170" font-size="7" fill="#5F6368">u32</text>
+  <text x="190" y="170" font-size="7" fill="#5F6368">FNV-32a(tenantId)</text>
+  <text x="305" y="170" font-size="6.5" fill="#5F6368">Multi-tenant isolation</text>
+
+  <text x="24" y="182" font-size="6.5" fill="#80868B" font-style="italic">4 NTAG pages — single read command for instant validation</text>
+
+  <!-- IDENTITY -->
+  <rect x="14" y="190" width="460" height="110" rx="6" fill="url(#ig)" stroke="#34A853" stroke-width="1"/>
+  <text x="24" y="204" font-size="10" font-weight="700" fill="#137333">IDENTITY — 48 B</text>
+  <text x="130" y="204" font-size="7.5" fill="#5F6368">(offset 16–63) Member data for offline display</text>
+
+  <text x="24" y="218" font-size="7" font-weight="600" fill="#137333">Off</text>
+  <text x="50" y="218" font-size="7" font-weight="600" fill="#137333">Sz</text>
+  <text x="70" y="218" font-size="7" font-weight="600" fill="#137333">Field</text>
+  <text x="140" y="218" font-size="7" font-weight="600" fill="#137333">Type</text>
+  <text x="190" y="218" font-size="7" font-weight="600" fill="#137333">Value</text>
+  <text x="305" y="218" font-size="7" font-weight="600" fill="#137333">Reason</text>
+
+  <text x="24" y="230" font-size="7" fill="#202124">16–39</text>
+  <text x="50" y="230" font-size="7" fill="#202124">24</text>
+  <text x="70" y="230" font-size="7" font-weight="600" fill="#202124">name</text>
+  <text x="140" y="230" font-size="7" fill="#5F6368">UTF-8 ø</text>
+  <text x="190" y="230" font-size="7" fill="#5F6368">max 24 chars</text>
+  <text x="305" y="230" font-size="6.5" fill="#5F6368">Scout kiosk shows name offline</text>
+
+  <text x="24" y="241" font-size="7" fill="#202124">40–47</text>
+  <text x="50" y="241" font-size="7" fill="#202124">8</text>
+  <text x="70" y="241" font-size="7" font-weight="600" fill="#202124">userId</text>
+  <text x="140" y="241" font-size="7" fill="#5F6368">ASCII ø</text>
+  <text x="190" y="241" font-size="7" font-family="monospace" fill="#137333">"GJWt7u3g"</text>
+  <text x="305" y="241" font-size="6.5" fill="#5F6368">8-char alnum → 62⁸ ≈ 218T combinations</text>
+
+  <text x="24" y="252" font-size="7" fill="#202124">48</text>
+  <text x="50" y="252" font-size="7" fill="#202124">1</text>
+  <text x="70" y="252" font-size="7" font-weight="600" fill="#202124">gender</text>
+  <text x="140" y="252" font-size="7" fill="#5F6368">u8</text>
+  <text x="190" y="252" font-size="7" fill="#5F6368">0/1/2</text>
+  <text x="305" y="252" font-size="6.5" fill="#5F6368">Statistics &amp; UI personalization</text>
+
+  <text x="24" y="263" font-size="7" fill="#202124">49</text>
+  <text x="50" y="263" font-size="7" fill="#202124">1</text>
+  <text x="70" y="263" font-size="7" font-weight="600" fill="#202124">status</text>
+  <text x="140" y="263" font-size="7" fill="#5F6368">u8</text>
+  <text x="190" y="263" font-size="7" fill="#5F6368">CardStatus 0–4</text>
+  <text x="305" y="263" font-size="6.5" fill="#5F6368">On-card block — instant offline rejection</text>
+
+  <text x="24" y="274" font-size="7" fill="#202124">52–55</text>
+  <text x="50" y="274" font-size="7" fill="#202124">4</text>
+  <text x="70" y="274" font-size="7" font-weight="600" fill="#202124">createdAt</text>
+  <text x="140" y="274" font-size="7" fill="#5F6368">u32</text>
+  <text x="190" y="274" font-size="7" fill="#5F6368">Unix sec</text>
+  <text x="305" y="274" font-size="6.5" fill="#5F6368">Clone detection via timestamp mismatch</text>
+
+  <text x="24" y="295" font-size="6.5" fill="#80868B" font-style="italic">Bytes 50–51: 2B reserved. 48B = 12 pages — one contiguous NFC burst read</text>
+
+  <!-- WALLET -->
+  <rect x="14" y="304" width="460" height="110" rx="6" fill="url(#wg)" stroke="#F9AB00" stroke-width="1"/>
+  <text x="24" y="318" font-size="10" font-weight="700" fill="#E37400">WALLET — 24 B</text>
+  <text x="120" y="318" font-size="7.5" fill="#5F6368">(offset 64–87) Financial state</text>
+
+  <text x="24" y="332" font-size="7" font-weight="600" fill="#E37400">Off</text>
+  <text x="50" y="332" font-size="7" font-weight="600" fill="#E37400">Sz</text>
+  <text x="70" y="332" font-size="7" font-weight="600" fill="#E37400">Field</text>
+  <text x="140" y="332" font-size="7" font-weight="600" fill="#E37400">Type</text>
+  <text x="190" y="332" font-size="7" font-weight="600" fill="#E37400">Value</text>
+  <text x="305" y="332" font-size="7" font-weight="600" fill="#E37400">Reason</text>
+
+  <text x="24" y="344" font-size="7" fill="#202124">64–67</text>
+  <text x="50" y="344" font-size="7" fill="#202124">4</text>
+  <text x="70" y="344" font-size="7" font-weight="600" fill="#202124">balance</text>
+  <text x="140" y="344" font-size="7" fill="#5F6368">u32</text>
+  <text x="190" y="344" font-size="7" fill="#5F6368">Rp (max ~4.2B)</text>
+  <text x="305" y="344" font-size="6.5" fill="#5F6368">Current balance, far exceeds 16M limit</text>
+
+  <text x="24" y="355" font-size="7" fill="#202124">68–71</text>
+  <text x="50" y="355" font-size="7" fill="#202124">4</text>
+  <text x="70" y="355" font-size="7" font-weight="600" fill="#202124">lastBalance</text>
+  <text x="140" y="355" font-size="7" fill="#5F6368">u32</text>
+  <text x="190" y="355" font-size="7" fill="#5F6368">prev tx balance</text>
+  <text x="305" y="355" font-size="6.5" fill="#5F6368">Tamper detect: delta must match log</text>
+
+  <text x="24" y="366" font-size="7" fill="#202124">72–79</text>
+  <text x="50" y="366" font-size="7" fill="#202124">8</text>
+  <text x="70" y="366" font-size="7" font-weight="600" fill="#202124">counter</text>
+  <text x="140" y="366" font-size="7" fill="#5F6368">u64</text>
+  <text x="190" y="366" font-size="7" fill="#5F6368">monotonic</text>
+  <text x="305" y="366" font-size="6.5" fill="#5F6368">Replay protection — never overflows</text>
+
+  <text x="24" y="377" font-size="7" fill="#202124">80–83</text>
+  <text x="50" y="377" font-size="7" fill="#202124">4</text>
+  <text x="70" y="377" font-size="7" font-weight="600" fill="#202124">lastTimestamp</text>
+  <text x="140" y="377" font-size="7" fill="#5F6368">u32</text>
+  <text x="190" y="377" font-size="7" fill="#5F6368">Unix sec</text>
+  <text x="305" y="377" font-size="6.5" fill="#5F6368">Rejects backdated transactions</text>
+
+  <text x="24" y="388" font-size="7" fill="#202124">84</text>
+  <text x="50" y="388" font-size="7" fill="#202124">1</text>
+  <text x="70" y="388" font-size="7" font-weight="600" fill="#202124">state</text>
+  <text x="140" y="388" font-size="7" fill="#5F6368">u8</text>
+  <text x="190" y="388" font-size="7" fill="#5F6368">CardState 0–3</text>
+  <text x="305" y="388" font-size="6.5" fill="#5F6368">IDLE→IN→STATION→OUT flow enforcement</text>
+
+  <text x="24" y="399" font-size="7" fill="#202124">85</text>
+  <text x="50" y="399" font-size="7" fill="#202124">1</text>
+  <text x="70" y="399" font-size="7" font-weight="600" fill="#202124">flags</text>
+  <text x="140" y="399" font-size="7" fill="#5F6368">u8</text>
+  <text x="190" y="399" font-size="7" fill="#5F6368">bitfield</text>
+  <text x="305" y="399" font-size="6.5" fill="#5F6368">Future: VIP/discount tier</text>
+
+  <text x="24" y="411" font-size="6.5" fill="#80868B" font-style="italic">6 pages — only this + trailer written on debit/credit (fast NFC write)</text>
+
+  <!-- ===== RIGHT COLUMN ===== -->
+
+  <!-- SESSION -->
+  <rect x="486" y="86" width="460" height="88" rx="6" fill="url(#sg)" stroke="#EA4335" stroke-width="1"/>
+  <text x="496" y="100" font-size="10" font-weight="700" fill="#C5221F">SESSION — 16 B</text>
+  <text x="600" y="100" font-size="7.5" fill="#5F6368">(offset 88–103) Check-in/out tracking</text>
+
+  <text x="496" y="114" font-size="7" font-weight="600" fill="#C5221F">Off</text>
+  <text x="522" y="114" font-size="7" font-weight="600" fill="#C5221F">Sz</text>
+  <text x="542" y="114" font-size="7" font-weight="600" fill="#C5221F">Field</text>
+  <text x="620" y="114" font-size="7" font-weight="600" fill="#C5221F">Type</text>
+  <text x="660" y="114" font-size="7" font-weight="600" fill="#C5221F">Value</text>
+  <text x="775" y="114" font-size="7" font-weight="600" fill="#C5221F">Reason</text>
+
+  <text x="496" y="126" font-size="7" fill="#202124">88–91</text>
+  <text x="522" y="126" font-size="7" fill="#202124">4</text>
+  <text x="542" y="126" font-size="7" font-weight="600" fill="#202124">startTime</text>
+  <text x="620" y="126" font-size="7" fill="#5F6368">u32</text>
+  <text x="660" y="126" font-size="7" fill="#5F6368">Unix sec</text>
+  <text x="775" y="126" font-size="6.5" fill="#5F6368">Parking fee: ceil(Δ/1hr) × Rp2K</text>
+
+  <text x="496" y="137" font-size="7" fill="#202124">92–95</text>
+  <text x="522" y="137" font-size="7" fill="#202124">4</text>
+  <text x="542" y="137" font-size="7" font-weight="600" fill="#202124">endTime</text>
+  <text x="620" y="137" font-size="7" fill="#5F6368">u32</text>
+  <text x="660" y="137" font-size="7" fill="#5F6368">Unix sec</text>
+  <text x="775" y="137" font-size="6.5" fill="#5F6368">Receipt display without server</text>
+
+  <text x="496" y="148" font-size="7" fill="#202124">96–99</text>
+  <text x="522" y="148" font-size="7" fill="#202124">4</text>
+  <text x="542" y="148" font-size="7" font-weight="600" fill="#202124">terminalId</text>
+  <text x="620" y="148" font-size="7" fill="#5F6368">u32</text>
+  <text x="660" y="148" font-size="7" fill="#5F6368">device id</text>
+  <text x="775" y="148" font-size="6.5" fill="#5F6368">Fraud audit trail</text>
+
+  <text x="496" y="168" font-size="6.5" fill="#80868B" font-style="italic">4 pages. Bytes 100–103 reserved. Zeroed on checkout complete.</text>
+
+  <!-- TX LOG -->
+  <rect x="486" y="180" width="460" height="115" rx="6" fill="url(#lg)" stroke="#9C27B0" stroke-width="1"/>
+  <text x="496" y="194" font-size="10" font-weight="700" fill="#7B1FA2">TX LOG — 80 B</text>
+  <text x="590" y="194" font-size="7.5" fill="#5F6368">(offset 104–183) 5 entries × 16B ring buffer</text>
+
+  <text x="496" y="208" font-size="7" font-weight="600" fill="#7B1FA2">Byte</text>
+  <text x="522" y="208" font-size="7" font-weight="600" fill="#7B1FA2">Sz</text>
+  <text x="542" y="208" font-size="7" font-weight="600" fill="#7B1FA2">Field</text>
+  <text x="620" y="208" font-size="7" font-weight="600" fill="#7B1FA2">Type</text>
+  <text x="660" y="208" font-size="7" font-weight="600" fill="#7B1FA2">Value</text>
+  <text x="775" y="208" font-size="7" font-weight="600" fill="#7B1FA2">Reason</text>
+
+  <text x="496" y="220" font-size="7" fill="#202124">+0–3</text>
+  <text x="522" y="220" font-size="7" fill="#202124">4</text>
+  <text x="542" y="220" font-size="7" font-weight="600" fill="#202124">timestamp</text>
+  <text x="620" y="220" font-size="7" fill="#5F6368">u32</text>
+  <text x="660" y="220" font-size="7" fill="#5F6368">Unix sec</text>
+  <text x="775" y="220" font-size="6.5" fill="#5F6368">Offline history on scout kiosk</text>
+
+  <text x="496" y="231" font-size="7" fill="#202124">+4–6</text>
+  <text x="522" y="231" font-size="7" fill="#202124">3</text>
+  <text x="542" y="231" font-size="7" font-weight="600" fill="#202124">amount</text>
+  <text x="620" y="231" font-size="7" fill="#5F6368">u24</text>
+  <text x="660" y="231" font-size="7" fill="#5F6368">max 16.7M</text>
+  <text x="775" y="231" font-size="6.5" fill="#5F6368">Saves 1B/entry; max tx is 2M anyway</text>
+
+  <text x="496" y="242" font-size="7" fill="#202124">+7–10</text>
+  <text x="522" y="242" font-size="7" fill="#202124">4</text>
+  <text x="542" y="242" font-size="7" font-weight="600" fill="#202124">balanceAfter</text>
+  <text x="620" y="242" font-size="7" fill="#5F6368">u32</text>
+  <text x="660" y="242" font-size="7" fill="#5F6368">snapshot</text>
+  <text x="775" y="242" font-size="6.5" fill="#5F6368">Chain verify: each Δ must match</text>
+
+  <text x="496" y="253" font-size="7" fill="#202124">+11</text>
+  <text x="522" y="253" font-size="7" fill="#202124">1</text>
+  <text x="542" y="253" font-size="7" font-weight="600" fill="#202124">flags</text>
+  <text x="620" y="253" font-size="7" fill="#5F6368">u8</text>
+  <text x="660" y="253" font-size="7" fill="#5F6368">TxType 0–4</text>
+  <text x="775" y="253" font-size="6.5" fill="#5F6368">DEBIT/CREDIT/CHECKIN/OUT/ADMIN</text>
+
+  <text x="496" y="264" font-size="7" fill="#202124">+12–15</text>
+  <text x="522" y="264" font-size="7" fill="#202124">4</text>
+  <text x="542" y="264" font-size="7" font-weight="600" fill="#202124">hash</text>
+  <text x="620" y="264" font-size="7" fill="#5F6368">bytes</text>
+  <text x="660" y="264" font-size="7" fill="#5F6368">SHA-256[0:4]</text>
+  <text x="775" y="264" font-size="6.5" fill="#5F6368">Chain integrity; all-zero = empty slot</text>
+
+  <text x="496" y="288" font-size="6.5" fill="#80868B" font-style="italic">5×16B = 80B. Bytes 184–215 (32B) reserved for future expansion.</text>
+
+  <!-- TRAILER -->
+  <rect x="486" y="300" width="460" height="180" rx="6" fill="url(#tg)" stroke="#00796B" stroke-width="1"/>
+  <text x="496" y="314" font-size="10" font-weight="700" fill="#004D40">TRAILER — 64 B</text>
+  <text x="600" y="314" font-size="7.5" fill="#5F6368">(offset 432–495) Crypto seal &amp; buffer mgmt</text>
+
+  <text x="496" y="328" font-size="7" font-weight="600" fill="#004D40">Off</text>
+  <text x="522" y="328" font-size="7" font-weight="600" fill="#004D40">Sz</text>
+  <text x="542" y="328" font-size="7" font-weight="600" fill="#004D40">Field</text>
+  <text x="620" y="328" font-size="7" font-weight="600" fill="#004D40">Type</text>
+  <text x="660" y="328" font-size="7" font-weight="600" fill="#004D40">Value</text>
+  <text x="775" y="328" font-size="7" font-weight="600" fill="#004D40">Reason</text>
+
+  <text x="496" y="340" font-size="7" fill="#202124">+0–3</text>
+  <text x="522" y="340" font-size="7" fill="#202124">4</text>
+  <text x="542" y="340" font-size="7" font-weight="600" fill="#202124">expiresAt</text>
+  <text x="620" y="340" font-size="7" fill="#5F6368">u32</text>
+  <text x="660" y="340" font-size="7" fill="#5F6368">Unix sec</text>
+  <text x="775" y="340" font-size="6.5" fill="#5F6368">Offline expiry check at gate</text>
+
+  <text x="496" y="351" font-size="7" fill="#202124">+4</text>
+  <text x="522" y="351" font-size="7" fill="#202124">1</text>
+  <text x="542" y="351" font-size="7" font-weight="600" fill="#202124">keyVersion</text>
+  <text x="620" y="351" font-size="7" fill="#5F6368">u8</text>
+  <text x="660" y="351" font-size="7" fill="#5F6368">1–255</text>
+  <text x="775" y="351" font-size="6.5" fill="#5F6368">Seamless AES key rotation</text>
+
+  <text x="496" y="362" font-size="7" fill="#202124">+5–7</text>
+  <text x="522" y="362" font-size="7" fill="#202124">3</text>
+  <text x="542" y="362" font-size="7" fill="#5F6368">reserved₁</text>
+  <text x="620" y="362" font-size="7" fill="#80868B">—</text>
+  <text x="660" y="362" font-size="7" fill="#80868B">pad</text>
+  <text x="775" y="362" font-size="6.5" fill="#5F6368">Alignment padding</text>
+
+  <text x="496" y="373" font-size="7" fill="#202124">+8–13</text>
+  <text x="522" y="373" font-size="7" fill="#202124">6</text>
+  <text x="542" y="373" font-size="7" font-weight="600" fill="#202124">rootHash</text>
+  <text x="620" y="373" font-size="7" fill="#5F6368">bytes</text>
+  <text x="660" y="373" font-size="7" fill="#5F6368">SHA-256[0:6]</text>
+  <text x="775" y="373" font-size="6.5" fill="#5F6368">Fast buffer integrity without decrypt</text>
+
+  <text x="496" y="384" font-size="7" fill="#202124">+14–15</text>
+  <text x="522" y="384" font-size="7" fill="#202124">2</text>
+  <text x="542" y="384" font-size="7" fill="#5F6368">reserved₂</text>
+  <text x="620" y="384" font-size="7" fill="#80868B">—</text>
+  <text x="660" y="384" font-size="7" fill="#80868B">pad</text>
+  <text x="775" y="384" font-size="6.5" fill="#5F6368">Future use</text>
+
+  <text x="496" y="395" font-size="7" fill="#202124">+16–19</text>
+  <text x="522" y="395" font-size="7" fill="#202124">4</text>
+  <text x="542" y="395" font-size="7" font-weight="600" fill="#202124">counterBind</text>
+  <text x="620" y="395" font-size="7" fill="#5F6368">u32</text>
+  <text x="660" y="395" font-size="7" fill="#5F6368">counter[31:0]</text>
+  <text x="775" y="395" font-size="6.5" fill="#5F6368">HMAC replay prevention</text>
+
+  <text x="496" y="406" font-size="7" fill="#202124">+20–27</text>
+  <text x="522" y="406" font-size="7" fill="#202124">8</text>
+  <text x="542" y="406" font-size="7" font-weight="600" fill="#202124">hmac</text>
+  <text x="620" y="406" font-size="7" fill="#5F6368">bytes</text>
+  <text x="660" y="406" font-size="7" fill="#5F6368">HMAC-256[0:8]</text>
+  <text x="775" y="406" font-size="6.5" fill="#5F6368">Tamper seal (2⁶⁴ brute-force)</text>
+
+  <text x="496" y="417" font-size="7" fill="#202124">+28</text>
+  <text x="522" y="417" font-size="7" fill="#202124">1</text>
+  <text x="542" y="417" font-size="7" font-weight="600" fill="#202124">activePtr</text>
+  <text x="620" y="417" font-size="7" fill="#5F6368">u8</text>
+  <text x="660" y="417" font-size="7" fill="#5F6368">0=A / 1=B</text>
+  <text x="775" y="417" font-size="6.5" fill="#5F6368">Atomic update: flip after write OK</text>
+
+  <text x="496" y="435" font-size="6.5" fill="#80868B" font-style="italic">16 pages. Bytes 29–63 (35B) reserved. Written last → atomic commit guarantee.</text>
+
+  <!-- ===== BOTTOM: NTAG215 Spec Summary ===== -->
+  <rect x="14" y="420" width="460" height="108" rx="6" fill="#F8F9FA" stroke="#DADCE0" stroke-width="1"/>
+  <text x="24" y="436" font-size="9" font-weight="700" fill="#202124">NTAG215 Quick Spec</text>
+  <rect x="24" y="442" width="440" height="0.5" fill="#DADCE0"/>
+
+  <text x="24" y="455" font-size="7" fill="#5F6368">Total Memory:</text>
+  <text x="100" y="455" font-size="7" font-weight="600" fill="#202124">540 B (135 pages × 4 B/page)</text>
+  <text x="260" y="455" font-size="7" fill="#5F6368">Usable:</text>
+  <text x="295" y="455" font-size="7" font-weight="600" fill="#202124">504 B (pages 4–129)</text>
+
+  <text x="24" y="467" font-size="7" fill="#5F6368">UID:</text>
+  <text x="50" y="467" font-size="7" font-weight="600" fill="#202124">7 B (pages 0–1)</text>
+  <text x="160" y="467" font-size="7" fill="#5F6368">Lock/OTP:</text>
+  <text x="210" y="467" font-size="7" font-weight="600" fill="#202124">Pages 2–3</text>
+  <text x="290" y="467" font-size="7" fill="#5F6368">Config:</text>
+  <text x="325" y="467" font-size="7" font-weight="600" fill="#202124">Pages 130–134</text>
+
+  <text x="24" y="479" font-size="7" fill="#5F6368">RF Interface:</text>
+  <text x="85" y="479" font-size="7" font-weight="600" fill="#202124">ISO 14443-3A, 13.56 MHz, 106 kbps</text>
+  <text x="310" y="479" font-size="7" fill="#5F6368">Read range:</text>
+  <text x="365" y="479" font-size="7" font-weight="600" fill="#202124">~3–5 cm</text>
+
+  <text x="24" y="495" font-size="7" fill="#5F6368">Endurance:</text>
+  <text x="80" y="495" font-size="7" font-weight="600" fill="#202124">100,000 write cycles</text>
+  <text x="220" y="495" font-size="7" fill="#5F6368">Data retention:</text>
+  <text x="295" y="495" font-size="7" font-weight="600" fill="#202124">10 years</text>
+
+  <rect x="24" y="502" width="440" height="0.5" fill="#DADCE0"/>
+  <text x="24" y="514" font-size="7" font-weight="600" fill="#CC001E">Security Stack:</text>
+  <text x="105" y="514" font-size="7" fill="#202124">AES-256-GCM (body) + HMAC-SHA256 (trailer) + monotonic counter + dual-buffer atomic writes + hash-chain log</text>
+  <text x="24" y="525" font-size="7" font-weight="600" fill="#CC001E">Encoding:</text>
+  <text x="80" y="525" font-size="7" fill="#202124">All integers Little-Endian · Strings UTF-8 null-padded · Magic "KOPW" (0x4B4F5057)</text>
+
+  <!-- Footer line -->
+  <line x1="14" y1="535" x2="946" y2="535" stroke="#DADCE0" stroke-width="0.5"/>
+  <text x="480" y="538" text-anchor="middle" font-size="6" fill="#80868B">Koperasi Kegelapan · KK Wallet · NFC Dompet Koperasi</text>
+</svg>

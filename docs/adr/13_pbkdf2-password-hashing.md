@@ -42,12 +42,12 @@ Cloudflare Workers limit PBKDF2 iterations to 100,000 maximum — this is the ha
 
 ## Alternatives Considered
 
-| Option                     | Reason Rejected                                                                                |
-| -------------------------- | ---------------------------------------------------------------------------------------------- |
-| **Argon2id (WASM)**        | Workers memory limits prevent meaningful memory-hard parameters. WASM adds deploy complexity. |
-| **bcrypt**                  | Limited to 72 bytes input. Not natively available in Web Crypto API.                          |
-| **scrypt**                  | Not available in Web Crypto API. Would require WASM.                                         |
-| **PBKDF2 with 600k iter** | Exceeds Cloudflare Workers' 100,000 iteration cap.                                           |
+| Option                    | Reason Rejected                                                                               |
+| ------------------------- | --------------------------------------------------------------------------------------------- |
+| **Argon2id (WASM)**       | Workers memory limits prevent meaningful memory-hard parameters. WASM adds deploy complexity. |
+| **bcrypt**                | Limited to 72 bytes input. Not natively available in Web Crypto API.                          |
+| **scrypt**                | Not available in Web Crypto API. Would require WASM.                                          |
+| **PBKDF2 with 600k iter** | Exceeds Cloudflare Workers' 100,000 iteration cap.                                            |
 
 ## References
 

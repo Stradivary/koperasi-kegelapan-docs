@@ -6,10 +6,10 @@
 
 Authentication uses a single layer: **operator credentials** (username + password + tenant slug).
 
-| Layer             | What is proved                                             | Mechanism                                           |
-| ----------------- | ---------------------------------------------------------- | --------------------------------------------------- |
-| Operator identity | The human has valid credentials for the claimed tenant role | Password verified via PBKDF2-SHA256 (100k iterations) |
-| Device enrollment | This browser is registered with the koperasi               | Device fingerprint (hash, userAgent, platform) registered at login time |
+| Layer             | What is proved                                              | Mechanism                                                               |
+| ----------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Operator identity | The human has valid credentials for the claimed tenant role | Password verified via PBKDF2-SHA256 (100k iterations)                   |
+| Device enrollment | This browser is registered with the koperasi                | Device fingerprint (hash, userAgent, platform) registered at login time |
 
 The backend issues a short-lived **JWT access token** (1h) and a **refresh token** (device-bound) after password verification succeeds.
 

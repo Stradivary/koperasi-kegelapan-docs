@@ -31,9 +31,9 @@ The following limits exist as fields in the `PolicyData` interface (`src/core/au
 
 ## Hardware constraints
 
-- **Balance** (`wallet.balance`, `wallet.lastBalance`): stored as **uint32** (max 4,294,967,295) but capped at 16M by business logic so that a full-balance debit fits in the 24-bit log amount field.
+- **Balance** (`wallet.balance`, `wallet.lastBalance`): stored as **uint24** (3 bytes value + 1 byte padding per field, max 16,777,215 / ~Rp 16.7 M). Operational ceiling `MAX_BALANCE = 16,000,000` fits within this hardware limit.
 - **Log entry amount**: stored as **uint24** (max 16,777,215). This is the hard cap on any single transaction amount. `MAX_TRANSACTION_AMOUNT = 16,000,000` provides a round business limit within this hardware cap.
-- **Log entry balanceAfter**: stored as **uint32**.
+- **Log entry balanceAfter**: stored as **uint24** (3 bytes value + 1 byte padding, same range as balance).
 - **Counter**: stored as **uint64** (bigint) — will not overflow in practice.
 
 ## Enforcement mechanism

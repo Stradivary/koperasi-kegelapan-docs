@@ -36,8 +36,9 @@ Holds the cardholder's static identity and the card's current health status. Fie
 
 ### Wallet + Runtime Block (24 bytes)
 
-Holds the live financial state and write-ordering fields. Fields: `balance`, `lastBalance`, `counter` (monotonic uint64), `lastTimestamp`, `state`, `flags`.
+Holds the live financial state and write-ordering fields. Fields: `balance` (uint24), `lastBalance` (uint24), `counter` (monotonic uint64), `lastTimestamp`, `state`, `flags`.
 
+- `balance` and `lastBalance` are uint24 values (max 16,777,215 / ~Rp 16.7M) each stored as 3 bytes value + 1 byte padding (4 bytes total per field).
 - `counter` is a `uint64` that increments on every write and is never decremented. It is the primary anti-replay control.
 - `lastBalance` and `lastTimestamp` are the balance and timestamp from the previous write, allowing the terminal to detect inconsistency without reading the full log chain.
 - `state` is the session lifecycle position (IDLE, CHECKED_IN, STATION_OPERATION, CHECKED_OUT - see [§4](4_card-state-machine.md)).
@@ -47,7 +48,7 @@ Holds the live financial state and write-ordering fields. Fields: `balance`, `la
 
 Bounds the current session window. Fields: `startTime`, `endTime`, `terminalId`.
 
-- `startTime` is set when the gate checks in. It is used as the anchor for the log chain hash (first entry's `prevHash` is derived from `startTime`).
+- `startTime` is set when the gate checks in. It records the session open time for fee calculation and audit purposes.
 - `endTime` is zero while the session is open and set to the checkout timestamp when the gate checks out.
 - `terminalId` is a uint32 recording which terminal opened the session, for audit purposes.
 

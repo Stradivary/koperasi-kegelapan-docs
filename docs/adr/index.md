@@ -15,7 +15,7 @@ ADRs are cross-cutting — they explain _why_ the specs are written the way they
 | [ADR-003](3_ntag215-baseline.md)                     | NTAG215 as the Production Card Baseline                              | Accepted |
 | [ADR-004](4_offline-trust-model.md)                  | Deferred-Trust Offline Model                                         | Accepted |
 | [ADR-005](5_hash-chain-log.md)                       | Hash-Chain Transaction Log (4-byte truncated SHA-256)                | Accepted |
-| [ADR-006](6_balance-ceiling.md)                      | uint32 Balance with Rp 16 M Ceiling                                  | Accepted |
+| [ADR-006](6_balance-ceiling.md)                      | uint24 Balance with Rp 16 M Ceiling                                  | Accepted |
 | [ADR-007](7_tanstack-start-cloudflare-stack.md)      | Vite React SPA + Hono Workers as the Application Platform            | Accepted |
 | [ADR-008](8_local-first-terminal-architecture.md)    | Local-First Terminal Architecture with Optional Backend Sync         | Accepted |
 | [ADR-009](9_indexeddb-local-persistence.md)          | IndexedDB as Primary Browser Persistence with Typed Local State      | Accepted |

@@ -1,7 +1,8 @@
-# ADR-006: uint32 Balance with Rp 16 M Ceiling
+# ADR-006: uint24 Balance with Rp 16 M Ceiling
 
 **Date**: 2025-01-01  
-**Status**: Accepted
+**Status**: Accepted  
+**Updated**: 2026-06 (clarified balance type as uint24 stored in 4-byte slot)
 
 ## Context
 
@@ -13,10 +14,10 @@ The card must store a monetary balance in its encrypted payload. Two design ques
 
 ## Decision
 
-The card balance is stored as a **uint32** (unsigned 32-bit integer), denominated in the smallest currency unit (Rupiah, no subdivision).
+The card balance is stored as a **uint24** (unsigned 24-bit integer, max 16,777,215) with 1 byte of padding per field (4 bytes total storage), denominated in the smallest currency unit (Rupiah, no subdivision).
 
-- The hard maximum value of uint32 is `2^32 − 1 = 4,294,967,295` (≈ Rp 4.3 billion). The system enforces a much lower **operational ceiling of Rp 16,000,000** (16 million Rupiah, ≈ USD 1,000).
-- The recommended maximum load per top-up event is **Rp 5,000,000** (5 million Rupiah).
+- The hard maximum value is `2^24 − 1 = 16,777,215` (≈ Rp 16.7 million). The system enforces a lower **operational ceiling of Rp 16,000,000** (16 million Rupiah, ≈ USD 1,000).
+- The recommended maximum load per top-up event is **Rp 2,000,000** (2 million Rupiah).
 - The maximum single transaction debit is **Rp 1,000,000** (1 million Rupiah).
 - The maximum daily debit total is **Rp 2,000,000** (2 million Rupiah).
 - The maximum weekly debit total is **Rp 5,000,000** (5 million Rupiah).
@@ -27,17 +28,17 @@ These limits are enforced by both the terminal (via session grant policy) and th
 
 **Positive:**
 
-- uint32 is 4 bytes - a known, compact, portable integer type. It fits within the card payload with zero ambiguity.
+- uint24 with 1 byte padding maintains 4-byte alignment while enforcing a natural ceiling that matches the log entry `amount` field range.
+- All monetary fields (balance, lastBalance, amount, balanceAfter) share the same uint24 range — no overflow possible when debiting a full balance into a log entry.
 - Integer arithmetic in the smallest unit eliminates all floating-point rounding errors.
-- The Rp 16 M ceiling bounds worst-case per-card exposure if the card is cloned or the session key is leaked.
+- The Rp 16 M ceiling (within the uint24 hardware max of ~Rp 16.7 M) bounds worst-case per-card exposure if the card is cloned or the session key is leaked.
 - The per-transaction and per-day limits further reduce the fraud surface within the offline window.
-- uint32 supports values up to ≈ Rp 4.3 billion, providing headroom for potential currency or region expansions without a card schema change.
 
 **Negative:**
 
-- The Rp 16 M ceiling may be too low for high-value venue scenarios (e.g., corporate expense cards). Raising the ceiling requires a policy change, not a schema change (the uint32 type can accommodate higher values).
+- The Rp 16 M ceiling cannot be raised above ~Rp 16.7 M without a schema change (unlike a full uint32 which would allow up to ~Rp 4.3 B). This limits future use cases to prepaid/transit scenarios.
+- `lastBalance` (the balance before the most recent transaction, stored for rollback detection) also uses the same uint24 + 1B padding layout.
 - Denominating in the smallest unit (Rupiah) means the balance field cannot represent currencies with sub-unit precision (e.g., USD cents) without a convention change.
-- `lastBalance` (the balance before the most recent transaction, stored for rollback detection) also uses uint32, doubling the storage cost for balance-related fields.
 
 **Risks:**
 
@@ -47,11 +48,11 @@ These limits are enforced by both the terminal (via session grant policy) and th
 
 | Option                                        | Reason Rejected                                                                                                                                                                                                                 |
 | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **uint64 (8 bytes)**                          | Double the storage cost (8 bytes vs 4 bytes). The uint32 ceiling of ≈ Rp 4.3 billion is already far above any realistic card balance need. The extra range is not justified.                                                    |
+| **uint32 (4 bytes, full range)**              | Max ~Rp 4.3 billion is far above any realistic card balance need and creates an inconsistency with the log entry `amount` field (uint24). Using uint24 for all monetary fields ensures no overflow when recording transactions. |
 | **uint16 (2 bytes)**                          | Maximum value of 65,535 is too small even for a modest Rp 65,535 limit. Would require storing balance in units of Rp 100 or Rp 1,000, introducing rounding errors and ambiguity.                                                |
 | **Fixed-point float (e.g., 32-bit IEEE 754)** | Float32 cannot exactly represent all integer values above 2^24 (≈ 16 million). For balances near the ceiling, float32 introduces representation errors that differ by platform. Unacceptable for a financial system.            |
 | **String / BCD**                              | Variable or inflated byte cost. Parsing overhead. Not appropriate for a compact binary card layout.                                                                                                                             |
-| **No ceiling (system max only)**              | Without an operational ceiling enforced by policy, a stolen card or compromised session key has unlimited exposure up to `uint32_max` ≈ Rp 4.3 billion. The ceiling exists to bound worst-case fraud, not as a type constraint. |
+| **No ceiling (system max only)**              | Without an operational ceiling enforced by policy, a compromised session key has exposure up to the uint24 hardware max. The ceiling exists to bound worst-case fraud, not as a type constraint.                                 |
 
 ## References
 

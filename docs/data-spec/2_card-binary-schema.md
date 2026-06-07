@@ -73,8 +73,10 @@ Each buffer contains the following blocks in fixed order:
 
 | Field           | Offset | Size | Type   | Description                                             | Constraints                                                       |
 | --------------- | ------ | ---- | ------ | ------------------------------------------------------- | ----------------------------------------------------------------- |
-| `balance`       | 64     | 4 B  | uint32 | Current balance in smallest currency unit (integer IDR) | Max `4,000,000,000`; effective ceiling is Rp 16,000,000 by policy |
-| `lastBalance`   | 68     | 4 B  | uint32 | Balance before most recent transaction                  | Used for rollback detection; must equal previous `balance`        |
+| `balance`       | 64     | 3 B  | uint24 | Current balance in smallest currency unit (integer IDR) | Max `16,777,215` (Rp 16.7 M)                                                |
+| `balance_pad`   | 67     | 1 B  | -      | Padding                                                 | Must be zeroed on write; ignored on read                                     |
+| `lastBalance`   | 68     | 3 B  | uint24 | Balance before most recent transaction                  | Used for rollback detection; must equal previous `balance`; same uint24 range |
+| `lastBal_pad`   | 71     | 1 B  | -      | Padding                                                 | Must be zeroed on write; ignored on read                                     |
 | `counter`       | 72     | 8 B  | uint64 | Monotonically increasing write counter                  | Never decremented; starts at `0` at issuance; anti-replay key     |
 | `lastTimestamp` | 80     | 4 B  | uint32 | Timestamp of most recent write (UTC seconds)            | Must not be earlier than previous `lastTimestamp`                 |
 | `state`         | 84     | 1 B  | uint8  | Card lifecycle / session state                          | See [session state codes](#session-state-codes) below             |
@@ -106,7 +108,7 @@ Each buffer contains the following blocks in fixed order:
 
 | Field        | Offset | Size | Type   | Description                            | Constraints                                              |
 | ------------ | ------ | ---- | ------ | -------------------------------------- | -------------------------------------------------------- |
-| `startTime`  | 88     | 4 B  | uint32 | Session open timestamp (UTC seconds)   | Set on `CHECKED_IN`; used as chain initialisation anchor |
+| `startTime`  | 88     | 4 B  | uint32 | Session open timestamp (UTC seconds)   | Set on `CHECKED_IN`; used for fee calculation and audit  |
 | `endTime`    | 92     | 4 B  | uint32 | Session close timestamp (UTC seconds)  | Zero while session is open; set on `CHECKED_OUT`         |
 | `terminalId` | 96     | 4 B  | uint32 | ID of terminal that opened the session | Backend-assigned terminal identifier                     |
 | `reserved`   | 100    | 4 B  | -      | Reserved                               | Must be zeroed on write; ignored on read                 |
@@ -123,7 +125,8 @@ Fixed-capacity ring buffer. When full, the oldest entry is overwritten. Current 
 | -------------- | --------------------- | ---- | ------ | ------------------------------------- | -------------------------------------------------------------------------------- |
 | `timestamp`    | 0                     | 4 B  | uint32 | Absolute Unix timestamp (UTC seconds) | Transaction time                                                                 |
 | `amount`       | 4                     | 3 B  | uint24 | Transaction amount (integer IDR)      | `0` for state-only transitions (check-in/out)                                    |
-| `balanceAfter` | 7                     | 4 B  | uint32 | Balance after this transaction        | Must be consistent with prior `balance` and `amount`                             |
+| `balanceAfter` | 7                     | 3 B  | uint24 | Balance after this transaction        | Must be consistent with prior `balance` and `amount`; max 16,777,215         |
+| `bal_pad`      | 10                    | 1 B  | -      | Padding                               | Must be zeroed on write; ignored on read                                     |
 | `flags`        | 11                    | 1 B  | uint8  | Transaction type + flags              | See [log flags table](#log-flags) below                                          |
 | `hash`         | 12                    | 4 B  | bytes  | Truncated SHA-256 chain hash          | `SHA256(timestamp \|\| amount \|\| balanceAfter \|\| flags \|\| prevHash)[0..3]` |
 

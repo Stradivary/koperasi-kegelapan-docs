@@ -6,7 +6,7 @@
 | -------------- | ---- | ------ | ------------------------------------------------------------------- |
 | `timestamp`    | 4 B  | uint32 | Absolute Unix timestamp (UTC seconds) of the transaction            |
 | `amount`       | 3 B  | uint24 | Transaction amount in smallest currency unit; unsigned              |
-| `balanceAfter` | 4 B  | uint32 | Balance after this transaction; used for consistency checks         |
+| `balanceAfter` | 4 B  | uint24 | Balance after this transaction; 3B value + 1B padding, high byte zero   |
 | `flags`        | 1 B  | uint8  | Transaction type and operational flags (see below)                  |
 | `hash`         | 4 B  | bytes  | Truncated SHA-256 chain hash linking this entry to the previous one |
 
@@ -36,7 +36,8 @@
 - The hash input is a 16-byte buffer:
   - bytes 0-3: `timestamp` (uint32, little-endian)
   - bytes 4-6: `amount` (uint24, little-endian)
-  - bytes 7-10: `balanceAfter` (uint32, little-endian)
+  - bytes 7-9: `balanceAfter` (uint24, little-endian)
+  - byte 10: padding (zero)
   - byte 11: `flags` (uint8)
   - bytes 12-15: `prevHash` (4 bytes)
 - `rootHash` in the trailer stores the hash of the most recent log entry (4 bytes, zero-padded to 6 bytes).

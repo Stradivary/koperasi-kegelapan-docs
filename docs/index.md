@@ -39,7 +39,7 @@ Twelve key decisions are recorded in the [ADR folder](adr/index.md):
 3. [NTAG215 production baseline](adr/3_ntag215-baseline.md) - Commodity hardware, byte budget
 4. [Offline trust model](adr/4_offline-trust-model.md) - Session grants, deferred reconciliation
 5. [Hash-chain log](adr/5_hash-chain-log.md) - Tamper-evident on-card transaction log
-6. [Balance ceiling](adr/6_balance-ceiling.md) - uint32 with Rp 16 M operational cap
+6. [Balance ceiling](adr/6_balance-ceiling.md) - uint24 with Rp 16 M operational cap
 7. [TanStack + Cloudflare stack](adr/7_tanstack-start-cloudflare-stack.md) - Application platform choice
 8. [Local-first terminal architecture](adr/8_local-first-terminal-architecture.md) - Optional backend sync
 9. [IndexedDB local persistence](adr/9_indexeddb-local-persistence.md) - Typed local state in browser

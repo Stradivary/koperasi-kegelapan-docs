@@ -7,7 +7,7 @@
 | Payload encryption     | AES-256-GCM                                   |
 | Payload authentication | HMAC-SHA256 (truncated to 8 bytes in trailer) |
 | Key derivation         | HKDF-SHA256                                   |
-| Log chain hash         | SHA-256 (truncated to 6 bytes per entry)      |
+| Log chain hash         | SHA-256 (truncated to 4 bytes per entry)      |
 
 ## Encryption
 
@@ -19,9 +19,9 @@
 ## Integrity
 
 - An **HMAC-SHA256** is computed over the following fields in order:
-  1. Full encrypted buffer bytes
+  1. Full encrypted buffer bytes (216 bytes)
   2. `expiresAt`, `keyVersion`, `rootHash`, `counterBind` from the trailer
-  3. `activePtr`
+- The `activePtr` field is NOT included in the HMAC input (it is written last during the buffer flip).
 - The first 8 bytes of the HMAC output are stored in the trailer `HMAC` field.
 - Validation recomputes the HMAC on every read and compares it to the stored value.
 

@@ -13,7 +13,7 @@ This section defines the canonical encoding rules that apply to all card binary 
 | **Byte order**       | Little-endian for all multi-byte integer fields (`uint16`, `uint32`, `uint64`, `uint24`)                                       |
 | **Timestamps**       | UTC seconds since Unix epoch, stored as `uint32`; valid range: year 2024–2106                                                  |
 | **String fields**    | UTF-8, null-padded to fill the fixed byte allocation; max 23 meaningful bytes for `name` (1 byte reserved for null terminator) |
-| **Currency amounts** | Integer IDR (Indonesian Rupiah), no decimal component; stored as `uint32` for balance, `uint24` for log `amount`               |
+| **Currency amounts** | Integer IDR (Indonesian Rupiah), no decimal component; all monetary fields use `uint24` range (max 16,777,215); `balance`, `lastBalance`, and `balanceAfter` are stored as 3B value + 1B padding (4B total), `amount` occupies 3 bytes |
 | **Reserved fields**  | Must be written as all-zero bytes; readers must ignore reserved content rather than rejecting it                               |
 | **`uint24`**         | 3-byte unsigned integer, little-endian (not a native CPU type; written/read as 3 separate bytes)                               |
 | **Boolean flags**    | Single bits within flag bytes; unset bits are `0`                                                                              |
@@ -95,7 +95,8 @@ The hash input is a 16-byte buffer:
 
 - bytes 0-3: `timestamp` (uint32, little-endian)
 - bytes 4-6: `amount` (uint24, little-endian)
-- bytes 7-10: `balanceAfter` (uint32, little-endian)
+- bytes 7-9: `balanceAfter` (uint24, little-endian)
+- byte 10: padding (zero)
 - byte 11: `flags` (uint8)
 - bytes 12-15: `prevHash` (4 bytes)
 

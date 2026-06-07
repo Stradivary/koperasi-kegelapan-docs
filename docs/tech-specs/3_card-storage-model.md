@@ -53,8 +53,8 @@ The active and shadow buffers each have a fixed size of **216 bytes** on NTAG215
 
 | Field           | Size | Type   | Description                                                             |
 | --------------- | ---- | ------ | ----------------------------------------------------------------------- |
-| `balance`       | 4 B  | uint32 | Current balance in smallest currency unit                               |
-| `lastBalance`   | 4 B  | uint32 | Balance before the most recent transaction; used for rollback detection |
+| `balance`       | 4 B  | uint24 | Current balance in smallest currency unit (3B value + 1B padding) |
+| `lastBalance`   | 4 B  | uint24 | Balance before the most recent transaction; used for rollback detection (3B value + 1B padding) |
 | `counter`       | 8 B  | uint64 | Monotonically increasing write counter; never decremented               |
 | `lastTimestamp` | 4 B  | uint32 | Timestamp of the most recent write (UTC seconds)                        |
 | `state`         | 1 B  | uint8  | Card lifecycle state (see [§6](6_state-machine-session-rules.md))       |
@@ -86,7 +86,7 @@ See [§14](14_transaction-log-format.md) for full log entry definition and chain
 | -------------- | ---- | ------ | -------------------------------------------- |
 | `timestamp`    | 4 B  | uint32 | Absolute Unix timestamp (UTC seconds)        |
 | `amount`       | 3 B  | uint24 | Transaction amount in smallest currency unit |
-| `balanceAfter` | 4 B  | uint32 | Balance after this transaction               |
+| `balanceAfter` | 4 B  | uint24 | Balance after this transaction (3B value + 1B padding)  |
 | `flags`        | 1 B  | uint8  | Transaction type and operational flags       |
 | `hash`         | 4 B  | bytes  | Truncated SHA-256 chain hash                 |
 

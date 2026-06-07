@@ -40,7 +40,7 @@ This section consolidates the authoritative runtime and design assumptions for t
 - Parking fee is calculated per hour, rounded up: **Rp 2,000/hour**.
 - Checkout fee = `ceil(duration_in_hours) × Rp 2,000`.
 - Maximum amount per transaction encodable on the card: **16,777,215** (uint24 max, ~Rp 16.7 million).
-- Maximum balance storable on the card: **4,294,967,295** (uint32 max, ~Rp 4.29 billion).
+- Maximum balance storable on the card: **16,777,215** (uint24 max, ~Rp 16.7 million; stored as 3B value + 1B padding).
 - Card counter uses uint64 (bigint) - practically no overflow risk.
 - Each transaction produces a unique idempotency key (`tenantId:cardIdHex:counter`) to prevent duplication during sync.
 - The on-card transaction log stores a maximum of **5 entries** (ring buffer) - the full log lives in the server/IndexedDB.

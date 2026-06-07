@@ -29,13 +29,14 @@ Trailer rootHash = entry[last].hash (4 bytes, zero-padded to 6 bytes in trailer)
 
 - bytes 0-3: `timestamp` (uint32, little-endian)
 - bytes 4-6: `amount` (uint24, little-endian)
-- bytes 7-10: `balanceAfter` (uint32, little-endian)
+- bytes 7-9: `balanceAfter` (uint24, little-endian)
+- byte 10: padding (zero)
 - byte 11: `flags` (uint8)
 - bytes 12-15: `prevHash` (4 bytes)
 
 - Hash fields are **4 bytes** (32 bits, truncated SHA-256). This is a practical size given the attacker cannot precompute chains without the session key (required to produce a valid HMAC over the trailer containing `rootHash`).
 - The log is a **ring buffer**: when full (5 entries on NTAG215), the oldest entry is overwritten. The chain is recomputed from surviving entries on each write via `recomputeChainHashes`.
-- Each entry is 16 bytes: 4B timestamp, 3B amount, 4B balanceAfter, 1B flags, 4B hash.
+- Each entry is 16 bytes: 4B timestamp, 3B amount, 4B balanceAfter (uint24 in 4-byte slot), 1B flags, 4B hash.
 
 ## Consequences
 

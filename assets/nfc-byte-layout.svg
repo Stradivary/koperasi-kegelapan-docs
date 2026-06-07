@@ -207,15 +207,15 @@
   <text x="70" y="888" font-size="11" fill="#202124">64–67</text>
   <text x="140" y="888" font-size="11" fill="#202124">4 B</text>
   <text x="210" y="888" font-size="11" font-weight="600" fill="#202124">balance</text>
-  <text x="370" y="888" font-size="11" fill="#5F6368">uint32</text>
-  <text x="500" y="888" font-size="11" fill="#5F6368">0 – 4,294,967,295 (Rp, max ~4.2B)</text>
-  <text x="750" y="888" font-size="10" fill="#5F6368">Current balance in Rupiah — uint32 supports far beyond 16M business limit</text>
+  <text x="370" y="888" font-size="11" fill="#5F6368">uint24+pad</text>
+  <text x="500" y="888" font-size="11" fill="#5F6368">0 – 16,777,215 (Rp, max ~16.7M)</text>
+  <text x="750" y="888" font-size="10" fill="#5F6368">Current balance in Rupiah — uint24 (3B) + 1B padding; matches log amount range</text>
 
   <text x="70" y="908" font-size="11" fill="#202124">68–71</text>
   <text x="140" y="908" font-size="11" fill="#202124">4 B</text>
   <text x="210" y="908" font-size="11" font-weight="600" fill="#202124">lastBalance</text>
-  <text x="370" y="908" font-size="11" fill="#5F6368">uint32</text>
-  <text x="500" y="908" font-size="11" fill="#5F6368">Previous transaction balance</text>
+  <text x="370" y="908" font-size="11" fill="#5F6368">uint24+pad</text>
+  <text x="500" y="908" font-size="11" fill="#5F6368">Previous balance (3B + 1B padding)</text>
   <text x="750" y="908" font-size="10" fill="#5F6368">Tamper detection — balance delta must match last log entry amount</text>
 
   <text x="70" y="928" font-size="11" fill="#202124">72–79</text>
@@ -309,13 +309,13 @@
   <text x="210" y="1253" font-size="11" font-weight="600" fill="#202124">amount</text>
   <text x="370" y="1253" font-size="11" fill="#5F6368">uint24</text>
   <text x="500" y="1253" font-size="11" fill="#5F6368">Max Rp 16,777,215</text>
-  <text x="750" y="1253" font-size="10" fill="#5F6368">3 bytes saves 1B per entry vs uint32 — max single tx is 2M anyway (business rule)</text>
+  <text x="750" y="1253" font-size="10" fill="#5F6368">3 bytes — same uint24 range as balance fields; max single tx is 2M (business rule)</text>
 
   <text x="70" y="1273" font-size="11" fill="#202124">+7 – +10</text>
   <text x="140" y="1273" font-size="11" fill="#202124">4 B</text>
   <text x="210" y="1273" font-size="11" font-weight="600" fill="#202124">balanceAfter</text>
-  <text x="370" y="1273" font-size="11" fill="#5F6368">uint32</text>
-  <text x="500" y="1273" font-size="11" fill="#5F6368">Running balance snapshot</text>
+  <text x="370" y="1273" font-size="11" fill="#5F6368">uint24+pad</text>
+  <text x="500" y="1273" font-size="11" fill="#5F6368">Balance snapshot (3B + 1B padding)</text>
   <text x="750" y="1273" font-size="10" fill="#5F6368">Chain verification — each entry's balanceAfter must equal next entry's (balanceAfter ± amount)</text>
 
   <text x="70" y="1293" font-size="11" fill="#202124">+11</text>

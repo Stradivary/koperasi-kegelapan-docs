@@ -3,8 +3,6 @@ sidebar_position: 5
 title: Operasi Kartu
 ---
 
-import PlaceholderImg from '@site/src/components/PlaceholderImg';
-
 # Operasi Kartu
 
 Panduan lengkap untuk mengelola kartu NFC: issue kartu baru, top-up saldo, cek saldo, dan block kartu.
@@ -21,30 +19,55 @@ Sistem menggunakan **NTAG215** NFC cards dengan spesifikasi:
 
 ## Issue Kartu Baru
 
-### 1. Buka Menu Kartu
+### 1. Tap Kartu NFC
 
-Dari dashboard admin, tap tab **Kartu**.
+Dari dashboard admin, tap tab **Kartu** lalu tap tombol **"+ Issue Kartu"**. Tempelkan kartu NFC kosong ke perangkat.
 
 <div className="guide-step">
 <div className="guide-step__text">
 
-**Yang akan Anda lihat:**
+**Proses:**
 
-- Daftar kartu yang sudah di-issue
-- Tombol **"+ Issue Kartu"** di pojok kanan atas
-- Filter & search kartu
-
-**Tap "Issue Kartu"** untuk memulai proses penerbitan.
+1. Tap "Issue Kartu" dari menu Kartu
+2. Layar menampilkan animasi "Tempelkan Kartu"
+3. Dekatkan kartu NFC ke bagian belakang HP
+4. Sistem membaca UID kartu
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Daftar Kartu - tombol Issue" />
+
+![Tap kartu NFC untuk issue](../../assets/images/issue_1_tap_card.jpeg)
+
 </div>
 </div>
 
 ---
 
-### 2. Pilih Anggota
+### 2. Form Issue Muncul
+
+Setelah kartu terbaca, drawer form issue akan muncul.
+
+<div className="guide-step">
+<div className="guide-step__text">
+
+**Yang ditampilkan:**
+
+- UID kartu yang terbaca
+- Form untuk memilih anggota
+- Input saldo awal
+- Tombol konfirmasi
+
+</div>
+<div className="guide-step__image">
+
+![Drawer form issue muncul](../../assets/images/issue_2_drawer_shown.jpeg)
+
+</div>
+</div>
+
+---
+
+### 3. Pilih Anggota
 
 Pilih anggota yang akan menerima kartu.
 
@@ -64,43 +87,38 @@ Pilih anggota yang akan menerima kartu.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Pilih anggota untuk kartu baru" />
+
+![Pilih anggota untuk kartu baru](../../assets/images/issue_3_select_member.jpeg)
+
 </div>
 </div>
 
 ---
 
-### 3. Tap Kartu NFC
+### 4. Input Saldo Awal
 
-Tempelkan kartu NFC kosong ke perangkat.
+Masukkan saldo awal untuk kartu (opsional, bisa Rp 0).
 
 <div className="guide-step">
 <div className="guide-step__text">
 
-**Proses:**
+**Input saldo:**
 
-1. Layar menampilkan animasi "Tempelkan Kartu"
-2. Dekatkan kartu NFC ke bagian belakang HP
-3. Sistem membaca UID kartu
-4. Data wallet di-encrypt dan ditulis ke kartu
-5. Konfirmasi berhasil muncul
-
-**Data yang ditulis:**
-
-- Wallet state (saldo awal Rp 0)
-- Tenant ID & member binding
-- Cryptographic signature (HMAC)
-- A/B buffer untuk write safety
+- Masukkan nominal saldo awal
+- Atau biarkan Rp 0 jika akan top-up nanti
+- Konfirmasi data sebelum write
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Animasi tap kartu NFC" />
+
+![Input saldo awal](../../assets/images/issue_4_input_balance.jpeg)
+
 </div>
 </div>
 
 ---
 
-### 4. Konfirmasi Issue
+### 5. Issue Berhasil
 
 Kartu berhasil di-issue dan siap digunakan.
 
@@ -111,17 +129,44 @@ Kartu berhasil di-issue dan siap digunakan.
 
 - UID kartu (7 byte hex)
 - Nama anggota yang terikat
-- Saldo awal (Rp 0)
+- Saldo awal
 - Status: ACTIVE
 
-**Selanjutnya:**
+**Data yang ditulis ke kartu:**
 
-- Top-up saldo sebelum digunakan
-- Atau langsung gunakan untuk check-in (saldo 0 diizinkan untuk gate)
+- Wallet state (saldo)
+- Tenant ID & member binding
+- Cryptographic signature (HMAC)
+- A/B buffer untuk write safety
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Kartu berhasil di-issue" />
+
+![Kartu berhasil di-issue](../../assets/images/issue_5_issue_success.jpeg)
+
+</div>
+</div>
+
+---
+
+### 6. Verifikasi via Scout
+
+Cek kartu yang baru di-issue melalui mode Scout untuk memastikan data tertulis dengan benar.
+
+<div className="guide-step">
+<div className="guide-step__text">
+
+**Verifikasi:**
+
+- Buka mode Scout
+- Tap kartu yang baru di-issue
+- Pastikan saldo & data anggota sesuai
+
+</div>
+<div className="guide-step__image">
+
+![Verifikasi kartu via Scout](../../assets/images/issue_6_check_scout.jpeg)
+
 </div>
 </div>
 
@@ -129,15 +174,41 @@ Kartu berhasil di-issue dan siap digunakan.
 
 ## Top-up Saldo
 
-### 1. Pilih Kartu atau Tap Langsung
+### 1. Scan Kartu
+
+Dari menu Kartu, tap "Top-up" lalu tempelkan kartu ke perangkat.
 
 <div className="guide-step">
 <div className="guide-step__text">
 
-**Dua cara top-up:**
+**Proses scan:**
 
-- **Dari daftar:** Tap kartu di list → pilih "Top-up"
-- **Tap langsung:** Dari menu Kartu, tap "Top-up" → tempelkan kartu
+- Tempelkan kartu ke NFC reader
+- Sistem membaca saldo saat ini
+- Verifikasi HMAC integrity kartu
+- Tampilkan informasi kartu & saldo
+
+</div>
+<div className="guide-step__image">
+
+![Scan kartu untuk top-up](../../assets/images/topup_1_scan.jpeg)
+
+</div>
+</div>
+
+---
+
+### 2. Input Nominal
+
+Masukkan nominal top-up yang diinginkan.
+
+<div className="guide-step">
+<div className="guide-step__text">
+
+**Masukkan nominal:**
+
+- Ketik nominal manual, atau
+- Pilih dari preset (Rp 50K, 100K, 200K, 500K)
 
 **Batas top-up:**
 
@@ -147,38 +218,40 @@ Kartu berhasil di-issue dan siap digunakan.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Pilih metode top-up" />
+
+![Input nominal top-up](../../assets/images/topup_2_input.jpeg)
+
 </div>
 </div>
 
 ---
 
-### 2. Input Nominal
+### 3. Konfirmasi Nominal
+
+Review nominal yang sudah diisi sebelum melanjutkan write.
 
 <div className="guide-step">
 <div className="guide-step__text">
 
-**Masukkan nominal:**
+**Review:**
 
-- Ketik nominal manual, atau
-- Pilih dari preset (Rp 50K, 100K, 200K, 500K)
-- Sistem menampilkan saldo sebelum & sesudah
-
-**Validasi:**
-
-- Nominal harus kelipatan Rp 1.000
-- Tidak boleh melebihi batas saldo kartu
-- Konfirmasi sebelum write
+- Nominal top-up yang dipilih
+- Saldo sebelum dan sesudah
+- Validasi nominal (kelipatan Rp 1.000, tidak melebihi batas)
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Input nominal top-up" />
+
+![Konfirmasi nominal top-up](../../assets/images/topup_3_input_filled.jpeg)
+
 </div>
 </div>
 
 ---
 
-### 3. Tap Kartu untuk Write
+### 4. Proses Write ke Kartu
+
+Tempelkan kartu untuk menulis saldo baru.
 
 <div className="guide-step">
 <div className="guide-step__text">
@@ -186,11 +259,8 @@ Kartu berhasil di-issue dan siap digunakan.
 **Proses write:**
 
 1. Tempelkan kartu ke NFC reader
-2. Sistem membaca state saat ini
-3. Verifikasi HMAC integrity
-4. Update saldo + tulis ke buffer
-5. Verifikasi write berhasil
-6. Tampilkan saldo baru
+2. Update saldo + tulis ke buffer
+3. Verifikasi write berhasil
 
 **Keamanan:**
 
@@ -198,9 +268,57 @@ Kartu berhasil di-issue dan siap digunakan.
 - HMAC verification sebelum dan sesudah write
 - Transaksi dicatat di hash-chain log on-card
 
+**Penting:** Jangan angkat kartu selama proses write.
+
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Proses write top-up ke kartu" />
+
+![Proses write top-up](../../assets/images/topup_5_write.jpeg)
+
+</div>
+</div>
+
+---
+
+### 5. Top-up Berhasil
+
+<div className="guide-step">
+<div className="guide-step__text">
+
+**Informasi yang ditampilkan:**
+
+- Nominal top-up yang berhasil
+- Saldo baru setelah top-up
+- Timestamp transaksi
+
+</div>
+<div className="guide-step__image">
+
+![Top-up berhasil](../../assets/images/topup_6_success.jpeg)
+
+</div>
+</div>
+
+---
+
+### 6. Verifikasi Saldo via Scout
+
+Cek saldo terbaru melalui Scout untuk memastikan top-up berhasil.
+
+<div className="guide-step">
+<div className="guide-step__text">
+
+**Verifikasi:**
+
+- Buka mode Scout
+- Tap kartu yang baru di-top-up
+- Pastikan saldo sudah terupdate
+
+</div>
+<div className="guide-step__image">
+
+![Verifikasi saldo via Scout](../../assets/images/topup_updated_scout.jpeg)
+
 </div>
 </div>
 
@@ -219,13 +337,15 @@ Kartu berhasil di-issue dan siap digunakan.
    - Saldo saat ini
    - Nama pemilik
    - Status kartu
-   - 5 transaksi terakhir
+   - Transaksi terakhir
 
 **Read-only** - tidak ada perubahan data di kartu.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Tampilan Scout - info kartu" />
+
+![Mode Scout - cek saldo](../../assets/images/scout_12.jpeg)
+
 </div>
 </div>
 
@@ -253,9 +373,6 @@ Kartu berhasil di-issue dan siap digunakan.
 - Anggota non-aktif sementara
 - Investigasi transaksi mencurigakan
 
-</div>
-<div className="guide-step__image">
-<PlaceholderImg caption="Block & Unblock kartu" />
 </div>
 </div>
 

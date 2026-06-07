@@ -3,8 +3,6 @@ sidebar_position: 7
 title: Mode Kiosk
 ---
 
-import PlaceholderImg from '@site/src/components/PlaceholderImg';
-
 # Mode Kiosk
 
 Panduan penggunaan mode-mode kiosk: **Gate**, **Terminal**, dan **Scout** untuk operasional sehari-hari.
@@ -44,7 +42,6 @@ Gate digunakan di pintu masuk untuk mencatat waktu kedatangan.
 2. Anggota menempelkan kartu NFC
 3. Sistem membaca kartu & verifikasi
 4. Waktu check-in dicatat di kartu
-5. Layar menampilkan konfirmasi ✅
 
 **State kartu berubah:**
 
@@ -53,11 +50,36 @@ Gate digunakan di pintu masuk untuk mencatat waktu kedatangan.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Mode Gate - menunggu tap kartu" />
+
+![Mode Gate - menunggu tap kartu](../../assets/images/check_in.jpeg)
+
 </div>
 </div>
 
 ---
+
+### Proses Write ke Kartu
+
+<div className="guide-step">
+<div className="guide-step__text">
+
+**Saat kartu ditap:**
+
+- Sistem membaca dan memverifikasi kartu
+- Data check-in ditulis ke kartu
+- Jangan angkat kartu selama proses write
+
+</div>
+<div className="guide-step__image">
+
+![Writing data ke kartu di Gate](../../assets/images/writing_gate.jpeg)
+
+</div>
+</div>
+
+---
+
+### Check-in Berhasil
 
 <div className="guide-step">
 <div className="guide-step__text">
@@ -69,15 +91,33 @@ Gate digunakan di pintu masuk untuk mencatat waktu kedatangan.
 - Animasi sukses (hijau)
 - Otomatis kembali ke layar tap setelah 3 detik
 
+</div>
+<div className="guide-step__image">
+
+![Gate - check-in berhasil](../../assets/images/check_in_success.jpeg)
+
+</div>
+</div>
+
+---
+
+### Check-in Gagal
+
+<div className="guide-step">
+<div className="guide-step__text">
+
 **Jika gagal:**
 
 - Kartu tidak dikenali → pesan error
 - Kartu sudah checked-in → pesan "Sudah masuk"
 - Kartu blocked → pesan "Kartu diblokir"
+- Saldo tidak cukup → pesan saldo kurang
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Gate - check-in berhasil" />
+
+![Gate - check-in gagal](../../assets/images/check_in_failure.jpeg)
+
 </div>
 </div>
 
@@ -109,11 +149,15 @@ Terminal digunakan di pintu keluar untuk menghitung durasi dan memotong saldo.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Mode Terminal - menunggu tap" />
+
+![Mode Terminal - menunggu tap kartu](../../assets/images/checkout.jpeg)
+
 </div>
 </div>
 
 ---
+
+### Checkout Berhasil
 
 <div className="guide-step">
 <div className="guide-step__text">
@@ -134,7 +178,9 @@ Terminal digunakan di pintu keluar untuk menghitung durasi dan memotong saldo.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Terminal - detail checkout & tarif" />
+
+![Terminal - checkout berhasil](../../assets/images/checkout_success.jpeg)
+
 </div>
 </div>
 
@@ -152,7 +198,7 @@ Scout adalah mode read-only untuk mengecek informasi kartu.
 - Saldo saat ini
 - Nama pemilik kartu
 - Status kartu (Active/Blocked/Checked-in)
-- 5 transaksi terakhir
+- Transaksi terakhir
 - Waktu check-in (jika sedang checked-in)
 
 **Kegunaan:**
@@ -165,7 +211,9 @@ Scout adalah mode read-only untuk mengecek informasi kartu.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Mode Scout - informasi kartu" />
+
+![Mode Scout - informasi kartu](../../assets/images/scout_12.jpeg)
+
 </div>
 </div>
 
@@ -193,7 +241,9 @@ Scout adalah mode read-only untuk mengecek informasi kartu.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Mode picker - long press untuk akses" />
+
+![Mode picker - switch mode](../../assets/images/kiosk_switch.jpeg)
+
 </div>
 </div>
 

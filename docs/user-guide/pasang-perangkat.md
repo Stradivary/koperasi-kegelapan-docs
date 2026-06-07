@@ -3,8 +3,6 @@ sidebar_position: 4
 title: Pasang Perangkat
 ---
 
-import PlaceholderImg from '@site/src/components/PlaceholderImg';
-
 # Pasang Perangkat
 
 Panduan untuk mendaftarkan dan mengkonfigurasi perangkat sebagai terminal operasional (Gate, Terminal, Scout, atau Kiosk).
@@ -17,62 +15,62 @@ Setiap perangkat fisik (smartphone/tablet) bisa didaftarkan dengan **role** tert
 | ------------ | ------------------------ | ------------------- |
 | **Gate**     | Check-in masuk area      | Pintu masuk parkir  |
 | **Terminal** | Checkout & hitung durasi | Pintu keluar parkir |
-| **Scout**    | Cek saldo & riwayat      | Meja informasi      |
-| **Station**  | Admin full-access        | Kantor admin        |
+| **Scout**    | Cek saldo & riwayat      | Meja informasi      | 
 
 ---
 
 ## Langkah-langkah
 
-### 1. Login ke Tenant
+### 1. Tap "Pasang Perangkat" di Landing Page
 
-Pastikan Anda sudah login ke tenant yang ingin dipasangi perangkat.
+Dari halaman utama aplikasi, tap tombol **"Pasang Perangkat"** untuk memulai proses setup.
 
 <div className="guide-step">
 <div className="guide-step__text">
 
-**Prasyarat:**
+**Yang perlu dilakukan:**
 
-- Sudah login sebagai admin tenant
-- Perangkat memiliki NFC reader (untuk operasi kartu)
-- Browser mendukung Web NFC API
+- Buka URL aplikasi di browser perangkat yang ingin didaftarkan
+- Pada halaman utama, tap tombol **"Pasang Perangkat"**
 
-**Cek kompatibilitas:**
+**Prasyarat perangkat:**
 
-- Chrome Android 89+ ✅
-- Samsung Internet ✅
-- iOS Safari ❌ (Web NFC belum didukung)
+- Browser mendukung Web NFC API (Chrome Android 89+)
+- NFC reader aktif (untuk operasi kartu nanti)
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Dashboard admin - siap setup perangkat" />
+
+![Landing Page - Tombol Pasang Perangkat](../../assets/images/register_1.png)
+
 </div>
 </div>
 
 ---
 
-### 2. Buka Pengaturan Perangkat
+### 2. Login ke Tenant
 
-Navigasi ke menu **Pengaturan** → **Perangkat**.
+Anda akan diminta login terlebih dahulu untuk mengautentikasi perangkat.
 
 <div className="guide-step">
 <div className="guide-step__text">
 
-**Cara akses:**
+**Yang perlu dilakukan:**
 
-- Tap tab **Pengaturan** di bottom navigation
-- Pilih section **Perangkat**
-- Tap **"Daftarkan Perangkat Ini"**
+- Pilih tenant yang ingin dipasangi perangkat
+- Masukkan username & password admin
+- Setelah berhasil login, lanjut ke pemilihan role
 
-**Informasi yang ditampilkan:**
+**Catatan:**
 
-- Device ID (auto-generated)
-- Browser & OS yang digunakan
-- Status NFC (tersedia/tidak)
+- Hanya admin yang bisa mendaftarkan perangkat baru
+- Login diperlukan untuk mengaitkan perangkat dengan tenant
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Halaman Pengaturan - section Perangkat" />
+
+![Login untuk Pasang Perangkat](../../assets/images/device_1.png)
+
 </div>
 </div>
 
@@ -90,25 +88,26 @@ Tentukan fungsi perangkat ini dalam operasional.
 - **Gate** - Hanya bisa melakukan check-in
 - **Terminal** - Hanya bisa melakukan checkout
 - **Scout** - Hanya bisa cek saldo (read-only)
-- **Station** - Akses penuh (admin)
 
 **Catatan:**
 
 - Role menentukan mode yang tersedia di perangkat
-- Perangkat dengan role spesifik tidak bisa switch ke mode lain
-- Station bisa mengakses semua mode
+- Perangkat dengan role spesifik langsung masuk ke mode kiosk
+- Untuk akses penuh (Station), login lewat alur biasa
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Pilih role perangkat" />
+
+![Pilih Role Perangkat](../../assets/images/device_2.png)
+
 </div>
 </div>
 
 ---
 
-### 4. Konfirmasi & Aktivasi
+### 4. Perangkat Aktif dalam Mode Kiosk
 
-Setelah memilih role, perangkat akan terdaftar dan langsung aktif.
+Setelah memilih role, perangkat langsung aktif dalam mode kiosk yang sesuai.
 
 <div className="guide-step">
 <div className="guide-step__text">
@@ -117,45 +116,21 @@ Setelah memilih role, perangkat akan terdaftar dan langsung aktif.
 
 - Device ID disimpan di IndexedDB lokal
 - Role di-lock untuk perangkat ini
-- Perangkat otomatis masuk ke mode yang sesuai
+- Perangkat otomatis masuk ke tampilan kiosk
 - Data device di-sync ke server saat online
 
-**Setelah aktivasi:**
+**Tampilan Kiosk:**
 
-- Perangkat langsung siap digunakan
-- Restart app akan otomatis masuk ke mode yang terdaftar
-- Untuk mengubah role, perlu reset dari menu admin
-
-</div>
-<div className="guide-step__image">
-<PlaceholderImg caption="Perangkat berhasil didaftarkan" />
-</div>
-</div>
-
----
-
-### 5. Mode Kiosk (Opsional)
-
-Untuk perangkat yang akan digunakan publik (tanpa supervisi), aktifkan mode kiosk.
-
-<div className="guide-step">
-<div className="guide-step__text">
-
-**Mode Kiosk:**
-
-- Menyembunyikan navigasi admin
-- Hanya menampilkan UI operasional
+- Navigasi admin disembunyikan
+- Hanya menampilkan UI operasional sesuai role
 - Long-press logo (500ms) untuk akses mode picker
 - Cocok untuk perangkat yang dipasang permanen
 
-**Cara aktifkan:**
-
-- Setelah daftar perangkat, toggle **"Mode Kiosk"**
-- Atau pilih role Gate/Terminal/Scout (otomatis kiosk)
-
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Tampilan Mode Kiosk - UI minimal" />
+
+![Mode Kiosk - Scout](../../assets/images/device_3.png)
+
 </div>
 </div>
 

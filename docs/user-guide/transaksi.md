@@ -3,8 +3,6 @@ sidebar_position: 8
 title: Transaksi
 ---
 
-import PlaceholderImg from '@site/src/components/PlaceholderImg';
-
 # Transaksi
 
 Panduan untuk melihat, memahami, dan mengelola riwayat transaksi di sistem.
@@ -19,6 +17,77 @@ Panduan untuk melihat, memahami, dan mengelola riwayat transaksi di sistem.
 | `CHECK_OUT` | Keluar area (Terminal) | - Tarif       |
 | `BLOCK`     | Pemblokiran kartu      | Tidak berubah |
 | `UNBLOCK`   | Pembukaan blokir       | Tidak berubah |
+
+---
+
+## Contoh Transaksi
+
+### Top-up Berhasil
+
+<div className="guide-step">
+<div className="guide-step__text">
+
+**Informasi yang dicatat:**
+
+- Tipe: `TOPUP`
+- Nominal yang diisi
+- Saldo sebelum & sesudah
+- Timestamp
+- Perangkat yang memproses
+
+</div>
+<div className="guide-step__image">
+
+![Transaksi Top-up berhasil](../../assets/images/topup_6_success.jpeg)
+
+</div>
+</div>
+
+---
+
+### Check-in Berhasil
+
+<div className="guide-step">
+<div className="guide-step__text">
+
+**Informasi yang dicatat:**
+
+- Tipe: `CHECK_IN`
+- Waktu masuk
+- Nama anggota
+- UID kartu
+- Perangkat Gate yang memproses
+
+</div>
+<div className="guide-step__image">
+
+![Transaksi Check-in berhasil](../../assets/images/check_in_success.jpeg)
+
+</div>
+</div>
+
+---
+
+### Checkout Berhasil
+
+<div className="guide-step">
+<div className="guide-step__text">
+
+**Informasi yang dicatat:**
+
+- Tipe: `CHECK_OUT`
+- Waktu masuk & keluar
+- Durasi parkir
+- Tarif yang dikenakan
+- Saldo sebelum & sesudah
+
+</div>
+<div className="guide-step__image">
+
+![Transaksi Checkout berhasil](../../assets/images/checkout_success.jpeg)
+
+</div>
+</div>
 
 ---
 
@@ -44,7 +113,9 @@ Panduan untuk melihat, memahami, dan mengelola riwayat transaksi di sistem.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Daftar riwayat transaksi" />
+
+![Daftar riwayat transaksi](../../assets/images/transaction.png)
+
 </div>
 </div>
 
@@ -69,35 +140,9 @@ Panduan untuk melihat, memahami, dan mengelola riwayat transaksi di sistem.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Filter transaksi" />
-</div>
-</div>
 
----
+![Filter & pencarian transaksi](../../assets/images/transaction_search.png)
 
-## Detail Transaksi
-
-<div className="guide-step">
-<div className="guide-step__text">
-
-**Tap transaksi untuk melihat detail:**
-
-- ID Transaksi (hash)
-- Tipe & timestamp lengkap
-- Anggota & kartu terkait
-- Nominal & saldo sebelum/sesudah
-- Device yang memproses
-- Status sync (lokal / synced)
-
-**Hash Chain:**
-
-- Setiap transaksi memiliki hash yang terhubung ke transaksi sebelumnya
-- Menjamin integritas data (tamper-evident)
-- Ditampilkan sebagai "Chain ID" di detail
-
-</div>
-<div className="guide-step__image">
-<PlaceholderImg caption="Detail transaksi - hash chain" />
 </div>
 </div>
 
@@ -132,7 +177,9 @@ Panduan untuk melihat, memahami, dan mengelola riwayat transaksi di sistem.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Status sync transaksi" />
+
+![Status sync transaksi](../../assets/images/transaction_sync.png)
+
 </div>
 </div>
 
@@ -155,9 +202,6 @@ Panduan untuk melihat, memahami, dan mengelola riwayat transaksi di sistem.
 - Terakhir sync berhasil
 - Status koneksi ke server
 
-</div>
-<div className="guide-step__image">
-<PlaceholderImg caption="Manual sync - status & trigger" />
 </div>
 </div>
 
@@ -186,8 +230,33 @@ Panduan untuk melihat, memahami, dan mengelola riwayat transaksi di sistem.
 - Format CSV untuk analisis lebih lanjut
 
 </div>
+</div>
+
+---
+
+## Cek Riwayat via Scout
+
+Selain dari menu Transaksi, riwayat juga bisa dilihat per kartu lewat mode Scout:
+
+<div className="guide-step">
+<div className="guide-step__text">
+
+**Cara:**
+
+1. Buka mode **Scout**
+2. Tempelkan kartu ke perangkat
+3. Transaksi terakhir ditampilkan bersama info saldo
+
+**Kegunaan:**
+
+- Verifikasi cepat transaksi terakhir
+- Anggota bisa cek sendiri tanpa akses admin
+
+</div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Ringkasan transaksi harian" />
+
+![Riwayat transaksi via Scout](../../assets/images/scout_12.jpeg)
+
 </div>
 </div>
 

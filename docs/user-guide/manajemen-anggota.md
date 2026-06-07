@@ -3,8 +3,6 @@ sidebar_position: 6
 title: Manajemen Anggota
 ---
 
-import PlaceholderImg from '@site/src/components/PlaceholderImg';
-
 # Manajemen Anggota
 
 Panduan untuk menambah, mengedit, dan mengelola data anggota koperasi.
@@ -15,9 +13,7 @@ Setiap anggota (member) adalah entitas yang bisa memiliki satu atau lebih kartu 
 
 ---
 
-## Tambah Anggota Baru
-
-### 1. Buka Menu Anggota
+## Daftar Anggota
 
 <div className="guide-step">
 <div className="guide-step__text">
@@ -25,7 +21,6 @@ Setiap anggota (member) adalah entitas yang bisa memiliki satu atau lebih kartu 
 **Akses:**
 
 - Tap tab **Anggota** di bottom navigation
-- Tap tombol **"+ Tambah Anggota"**
 
 **Daftar anggota menampilkan:**
 
@@ -34,15 +29,27 @@ Setiap anggota (member) adalah entitas yang bisa memiliki satu atau lebih kartu 
 - Status (aktif/non-aktif)
 - Tanggal bergabung
 
+**Fitur:**
+
+- Search nama atau nomor anggota
+- Filter status: Semua / Aktif / Non-aktif
+- Tombol **"+ Tambah Anggota"** untuk membuat baru
+
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Daftar Anggota - tombol Tambah" />
+
+![Daftar Anggota](../../assets/images/member.jpeg)
+
 </div>
 </div>
 
 ---
 
-### 2. Isi Data Anggota
+## Tambah Anggota Baru
+
+### 1. Buka Form Tambah
+
+Tap tombol **"+ Tambah Anggota"** dari daftar anggota.
 
 <div className="guide-step">
 <div className="guide-step__text">
@@ -61,13 +68,15 @@ Setiap anggota (member) adalah entitas yang bisa memiliki satu atau lebih kartu 
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Form tambah anggota" />
+
+![Form tambah anggota](../../assets/images/add_member_1.jpeg)
+
 </div>
 </div>
 
 ---
 
-### 3. Simpan
+### 2. Simpan
 
 <div className="guide-step">
 <div className="guide-step__text">
@@ -85,64 +94,9 @@ Setiap anggota (member) adalah entitas yang bisa memiliki satu atau lebih kartu 
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Anggota berhasil ditambahkan" />
-</div>
-</div>
 
----
+![Anggota berhasil ditambahkan](../../assets/images/add_member_2.jpeg)
 
-## Edit Anggota
-
-<div className="guide-step">
-<div className="guide-step__text">
-
-**Cara edit:**
-
-1. Tap anggota di daftar
-2. Tap ikon **Edit** (pensil)
-3. Ubah data yang diperlukan
-4. Tap **Simpan**
-
-**Yang bisa diedit:**
-
-- Nama, No. HP, Catatan
-- Status aktif/non-aktif
-
-**Yang tidak bisa diedit:**
-
-- ID Anggota (auto-generated)
-- Riwayat kartu
-
-</div>
-<div className="guide-step__image">
-<PlaceholderImg caption="Edit data anggota" />
-</div>
-</div>
-
----
-
-## Lihat Detail Anggota
-
-<div className="guide-step">
-<div className="guide-step__text">
-
-**Informasi di halaman detail:**
-
-- Data profil anggota
-- Daftar kartu yang dimiliki (aktif & blocked)
-- Riwayat transaksi terkait
-- Total saldo di semua kartu
-
-**Aksi yang tersedia:**
-
-- Edit profil
-- Issue kartu baru untuk anggota ini
-- Block/unblock kartu
-- Nonaktifkan anggota
-
-</div>
-<div className="guide-step__image">
-<PlaceholderImg caption="Detail anggota - kartu & riwayat" />
 </div>
 </div>
 
@@ -167,18 +121,7 @@ Setiap anggota (member) adalah entitas yang bisa memiliki satu atau lebih kartu 
 - Bisa diaktifkan kembali oleh admin
 
 </div>
-<div className="guide-step__image">
-<PlaceholderImg caption="Konfirmasi nonaktifkan anggota" />
 </div>
-</div>
-
----
-
-## Pencarian & Filter
-
-- **Search:** Ketik nama atau nomor anggota
-- **Filter status:** Semua / Aktif / Non-aktif
-- **Sort:** Nama (A-Z), Tanggal gabung, Jumlah kartu
 
 ---
 

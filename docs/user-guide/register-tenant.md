@@ -3,8 +3,6 @@ sidebar_position: 2
 title: Register Tenant
 ---
 
-import PlaceholderImg from '@site/src/components/PlaceholderImg';
-
 # Register Tenant
 
 Langkah pertama untuk menggunakan Koperasi Kegelapan adalah mendaftarkan **Tenant** (organisasi/koperasi) Anda.
@@ -37,7 +35,9 @@ Akses aplikasi melalui browser. Anda akan melihat halaman login dengan opsi untu
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Halaman Login - tombol Buat Koperasi Baru" />
+
+![Halaman Login - tombol Buat Koperasi Baru](../../assets/images/register_1.png)
+
 </div>
 </div>
 
@@ -54,25 +54,53 @@ Form registrasi akan muncul. Isi informasi dasar koperasi Anda.
 
 - **Nama Koperasi** - Nama organisasi Anda (contoh: "Koperasi Maju Bersama")
 - **Kode Tenant** - Kode unik pendek (auto-generated, bisa diedit)
-- **PIN Admin** - PIN 6 digit untuk akses admin
 
 **Validasi:**
 
 - Nama minimal 3 karakter
-- PIN harus 6 digit angka
 - Kode tenant harus unik di sistem
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Form Registrasi Tenant" />
+
+![Form Registrasi Tenant](../../assets/images/register_2.png)
+
 </div>
 </div>
 
 ---
 
-### 3. Konfirmasi & Simpan
+### 3. Set Password Admin
 
-Setelah mengisi data, sistem akan membuat tenant secara lokal.
+Buat password untuk akun admin tenant Anda.
+
+<div className="guide-step">
+<div className="guide-step__text">
+
+**Yang perlu dilakukan:**
+
+- Masukkan **Password Admin** untuk akses ke dashboard
+- Konfirmasi password yang telah diisi
+- Tap tombol **Simpan** untuk membuat tenant
+
+**Penting:**
+
+- Ingat password ini, digunakan untuk login sebagai admin
+- Password bersifat lokal dan di-hash sebelum disimpan
+
+</div>
+<div className="guide-step__image">
+
+![Set Password Admin](../../assets/images/register_3.png)
+
+</div>
+</div>
+
+---
+
+### 4. Tenant Berhasil Dibuat
+
+Setelah menyimpan, sistem akan membuat tenant secara lokal.
 
 <div className="guide-step">
 <div className="guide-step__text">
@@ -91,7 +119,9 @@ Setelah mengisi data, sistem akan membuat tenant secara lokal.
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Konfirmasi tenant berhasil dibuat" />
+
+![Tenant berhasil dibuat](../../assets/images/register_4.png)
+
 </div>
 </div>
 

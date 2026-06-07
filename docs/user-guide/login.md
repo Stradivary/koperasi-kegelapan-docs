@@ -3,8 +3,6 @@ sidebar_position: 3
 title: Login
 ---
 
-import PlaceholderImg from '@site/src/components/PlaceholderImg';
-
 # Login
 
 Panduan untuk masuk ke aplikasi dan memilih tenant yang akan dikelola.
@@ -16,7 +14,7 @@ flowchart TD
     A[Buka App] --> B{Punya Tenant Lokal?}
     B -->|Ya| C[Pilih Tenant]
     B -->|Tidak| D[Browse Server / Buat Baru]
-    C --> E[Masukkan PIN]
+    C --> E[Masukkan Username & Password]
     D --> F[Sync Tenant dari Server]
     F --> E
     E --> G[Masuk ke Dashboard]
@@ -26,9 +24,9 @@ flowchart TD
 
 ## Langkah-langkah
 
-### 1. Buka Aplikasi
+### 1. Cari & Pilih Tenant
 
-Buka aplikasi dari browser atau shortcut Home Screen.
+Buka aplikasi dari browser atau shortcut Home Screen. Cari tenant yang ingin Anda kelola.
 
 <div className="guide-step">
 <div className="guide-step__text">
@@ -40,69 +38,52 @@ Buka aplikasi dari browser atau shortcut Home Screen.
 - Tombol "Browse Server" untuk mencari tenant online
 - Tombol "Buat Koperasi Baru" untuk registrasi
 
-</div>
-<div className="guide-step__image">
-<PlaceholderImg caption="Halaman utama login" />
-</div>
-</div>
-
----
-
-### 2. Pilih Tenant
-
-Jika Anda sudah pernah login, tenant akan muncul di daftar lokal.
-
-<div className="guide-step">
-<div className="guide-step__text">
-
 **Opsi yang tersedia:**
 
 - **Tenant Lokal** - Tap untuk langsung memilih
 - **Browse Server** - Cari tenant yang terdaftar di server
 - **Buat Baru** - Registrasi tenant baru
 
-**Browse Server:**
-
-- Ketik nama atau kode tenant di search bar
-- Hasil pencarian muncul real-time
-- Tap tenant untuk sync ke perangkat lokal
-
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Daftar tenant lokal & browse server" />
+
+![Cari & Pilih Tenant](../../assets/images/login_1.png)
+
 </div>
 </div>
 
 ---
 
-### 3. Masukkan PIN
+### 2. Masukkan Username & Password
 
-Setelah memilih tenant, masukkan PIN admin untuk autentikasi.
+Setelah memilih tenant, masukkan kredensial untuk autentikasi.
 
 <div className="guide-step">
 <div className="guide-step__text">
 
 **Autentikasi:**
 
-- Masukkan PIN 6 digit yang dibuat saat registrasi
-- PIN diverifikasi secara lokal (offline-capable)
+- Masukkan **username** dan **password** yang dibuat saat registrasi
+- Kredensial diverifikasi secara lokal (offline-capable)
 - Setelah berhasil, Anda masuk ke dashboard
 
 **Keamanan:**
 
-- 5x salah PIN → akun terkunci sementara (5 menit)
-- PIN tidak pernah dikirim ke server
+- 5x salah password → akun terkunci sementara (5 menit)
+- Password tidak pernah dikirim ke server dalam plaintext
 - Verifikasi menggunakan hash lokal
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Input PIN admin" />
+
+![Masukkan Username & Password](../../assets/images/login_2.png)
+
 </div>
 </div>
 
 ---
 
-### 4. Dashboard Admin
+### 3. Dashboard Admin
 
 Setelah login berhasil, Anda masuk ke Station mode (dashboard admin).
 
@@ -119,7 +100,9 @@ Setelah login berhasil, Anda masuk ke Station mode (dashboard admin).
 
 </div>
 <div className="guide-step__image">
-<PlaceholderImg caption="Dashboard Admin - Station mode" />
+
+![Dashboard Admin - Station mode](../../assets/images/register_4.png)
+
 </div>
 </div>
 
@@ -135,9 +118,9 @@ Setelah login berhasil, Anda masuk ke Station mode (dashboard admin).
 
 ## Troubleshooting
 
-| Masalah                       | Solusi                                                            |
-| ----------------------------- | ----------------------------------------------------------------- |
-| Tenant tidak muncul di daftar | Gunakan "Browse Server" untuk sync ulang                          |
-| PIN salah terus               | Pastikan menggunakan PIN yang benar, tunggu 5 menit jika terkunci |
-| Tidak bisa browse server      | Periksa koneksi internet                                          |
-| App tidak bisa dibuka         | Clear cache browser, pastikan HTTPS                               |
+| Masalah                          | Solusi                                                                |
+| -------------------------------- | --------------------------------------------------------------------- |
+| Tenant tidak muncul di daftar    | Gunakan "Browse Server" untuk sync ulang                              |
+| Password salah terus             | Pastikan menggunakan password yang benar, tunggu 5 menit jika terkunci |
+| Tidak bisa browse server         | Periksa koneksi internet                                              |
+| App tidak bisa dibuka            | Clear cache browser, pastikan HTTPS                                   |
